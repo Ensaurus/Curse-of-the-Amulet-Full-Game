@@ -74083,7 +74083,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec70cf7b1b002c841a995f7e95b678a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 7
   rb: {fileID: 2083432486}
 --- !u!50 &2083432486
 Rigidbody2D:
@@ -74164,8 +74164,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2083432484}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.79, y: -2.76, z: -1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -15.5458, y: -2.2988, z: -1}
+  m_LocalScale: {x: 0.8457661, y: 0.8457661, z: 0.8457661}
   m_Children:
   - {fileID: 1689886960}
   m_Father: {fileID: 0}
@@ -74209,5 +74209,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 1, y: 1.9}
   m_EdgeRadius: 0
