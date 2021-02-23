@@ -8,6 +8,8 @@ public class movement_2D : MonoBehaviour
 
     public Rigidbody2D rb;
     Vector2 movement;
+
+    public Animator animator;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +21,10 @@ public class movement_2D : MonoBehaviour
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
+
+        animator.SetFloat("horizontal", movement.x);
+        animator.SetFloat("vertical", movement.y);
+        animator.SetFloat("speed", movement.sqrMagnitude);
     }
     
     void FixedUpdate(){
