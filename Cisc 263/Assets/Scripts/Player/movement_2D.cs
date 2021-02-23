@@ -53,7 +53,11 @@ public class movement_2D : MonoBehaviour
     }
     
     void FixedUpdate(){
-        rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+        // move if not using amulet
+        if (!Amulet.Instance.isActive)
+        {
+            rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+        }
     }
 
 }
