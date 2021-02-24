@@ -26,7 +26,7 @@ public class LanternMech : MonoBehaviour
 
         //Turning the light on
         if (Input.GetKeyDown(KeyCode.F)){
-           isOn =! isOn;
+           isOn = !isOn;
         }
         if (isOn){
             lightSource.SetActive(true);

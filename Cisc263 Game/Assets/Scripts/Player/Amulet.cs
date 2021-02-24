@@ -7,12 +7,14 @@ public class Amulet : Singleton<Amulet>
     public float charge;
     public bool isActive;
     private Collider2D playerCol;
+    private Animator playerAnimator;
     // temp, move to a better place
     // [SerializeField] private GameObject stoneSprite;
 
     // Start is called before the first frame update
     void Start()
     {
+        playerAnimator = gameObject.GetComponent<Animator>();
         isActive = false;
         playerCol = gameObject.GetComponent<BoxCollider2D>();
     }
@@ -29,7 +31,8 @@ public class Amulet : Singleton<Amulet>
 
     IEnumerator Activate()
     {
-        // stoneSprite.SetActive(true);
+        isActive = true;
+        playerAnimator.SetBool("frozen", isActive);
         playerCol.enabled = false;
 
         while (Input.GetKey(KeyCode.Space) && charge > 0) {
@@ -41,6 +44,6 @@ public class Amulet : Singleton<Amulet>
         // deactivate
         playerCol.enabled = true;
         isActive = false;
-        // stoneSprite.SetActive(false);
+        playerAnimator.SetBool("frozen", isActive);
     }
 }
