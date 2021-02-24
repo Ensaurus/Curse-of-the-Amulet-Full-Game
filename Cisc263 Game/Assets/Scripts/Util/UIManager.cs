@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UIManager : Singleton<UIManager>
 {
     public TextMeshProUGUI amuletChargeText;
+    public TextMeshProUGUI lanternChargeText;
     public TextMeshProUGUI gameOverText;
     public Image jumpScare;
     public bool isScaring = false;
@@ -14,7 +15,8 @@ public class UIManager : Singleton<UIManager>
     void Start()
     {
         EventManager.Instance.JumpScare.AddListener(DisplayJumpScare);
-        updateAmuletCharge();     
+        updateAmuletCharge();
+        updateLanternCharge();
     }
 
     // Update is called once per frame
@@ -24,11 +26,21 @@ public class UIManager : Singleton<UIManager>
         {
             updateAmuletCharge();
         }
+
+        if (Lantern.Instance.isOn)
+        {
+            updateLanternCharge();
+        }
     }
 
     private void updateAmuletCharge()
     {
         amuletChargeText.text = "Amulet Charge: " + Mathf.Round(Amulet.Instance.charge);
+    }
+
+    private void updateLanternCharge()
+    {
+        lanternChargeText.text = "Lantern Charge: " + Mathf.Round(Lantern.Instance.currentEnergy);
     }
 
 
