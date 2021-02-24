@@ -248,6 +248,7 @@ public class EnemyAI : MonoBehaviour
         // move towards player
         while (!PositionIsVeryNear(myTransform.position, playerTransform.position))
         {
+            Debug.Log("player pos: " + playerTransform.position + " enemy pos: " + myTransform.position);
             target = playerTransform.position;
             Move();
             yield return new WaitForSeconds(Time.deltaTime);

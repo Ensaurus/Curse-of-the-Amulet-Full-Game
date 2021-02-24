@@ -8,10 +8,10 @@ public class Amulet : Singleton<Amulet>
     public bool isActive;
     private Collider2D playerCol;
     private Animator playerAnimator;
-    // temp, move to a better place
-    // [SerializeField] private GameObject stoneSprite;
 
-    // Start is called before the first frame update
+    [SerializeField] private GameObject stoneSpriteCollider;
+
+
     void Start()
     {
         playerAnimator = gameObject.GetComponent<Animator>();
@@ -19,21 +19,23 @@ public class Amulet : Singleton<Amulet>
         playerCol = gameObject.GetComponent<BoxCollider2D>();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && charge > 0)
+        if (Input.GetKeyDown(KeyCode.Space) && charge > 0 && !isActive)
         {
             StartCoroutine(Activate());
         }
     }
 
 
+    // Note: stonerSpriteCollider needs a 2D collider with a "Player" tag so the enemy will behave normally 
     IEnumerator Activate()
     {
         isActive = true;
         playerAnimator.SetBool("frozen", isActive);
         playerCol.enabled = false;
+        stoneSpriteCollider.SetActive(true);
 
         while (Input.GetKey(KeyCode.Space) && charge > 0) {
             isActive = true;
@@ -42,6 +44,7 @@ public class Amulet : Singleton<Amulet>
         }
 
         // deactivate
+        stoneSpriteCollider.SetActive(false);
         playerCol.enabled = true;
         isActive = false;
         playerAnimator.SetBool("frozen", isActive);

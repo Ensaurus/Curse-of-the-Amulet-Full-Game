@@ -36,7 +36,6 @@ public class ScentSpawner : MonoBehaviour
     {
         Vector2 currentPos = myTransform.position;
         float distanceMoved = (currentPos - lastUpdatePos).magnitude;
-        Debug.Log("distance moved: " + distanceMoved);
 
         if (distanceMoved <= validDistance)
         {

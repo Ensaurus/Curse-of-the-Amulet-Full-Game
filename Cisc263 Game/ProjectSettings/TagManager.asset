@@ -7,6 +7,7 @@ TagManager:
   - Scent
   - Enemy
   - Flame
+  - Light
   layers:
   - Default
   - TransparentFX

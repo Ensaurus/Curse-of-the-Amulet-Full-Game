@@ -5,8 +5,10 @@ using UnityEngine;
 public class Lantern : Singleton<Lantern>
 {
     public bool isOn = false;
-    public GameObject lantern;
-    public GameObject lanternLight;
+    [SerializeField] private GameObject lantern;
+    [SerializeField] private GameObject lanternLight;
+    [SerializeField] private GameObject idleLight;
+    [SerializeField] private GameObject activeGlow;
     private Transform myTransform;
     [SerializeField] private float maxEnergy;   // max energy flashlight can hold (also functions as starting energy
     public float currentEnergy;    // time in seconds before latern runs out of energy
@@ -40,15 +42,19 @@ public class Lantern : Singleton<Lantern>
     {
         isOn = !isOn;
 
-        if (isOn && currentEnergy >= 0)
+        if (isOn && currentEnergy > 0)
         {
+            idleLight.SetActive(false);
+            activeGlow.SetActive(true);
             lanternLight.SetActive(true);
-            while (isOn && currentEnergy >= 0)
+            while (isOn && currentEnergy > 0)
             {
                 currentEnergy -= Time.deltaTime;
                 yield return null;
             }
             lanternLight.SetActive(false);
+            activeGlow.SetActive(false);
+            idleLight.SetActive(true);
         }
     }
 
