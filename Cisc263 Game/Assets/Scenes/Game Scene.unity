@@ -241,6 +241,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1412687742}
   - {fileID: 2072296400}
   m_Father: {fileID: 1997209284}
   m_RootOrder: 5
@@ -1536,12 +1537,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 895018909}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1.974634, y: 1.974634, z: 1.974634}
   m_Children: []
   m_Father: {fileID: 2083432488}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &895018911
 SpriteRenderer:
@@ -36850,7 +36851,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1412687742}
   - component: {fileID: 1412687744}
-  - component: {fileID: 1412687743}
   m_Layer: 0
   m_Name: MinimapCamera
   m_TagString: Untagged
@@ -36866,20 +36866,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1412687741}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.09, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -850.6, y: -71.9, z: -58.19}
+  m_LocalScale: {x: 0.8457661, y: 0.687185, z: 0.8457661}
   m_Children: []
-  m_Father: {fileID: 1689886960}
+  m_Father: {fileID: 328558768}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &1412687743
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1412687741}
-  m_Enabled: 1
 --- !u!20 &1412687744
 Camera:
   m_ObjectHideFlags: 0
@@ -36899,16 +36891,16 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: -0.86
     y: 0
     width: 10.28
-    height: 30.33
+    height: 29.4
   near clip plane: 0.01
-  far clip plane: 991.38
+  far clip plane: 68.9
   field of view: 10.994492
   orthographic: 1
-  orthographic size: 7.56
-  m_Depth: -2
+  orthographic size: 49.758297
+  m_Depth: -0.5
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 256
@@ -37029,7 +37021,7 @@ Transform:
   m_LocalScale: {x: 8.65, y: 7.31, z: 1}
   m_Children: []
   m_Father: {fileID: 2083432488}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1689886957
 GameObject:
@@ -37110,10 +37102,9 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.2, y: -0.1, z: -31.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1412687742}
+  m_Children: []
   m_Father: {fileID: 2083432488}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1693014797
 PrefabInstance:
@@ -37128,7 +37119,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4171262313632050, guid: 263b26f2316871f46a4bda232a61ec44, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4171262313632050, guid: 263b26f2316871f46a4bda232a61ec44, type: 3}
       propertyPath: m_LocalPosition.x
@@ -76203,7 +76194,7 @@ RectTransform:
   m_Children:
   - {fileID: 415959441}
   m_Father: {fileID: 328558768}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -76222,7 +76213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 0
+  m_ShowMaskGraphic: 1
 --- !u!114 &2072296402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76381,9 +76372,9 @@ Transform:
   m_LocalPosition: {x: 26.07, y: 8.14, z: 0}
   m_LocalScale: {x: 0.8457661, y: 0.8457661, z: 0.8457661}
   m_Children:
-  - {fileID: 895018910}
   - {fileID: 1689886960}
   - {fileID: 1652049355}
+  - {fileID: 895018910}
   - {fileID: 1906577281}
   m_Father: {fileID: 0}
   m_RootOrder: 0
