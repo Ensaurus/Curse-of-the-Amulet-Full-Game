@@ -8,6 +8,7 @@ public class UIManager : Singleton<UIManager>
     public TextMeshProUGUI amuletChargeText;
     public TextMeshProUGUI lanternChargeText;
     public TextMeshProUGUI gameOverText;
+    public TextMeshProUGUI trackingText;
     public Image jumpScare;
     public bool isScaring = false;
 
@@ -15,6 +16,7 @@ public class UIManager : Singleton<UIManager>
     void Start()
     {
         EventManager.Instance.JumpScare.AddListener(DisplayJumpScare);
+        EventManager.Instance.EnemyStateChange.AddListener(DisplayTracking);
         updateAmuletCharge();
         updateLanternCharge();
     }
@@ -46,14 +48,28 @@ public class UIManager : Singleton<UIManager>
 
     private void DisplayJumpScare()
     {
-        Debug.Log("made it here");
+        // Debug.Log("made it here");
         StartCoroutine(JumpScare());
+    }
+
+    private void DisplayTracking(EnemyAI.State newState)
+    {
+        // Debug.Log("Display Tracking called");
+        if (newState == EnemyAI.State.TRACKING)
+        {
+            trackingText.gameObject.SetActive(true);
+        }
+        else
+        {
+            // Debug.Log("removing tracking text");
+            trackingText.gameObject.SetActive(false);
+        }
     }
 
     IEnumerator JumpScare()
     {
         isScaring = true;
-        Debug.Log("JumpScare");
+        // Debug.Log("JumpScare");
         float timer = 0;
         float width = 1;
         float height = 1;

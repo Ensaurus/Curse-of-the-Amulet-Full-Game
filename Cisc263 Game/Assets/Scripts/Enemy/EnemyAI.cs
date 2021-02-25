@@ -150,7 +150,7 @@ public class EnemyAI : MonoBehaviour
         float newX = Random.Range(0, SceneManager.Instance.levelWidth);
         float newY = Random.Range(0, SceneManager.Instance.levelHeight);
         target.Set(newX, newY);
-        Debug.Log("New Target: " + target);
+        // Debug.Log("New Target: " + target);
     }
 
 
@@ -248,7 +248,7 @@ public class EnemyAI : MonoBehaviour
         // move towards player
         while (!PositionIsVeryNear(myTransform.position, playerTransform.position))
         {
-            Debug.Log("player pos: " + playerTransform.position + " enemy pos: " + myTransform.position);
+            // Debug.Log("player pos: " + playerTransform.position + " enemy pos: " + myTransform.position);
             target = playerTransform.position;
             Move();
             yield return new WaitForSeconds(Time.deltaTime);
@@ -318,6 +318,7 @@ public class EnemyAI : MonoBehaviour
     {
         activeState = newState;
         Debug.Log("changed state to: " + activeState);
+        EventManager.Instance.EnemyStateChange.Invoke(newState);
         switch (newState){
             case State.ATTACKING:
                 speed = attackSpeed;

@@ -9,7 +9,7 @@ public class CollisionDetection : MonoBehaviour
         // if collided enemy and amulet not active
         if (other.CompareTag("Enemy") && !Amulet.Instance.isActive) 
         {
-            Debug.Log("player hit an enemy");
+            // Debug.Log("player hit an enemy");
             // can add a condition here for health later if we want
             EventManager.Instance.JumpScare.Invoke();
             EventManager.Instance.Death.Invoke();

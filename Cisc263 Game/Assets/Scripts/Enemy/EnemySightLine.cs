@@ -8,7 +8,7 @@ public class EnemySightLine : MonoBehaviour
     {
         if (other.CompareTag("Player")) // || "Player flashlight or whatever"
         {
-            Debug.Log("this works");
+            // Debug.Log("this works");
             EventManager.Instance.PlayerSeen.Invoke();
         }
     }
