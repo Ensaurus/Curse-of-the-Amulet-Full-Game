@@ -14,6 +14,7 @@ public class CollisionDetection : MonoBehaviour
             EventManager.Instance.JumpScare.Invoke();
             EventManager.Instance.Death.Invoke();
         }
+        // collided with flame pickup for lantern
         if (other.CompareTag("Flame"))
         {
             // deactivate flame
@@ -21,7 +22,14 @@ public class CollisionDetection : MonoBehaviour
             // increase energy of lantern
             Lantern.Instance.IncreaseCurrentEnergy();            
         }
-
+        // collided with exit
+        if (other.CompareTag("Exit"))
+        {
+            if (Amulet.Instance.charge >= Exit.Instance.requiredEnergy)
+            {
+                EventManager.Instance.LevelCompleted.Invoke();
+            }
+        }
     }
 
 }

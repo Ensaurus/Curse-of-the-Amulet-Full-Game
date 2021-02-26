@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Flame
   - Light
+  - Exit
   layers:
   - Default
   - TransparentFX

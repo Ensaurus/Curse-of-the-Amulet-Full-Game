@@ -74,7 +74,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    private void TogglePause()
+    public void TogglePause()
     {
         UpdateState(currentGameState == GameState.RUNNING ? GameState.PAUSED : GameState.RUNNING);
     }

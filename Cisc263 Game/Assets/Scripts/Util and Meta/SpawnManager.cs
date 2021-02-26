@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnManager : MonoBehaviour
+public class SpawnManager : Singleton<SpawnManager>
 {
     private ObjectPooler enemies;
     private ArrayPooler powerUps;
@@ -18,10 +18,15 @@ public class SpawnManager : MonoBehaviour
 
     #region level spawner
     
-    private void LevelSpawner()
+    public void LevelSpawner(int enemieNum, int powerUpNum, int chargingStationNum, int obstacleNum, Vector2 mapDimensions)
     {
 
     }
 
     #endregion
+
+    public void LevelUnloader()
+    {
+
+    }
 }

@@ -8,7 +8,7 @@ public class UIManager : Singleton<UIManager>
     public TextMeshProUGUI amuletChargeText;
     public TextMeshProUGUI lanternChargeText;
     public TextMeshProUGUI gameOverText;
-    public TextMeshProUGUI trackingText;
+    public TextMeshProUGUI textAbovePlayer;
     public Image jumpScare;
     public bool isScaring = false;
 
@@ -57,12 +57,12 @@ public class UIManager : Singleton<UIManager>
         // Debug.Log("Display Tracking called");
         if (newState == EnemyAI.State.TRACKING)
         {
-            trackingText.gameObject.SetActive(true);
+            textAbovePlayer.gameObject.SetActive(true);
         }
         else
         {
             // Debug.Log("removing tracking text");
-            trackingText.gameObject.SetActive(false);
+            textAbovePlayer.gameObject.SetActive(false);
         }
     }
 
@@ -95,5 +95,13 @@ public class UIManager : Singleton<UIManager>
     public void DisplayGameOver()
     {
         gameOverText.gameObject.SetActive(true);
+    }
+
+
+
+    public void LevelTransitionText()
+    {
+        textAbovePlayer.text = "Level Complete!";
+        textAbovePlayer.gameObject.SetActive(true);
     }
 }
