@@ -835,6 +835,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3961910642601758496, guid: 6df183845664a304eacbaf72acd8b3b4,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961910642601758496, guid: 6df183845664a304eacbaf72acd8b3b4,
+        type: 3}
       propertyPath: m_DrawHalo
       value: 0
       objectReference: {fileID: 0}
@@ -857,6 +862,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_BounceIntensity
       value: 1.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961910643069693632, guid: 6df183845664a304eacbaf72acd8b3b4,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3961910644205883820, guid: 6df183845664a304eacbaf72acd8b3b4,
         type: 3}
