@@ -846,7 +846,7 @@ PrefabInstance:
     - target: {fileID: 3961910642601758496, guid: 6df183845664a304eacbaf72acd8b3b4,
         type: 3}
       propertyPath: m_SpotAngle
-      value: 167.9
+      value: 172.28
       objectReference: {fileID: 0}
     - target: {fileID: 3961910642601758496, guid: 6df183845664a304eacbaf72acd8b3b4,
         type: 3}
@@ -921,6 +921,26 @@ PrefabInstance:
     - target: {fileID: 3961910644205883823, guid: 6df183845664a304eacbaf72acd8b3b4,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5906946189133250098, guid: 6df183845664a304eacbaf72acd8b3b4,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5906946189133250098, guid: 6df183845664a304eacbaf72acd8b3b4,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.34509805
+      objectReference: {fileID: 0}
+    - target: {fileID: 5906946189133250098, guid: 6df183845664a304eacbaf72acd8b3b4,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5906946189133250098, guid: 6df183845664a304eacbaf72acd8b3b4,
+        type: 3}
+      propertyPath: m_SortingOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7057884423467370501, guid: 6df183845664a304eacbaf72acd8b3b4,
@@ -1626,7 +1646,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 78bf0dc18d773714b827e8d1fa30fb72, type: 3}
-  m_Color: {r: 0.13082945, g: 0.7924528, b: 0.1979721, a: 1}
+  m_Color: {r: 0.12941177, g: 0.7921569, b: 0.19607843, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
