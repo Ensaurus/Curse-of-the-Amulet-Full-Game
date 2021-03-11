@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CollisionDetection : MonoBehaviour
 {
+    [SerializeField] private AudioSource DeathSound;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         // if collided enemy and amulet not active
@@ -11,6 +13,7 @@ public class CollisionDetection : MonoBehaviour
         {
             // Debug.Log("player hit an enemy");
             // can add a condition here for health later if we want
+            DeathSound.Play();
             EventManager.Instance.JumpScare.Invoke();
             EventManager.Instance.Death.Invoke();
         }

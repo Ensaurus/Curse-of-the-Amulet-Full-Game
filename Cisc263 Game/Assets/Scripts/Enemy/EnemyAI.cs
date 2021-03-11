@@ -25,6 +25,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float trackSpeed;
     [SerializeField] private float attackSpeed;
     [SerializeField] private GameObject player;
+    
     private Transform myTransform;
     private Transform playerTransform;
     private bool cooldown;
@@ -43,6 +44,8 @@ public class EnemyAI : MonoBehaviour
     // for attacking
     [SerializeField] private float attackTime;  // time in seconds for enemy to attack player
 
+    //Sound for tracking
+    [SerializeField] private AudioSource trackingSound;
 
     // Start is called before the first frame update
     void Start()
@@ -194,13 +197,15 @@ public class EnemyAI : MonoBehaviour
         if ((confidence > currentConfidence) && !cooldown){
             currentConfidence = confidence;
             StartCoroutine(Tracking(true));
+
         }
     }
 
     IEnumerator Tracking(bool sound)
     {
         ChangeState(State.TRACKING);
-
+        trackingSound.Play();
+        
         float uncertainty = 0;
         while (uncertainty <= currentConfidence && activeState == State.TRACKING)
         {

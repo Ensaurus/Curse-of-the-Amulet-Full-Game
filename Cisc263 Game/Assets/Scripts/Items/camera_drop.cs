@@ -14,6 +14,8 @@ public class camera_drop : MonoBehaviour
 
     [SerializeField] private GameObject cam_1;
     [SerializeField] private GameObject cam_2;
+
+    [SerializeField] private AudioSource CamDrop;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +34,8 @@ public class camera_drop : MonoBehaviour
 
                 drop_position = player.transform.position;
                 drop.transform.position = drop_position;
+
+                CamDrop.Play();
 
             }
             else{
