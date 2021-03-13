@@ -55,6 +55,8 @@ public class GameManager : Singleton<GameManager>
         GameState previousGameState = currentGameState;
         currentGameState = state;
 
+        EventManager.Instance.GameStateChange.Invoke(previousGameState, currentGameState);
+
         switch (currentGameState)
         {
             case GameState.PREGAME:

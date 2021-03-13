@@ -4,7 +4,7 @@
 public class EventManager : Singleton<EventManager> 
 { 	
 	[System.Serializable] public class EventJumpScare : UnityEvent { }
-	//[System.Serializable] public class EventGameStateChange : UnityEvent<GameManager.gameState, GameManager.gameState> { }
+	[System.Serializable] public class EventGameStateChange : UnityEvent<GameManager.GameState, GameManager.GameState> { }
 	[System.Serializable] public class EventLevelCompleted : UnityEvent { }
 	[System.Serializable] public class EventEnemyStateChange : UnityEvent<EnemyAI.State> { }
 	[System.Serializable] public class EventPlayerSeen : UnityEvent { }
@@ -14,7 +14,7 @@ public class EventManager : Singleton<EventManager>
 
 
 	public EventJumpScare JumpScare;
-	//public EventGameStateChange GameStateChange;
+	public EventGameStateChange GameStateChange;
 	public EventLevelCompleted LevelCompleted;
 	public EventEnemyStateChange EnemyStateChange;
 	public EventPlayerSeen PlayerSeen;

@@ -11,19 +11,24 @@ public class PauseMenu : MonoBehaviour
     public GameObject LanternText;
     public GameObject AmultetText;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)){
-            if (GameIsPaused){
-                Resume();
-            }
-            else{
-                Pause();
-            }
-        }
-        
+        EventManager.Instance.GameStateChange.AddListener(TogglePause);
     }
+
+
+    private void TogglePause(GameManager.GameState previousGameState, GameManager.GameState newGameState)
+    {
+        if (newGameState == GameManager.GameState.PAUSED)
+        {
+            Pause();
+        }
+        if (previousGameState == GameManager.GameState.PAUSED && newGameState != GameManager.GameState.PAUSED)
+        {
+            Resume();
+        }
+    }
+
     public void Resume(){
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
