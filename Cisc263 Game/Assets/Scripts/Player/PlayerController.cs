@@ -9,6 +9,7 @@ public class PlayerController: MonoBehaviour
     Vector2 movement;
 
     private Animator playerAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +34,7 @@ public class PlayerController: MonoBehaviour
         if (!Amulet.Instance.isActive)
         {
             rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+
         }
     }
 
