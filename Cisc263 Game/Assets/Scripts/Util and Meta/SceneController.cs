@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneManager : Singleton<SceneManager>
+public class SceneController : Singleton<SceneController>
 {
     public float currentLevel;
     public int numEnemies;

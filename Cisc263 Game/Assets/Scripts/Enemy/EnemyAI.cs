@@ -59,8 +59,8 @@ public class EnemyAI : MonoBehaviour
         playerTransform = player.transform;
 
         // set up first target
-        float targetX = Random.Range(0, SceneManager.Instance.levelWidth);
-        float targetY = Random.Range(0, SceneManager.Instance.levelHeight);
+        float targetX = Random.Range(0, SceneController.Instance.levelWidth);
+        float targetY = Random.Range(0, SceneController.Instance.levelHeight);
         target.Set(targetX, targetY);
         // Debug.Log("target: " + target);
 
@@ -143,15 +143,15 @@ public class EnemyAI : MonoBehaviour
         float newX = Random.Range(point.x - radius, point.x + radius);
         float newY = Random.Range(point.y - radius, point.y + radius);
 
-        target.Set(newX % SceneManager.Instance.levelWidth, newY % SceneManager.Instance.levelHeight);
+        target.Set(newX % SceneController.Instance.levelWidth, newY % SceneController.Instance.levelHeight);
     }
 
     // set new target as a radom point in bounds of level
     private void TargetRandomPointOnMap()
     {
         // set new target anywhere on the map
-        float newX = Random.Range(0, SceneManager.Instance.levelWidth);
-        float newY = Random.Range(0, SceneManager.Instance.levelHeight);
+        float newX = Random.Range(0, SceneController.Instance.levelWidth);
+        float newY = Random.Range(0, SceneController.Instance.levelHeight);
         target.Set(newX, newY);
         // Debug.Log("New Target: " + target);
     }
