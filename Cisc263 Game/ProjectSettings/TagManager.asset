@@ -9,6 +9,7 @@ TagManager:
   - Flame
   - Light
   - Exit
+  - ChargingStation
   layers:
   - Default
   - TransparentFX
