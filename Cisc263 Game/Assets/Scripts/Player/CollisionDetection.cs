@@ -6,6 +6,9 @@ public class CollisionDetection : MonoBehaviour
 {
     [SerializeField] private AudioSource DeathSound;
 
+    public GameObject chargingStat;
+    public ChargingStationScript chargingStatScript;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         // if collided enemy and amulet not active
@@ -25,11 +28,12 @@ public class CollisionDetection : MonoBehaviour
             // increase energy of lantern
             Lantern.Instance.IncreaseCurrentEnergy();            
         }
-        
+
         // collided with charging station for charging amulet
         if (other.CompareTag("ChargingStation"))
         {
             Amulet.Instance.isCharging = true;
+            
         }
 
         // collided with exit
@@ -47,7 +51,16 @@ public class CollisionDetection : MonoBehaviour
             // collided with charging station for charging amulet
             if (other.CompareTag("ChargingStation"))
             {  
-                Amulet.Instance.IncreaseAmuletCharge();
+                if(chargingStatScript.chargingState)
+                {
+                    Amulet.Instance.IncreaseAmuletCharge();
+                }
+                else
+                {
+                    Amulet.Instance.isCharging = false;
+                }
+                
+
 
             }
         }

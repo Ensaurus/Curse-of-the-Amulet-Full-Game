@@ -57,7 +57,6 @@ public class Amulet : Singleton<Amulet>
     public void IncreaseAmuletCharge()
     {
         charge += (Time.deltaTime * chargeSpeed);
-        print("YAAY!!");
     }
 
 

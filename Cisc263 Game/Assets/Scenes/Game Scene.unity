@@ -1777,7 +1777,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &667024632
 Light:
   m_ObjectHideFlags: 0
@@ -2001,10 +2001,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 720718899}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82a01f38a7fd9904bb2d508fab9d5fe5, type: 3}
+  m_Script: {fileID: 11500000, guid: 6789e6c74ec396a4cba8a081643a497b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsCharging: 0
+  maxChargeTime: 5
+  chargeTimeLeft: 5
+  maxCoolDown: 10
+  coolDown: 0
+  chargingState: 0
+  inChargeCircle: 0
 --- !u!50 &720718902
 Rigidbody2D:
   serializedVersion: 4
@@ -2023,7 +2028,7 @@ Rigidbody2D:
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 7
 --- !u!61 &720718903
@@ -4840,6 +4845,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeathSound: {fileID: 314208140}
+  chargingStat: {fileID: 720718899}
+  chargingStatScript: {fileID: 720718900}
 --- !u!114 &2083432494
 MonoBehaviour:
   m_ObjectHideFlags: 0
