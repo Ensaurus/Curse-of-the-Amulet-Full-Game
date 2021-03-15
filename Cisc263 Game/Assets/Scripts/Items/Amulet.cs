@@ -6,6 +6,9 @@ public class Amulet : Singleton<Amulet>
 {
     public float charge;
     public bool isActive;
+
+    public bool isCharging;
+    public float chargeSpeed;
     private Collider2D playerCol;
     private Animator playerAnimator;
 
@@ -17,6 +20,7 @@ public class Amulet : Singleton<Amulet>
         playerAnimator = gameObject.GetComponent<Animator>();
         isActive = false;
         playerCol = gameObject.GetComponent<BoxCollider2D>();
+        isCharging = false;
     }
 
 
@@ -49,4 +53,11 @@ public class Amulet : Singleton<Amulet>
         isActive = false;
         playerAnimator.SetBool("frozen", isActive);
     }
+
+    public void IncreaseAmuletCharge()
+    {
+        charge += (Time.deltaTime * chargeSpeed);
+    }
+
+
 }

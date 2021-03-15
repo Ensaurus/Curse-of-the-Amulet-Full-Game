@@ -24,7 +24,7 @@ public class UIManager : Singleton<UIManager>
     // Update is called once per frame
     void Update()
     {
-        if (Amulet.Instance.isActive)
+        if (Amulet.Instance.isActive || Amulet.Instance.isCharging)
         {
             updateAmuletCharge();
         }
