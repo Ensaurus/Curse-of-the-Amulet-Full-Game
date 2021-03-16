@@ -265,13 +265,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e59ede7ce0eb6e4c9bfa5d89b88b14d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roamSpeed: 5
-  trackSpeed: 12
-  attackSpeed: 100
-  player: {fileID: 0}
-  searchTime: 5
-  cooldownTime: 5
-  attackTime: 2
   trackingSound: {fileID: 518791668}
 --- !u!70 &8701147181165627355
 CapsuleCollider2D:
@@ -296,7 +289,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5858103958070478789}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 25a3e7f6e90c74c40a4d78a737a0179c, type: 3}
@@ -310,7 +303,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 16
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0

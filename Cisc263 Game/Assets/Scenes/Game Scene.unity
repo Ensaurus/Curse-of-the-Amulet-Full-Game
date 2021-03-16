@@ -1292,15 +1292,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentLevel: 1
   numEnemies: 1
-  numChargingStations: 1
+  numChargingStations: 3
   numPowerUps: 0
-  numObstacles: 10
-  levelDimensions: {x: 90, y: 80}
-  levelSizeIncrease: {x: 20, y: 20}
+  numObstacles: 0
+  levelDimensions: {x: 80, y: 90}
+  levelSizeIncrease: {x: 0, y: 0}
   enemyIncrease: 1
   chargingStationIncrease: 1
   powerUpsIncrease: 0
-  obstaclesIncrease: 2
+  obstaclesIncrease: 0
 --- !u!4 &838902659
 Transform:
   m_ObjectHideFlags: 0
@@ -1309,7 +1309,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 838902657}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 40.7, y: 3.1, z: 20.244339}
+  m_LocalPosition: {x: 82.1, y: 93.6, z: 20.244339}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3675,6 +3675,41 @@ PrefabInstance:
       propertyPath: chargingStat
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 37957569077328216, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_Pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569077328216, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569077328216, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 1.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569077328216, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: MinDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569077328216, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: DopplerLevel
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569077328216, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: reverbZoneMixCustomCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569234578652, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 37957569376607565, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
       propertyPath: m_IsActive
@@ -3717,7 +3752,7 @@ PrefabInstance:
     - target: {fileID: 3486503838050975527, guid: 8a108b9d61111cc418d8e13790df890d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6561807243403505911, guid: 8a108b9d61111cc418d8e13790df890d,
         type: 3}
@@ -3896,7 +3931,7 @@ PrefabInstance:
     - target: {fileID: 6563820303930233167, guid: 79ea09db617a1b3479b02f9457d2d7f9,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6563820303948620484, guid: 79ea09db617a1b3479b02f9457d2d7f9,
         type: 3}
