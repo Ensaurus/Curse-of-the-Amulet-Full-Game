@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class EnemySightLine : MonoBehaviour
 {
+    private EnemyAI me;
+
+    private void Start()
+    {
+        me = gameObject.GetComponentInParent<EnemyAI>();
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player")) // || "Player flashlight or whatever"
         {
-            // Debug.Log("this works");
-            EventManager.Instance.PlayerSeen.Invoke();
+            EventManager.Instance.PlayerSeen.Invoke(me);
         }
     }
 }

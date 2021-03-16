@@ -11,9 +11,7 @@ public class SceneController : Singleton<SceneController>
     public int numObstacles;
 
     // width and height of current level map, map extends from (0,0,0) to levelDimensions
-    public float levelHeight;
-    public float levelWidth;	
-	private Vector2 levelDimensions;
+    public Vector2 levelDimensions;
 
     // specifies increase in quanity of different items in subsequent levels
     public Vector2 levelSizeIncrease;
@@ -23,7 +21,6 @@ public class SceneController : Singleton<SceneController>
     public int obstaclesIncrease;
 
     private void Start() {
-        levelDimensions.Set(levelWidth, levelHeight);
         currentLevel = 1;
 
         SpawnLevel();
@@ -43,15 +40,13 @@ public class SceneController : Singleton<SceneController>
 
     private void ChangeLevel()
     {
-        UIManager.Instance.LevelTransitionText();
-        // replace later, just using TogglePause for video deliverable
-        GameManager.Instance.TogglePause();
-
+        currentLevel++;       
         levelDimensions += levelSizeIncrease;
         numEnemies += enemyIncrease;
         numChargingStations += chargingStationIncrease;
         numPowerUps += powerUpsIncrease;
         numObstacles += obstaclesIncrease;
+        UIManager.Instance.LevelTransitionText();
 
         UnloadLevel();
         SpawnLevel();

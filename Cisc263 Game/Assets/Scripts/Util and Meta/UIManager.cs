@@ -9,6 +9,8 @@ public class UIManager : Singleton<UIManager>
     public TextMeshProUGUI lanternChargeText;
     public TextMeshProUGUI gameOverText;
     public TextMeshProUGUI textAbovePlayer;
+    public TextMeshProUGUI levelTransitionText;
+    public Image blackBackground;
     public Image jumpScare;
     public bool isScaring = false;
 
@@ -101,7 +103,60 @@ public class UIManager : Singleton<UIManager>
 
     public void LevelTransitionText()
     {
-        textAbovePlayer.text = "Level Complete!";
-        textAbovePlayer.gameObject.SetActive(true);
+        StartCoroutine(FadeInAndOut(blackBackground));
+        levelTransitionText.text = "Level Complete!";
+        levelTransitionText.gameObject.SetActive(true);
+    }
+
+    IEnumerator FadeInAndOut(Image obj)
+    {
+        // make image transparent
+        Color objColor = obj.color;
+        objColor.a = 0;
+        obj.color = objColor;
+        obj.gameObject.SetActive(true);
+
+        int fadeSpeed = 5;  // change this to change fade speed
+        while (obj.color.a < 1){
+            objColor.a += Time.deltaTime * fadeSpeed;
+            obj.color = objColor;
+            yield return null;
+        }
+        StartCoroutine(WaitBeforeFadeOut(obj));
+    }
+
+    IEnumerator WaitBeforeFadeOut(Image obj)
+    {
+        float timer = 3;    // wait 3 secs
+        while (timer >= 1.5)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+        // change text halfway through transition
+        levelTransitionText.text = "Level " + SceneController.Instance.currentLevel;
+        while (timer >= 0)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+        StartCoroutine(FadeOut(obj));
+    }
+
+
+    IEnumerator FadeOut(Image obj)
+    {
+        Color objColor = obj.color;
+
+        int fadeSpeed = 5;  // change this to change fade speed
+        while (obj.color.a > 0.1f)
+        {
+            objColor.a -= Time.deltaTime * fadeSpeed;
+            obj.color = objColor;
+            yield return null;
+        }
+        obj.gameObject.SetActive(false);
+        levelTransitionText.gameObject.SetActive(false);
+        EventManager.Instance.FadeComplete.Invoke();
     }
 }

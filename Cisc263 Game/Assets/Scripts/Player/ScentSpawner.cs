@@ -17,18 +17,21 @@ public class ScentSpawner : MonoBehaviour
     [SerializeField] private float spawnRate; // time in seconds between spawns
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         myTransform = this.transform;
+        scentPool = GetComponent<ScentPool>();
+    }
+
+    private void OnEnable()
+    {
         lastUpdatePos = myTransform.position;
         spawnPos = myTransform.position;
         nextSpawnPos = myTransform.position;
         stationary = false;
         staticSpawning = false;
-        scentPool = GetComponent<ScentPool>();
-
         InvokeRepeating("UpdateLocation", 4, updateTime);    // check if stationary every updateTime secs
-        InvokeRepeating("MovingSpawn", 1, spawnRate);   // spawn a scent every half second
+        InvokeRepeating("MovingSpawn", 1, spawnRate);   // spawn a scent every spawnRate seconds
         InvokeRepeating("StaticSpawn", 2, spawnRate);
     }
 
@@ -57,7 +60,7 @@ public class ScentSpawner : MonoBehaviour
 
             
 
-            GameObject node = scentPool.GetAvailableObject();
+            GameObject node = scentPool.GetObject();
             node.transform.position = spawnPos;
             // need to reset scale of ones grown while stationary
             node.transform.localScale = new Vector3(1, 1, 1);
@@ -87,7 +90,7 @@ public class ScentSpawner : MonoBehaviour
 
         while (stationary)
         {
-            GameObject node = scentPool.GetAvailableObject();
+            GameObject node = scentPool.GetObject();
             node.transform.position = myTransform.position;
             node.transform.localScale = new Vector3(radius, radius, radius);
             node.SetActive(true);

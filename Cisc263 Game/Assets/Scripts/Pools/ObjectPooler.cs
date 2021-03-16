@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPooler : MonoBehaviour
+public class ObjectPooler : MonoBehaviour, Pooler
 {
     [SerializeField] private GameObject prefabObject;
     [SerializeField] private int poolDepth;
@@ -20,7 +20,7 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-    public GameObject GetAvailableObject()
+    public GameObject GetObject()
     {
         for (int i = 0; i < pool.Count; i++)
         {
@@ -38,5 +38,16 @@ public class ObjectPooler : MonoBehaviour
         }
         else
             return null;
+    }
+
+    public void ResetPool()
+    {
+        for (int i = 0; i < pool.Count; i++)
+        {
+            if (pool[i].activeInHierarchy)  // need to go through everything for scent pools as random ones could be inactive at any time, can't just break when hit an inactive item
+            {
+                pool[i].SetActive(false);
+            }
+        }
     }
 }

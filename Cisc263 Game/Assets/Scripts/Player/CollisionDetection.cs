@@ -7,7 +7,6 @@ public class CollisionDetection : MonoBehaviour
     [SerializeField] private AudioSource DeathSound;
 
     public GameObject chargingStat;
-    public ChargingStationScript chargingStatScript;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -37,8 +36,7 @@ public class CollisionDetection : MonoBehaviour
         }
 
         // collided with exit
-        if (other.CompareTag("Exit"))
-        
+        if (other.CompareTag("Exit"))        
             if (Amulet.Instance.charge >= Exit.Instance.requiredEnergy)
             {
                 EventManager.Instance.LevelCompleted.Invoke();
@@ -47,10 +45,10 @@ public class CollisionDetection : MonoBehaviour
 
         private void OnTriggerStay2D(Collider2D other)
         {
-        
             // collided with charging station for charging amulet
             if (other.CompareTag("ChargingStation"))
-            {  
+            {
+                ChargingStationScript chargingStatScript = other.GetComponent<ChargingStationScript>();
                 if(chargingStatScript.chargingState)
                 {
                     Amulet.Instance.IncreaseAmuletCharge();
@@ -59,9 +57,6 @@ public class CollisionDetection : MonoBehaviour
                 {
                     Amulet.Instance.isCharging = false;
                 }
-                
-
-
             }
         }
         private void OnTriggerExit2D(Collider2D other)

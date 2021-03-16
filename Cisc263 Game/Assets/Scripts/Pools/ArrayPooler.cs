@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArrayPooler : MonoBehaviour
+public class ArrayPooler : MonoBehaviour, Pooler
 {
 	[SerializeField] private GameObject[] objectsToPool;
 	[SerializeField] private int poolDepth;
@@ -10,7 +10,7 @@ public class ArrayPooler : MonoBehaviour
 
 	private List<GameObject>[] poolArray;  // array of the different pool lists, of length objectsToPool.Length  readonly
 
-	private void Start()
+	private void Awake()
 	{
 		poolArray = new List<GameObject>[this.objectsToPool.Length];
 
@@ -27,7 +27,7 @@ public class ArrayPooler : MonoBehaviour
 		}
 	}
 
-	public GameObject GetRandomObject()
+	public GameObject GetObject()
 	{
 		int listArrayIndex = Random.Range(0, poolArray.Length);     // get a random pool list of game objects from the poolArray 
 
@@ -51,4 +51,23 @@ public class ArrayPooler : MonoBehaviour
 			return null;
 		}
 	}
+
+	// look through all nested pools and if any items are active from the pool, deactivate them
+	public void ResetPool()
+    {
+		for (int i = 0; i < poolArray.Length; i++)
+        {
+			for (int j = 0; j < poolArray[i].Count; j++)
+            {
+				if (poolArray[i][j].activeInHierarchy == true)
+				{
+					poolArray[i][j].SetActive(false);
+				}
+                else
+                {
+					break;
+                }
+			}
+        }
+    }
 }

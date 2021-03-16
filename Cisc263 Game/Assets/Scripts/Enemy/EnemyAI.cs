@@ -21,10 +21,7 @@ public class EnemyAI : MonoBehaviour
     }
 
     private float speed;
-    [SerializeField] private float roamSpeed;
-    [SerializeField] private float trackSpeed;
-    [SerializeField] private float attackSpeed;
-    [SerializeField] private GameObject player;
+
     
     private Transform myTransform;
     private Transform playerTransform;
@@ -34,15 +31,10 @@ public class EnemyAI : MonoBehaviour
     
     // for roaming
     private bool searching;
-    [SerializeField] private float searchTime;
 
     // for tracking
     private Scent currentScent;
-    [SerializeField] private float cooldownTime;  // time in seconds to cool down tracking mode
     private float currentConfidence;    // time in seconds enemy will be in tracking mode
-
-    // for attacking
-    [SerializeField] private float attackTime;  // time in seconds for enemy to attack player
 
     //Sound for tracking
     [SerializeField] private AudioSource trackingSound;
@@ -56,20 +48,19 @@ public class EnemyAI : MonoBehaviour
         
         // set up transforms
         myTransform = this.transform;
-        playerTransform = player.transform;
+        playerTransform = EnemyStats.Instance.player.transform;
 
         // set up first target
-        float targetX = Random.Range(0, SceneController.Instance.levelWidth);
-        float targetY = Random.Range(0, SceneController.Instance.levelHeight);
+        float targetX = Random.Range(0, SceneController.Instance.levelDimensions.x);
+        float targetY = Random.Range(0, SceneController.Instance.levelDimensions.y);
         target.Set(targetX, targetY);
-        // Debug.Log("target: " + target);
 
         // set up starting state
         ChangeState(State.ROAMING);
         searching = false;
         cooldown = false;
         currentConfidence = 0;
-        speed = roamSpeed;        
+        speed = EnemyStats.Instance.roamSpeed;        
     }
 
     // Update is called once per frame
@@ -116,7 +107,7 @@ public class EnemyAI : MonoBehaviour
         Vector2 searchOrigin = target;
         float searchTimer = 0;
 
-        while (searchTimer <= searchTime && activeState == State.ROAMING)
+        while (searchTimer <= EnemyStats.Instance.searchTime && activeState == State.ROAMING)
         {        
             if (PositionIsNear(myTransform.position, target))
             {
@@ -143,15 +134,15 @@ public class EnemyAI : MonoBehaviour
         float newX = Random.Range(point.x - radius, point.x + radius);
         float newY = Random.Range(point.y - radius, point.y + radius);
 
-        target.Set(newX % SceneController.Instance.levelWidth, newY % SceneController.Instance.levelHeight);
+        target.Set(newX % SceneController.Instance.levelDimensions.x, newY % SceneController.Instance.levelDimensions.y);
     }
 
     // set new target as a radom point in bounds of level
     private void TargetRandomPointOnMap()
     {
         // set new target anywhere on the map
-        float newX = Random.Range(0, SceneController.Instance.levelWidth);
-        float newY = Random.Range(0, SceneController.Instance.levelHeight);
+        float newX = Random.Range(0, SceneController.Instance.levelDimensions.x);
+        float newY = Random.Range(0, SceneController.Instance.levelDimensions.y);
         target.Set(newX, newY);
         // Debug.Log("New Target: " + target);
     }
@@ -237,11 +228,16 @@ public class EnemyAI : MonoBehaviour
 
 
     #region Attacking
-    private void SeePlayer()
+    private void SeePlayer(EnemyAI enemy)
     {
-        if (activeState != State.ATTACKING)
+        // only do anything if this was the enemy that saw the player 
+        if (enemy == this)
         {
-            StartCoroutine(Attack());
+            // Debug.Log("I alone saw the player and I'm attacking now.");
+            if (activeState != State.ATTACKING)
+            {
+                StartCoroutine(Attack());
+            }
         }
     }
 
@@ -253,14 +249,13 @@ public class EnemyAI : MonoBehaviour
         // move towards player
         while (!PositionIsVeryNear(myTransform.position, playerTransform.position))
         {
-            // Debug.Log("player pos: " + playerTransform.position + " enemy pos: " + myTransform.position);
             target = playerTransform.position;
             Move();
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
         //stay on player for set time
-        while (attackTimer <= attackTime)
+        while (attackTimer <= EnemyStats.Instance.attackTime)
         {
             // TODO: run attack animation and prevent moving
             attackTimer += Time.deltaTime;
@@ -279,7 +274,7 @@ public class EnemyAI : MonoBehaviour
         ChangeState(State.ROAMING);
         cooldown = true;
 
-        while (cooldownTimer <= cooldownTime)
+        while (cooldownTimer <= EnemyStats.Instance.cooldownTime)
         {
             cooldownTimer += Time.deltaTime;
             yield return null;
@@ -322,17 +317,16 @@ public class EnemyAI : MonoBehaviour
     private void ChangeState(State newState)
     {
         activeState = newState;
-        Debug.Log("changed state to: " + activeState);
         EventManager.Instance.EnemyStateChange.Invoke(newState);
         switch (newState){
             case State.ATTACKING:
-                speed = attackSpeed;
+                speed = EnemyStats.Instance.attackSpeed;
                 break;
             case State.TRACKING:
-                speed = trackSpeed;
+                speed = EnemyStats.Instance.trackSpeed;
                 break;
             case State.ROAMING:
-                speed = roamSpeed;
+                speed = EnemyStats.Instance.roamSpeed;
                 break;
         }
     }
