@@ -9,12 +9,13 @@ public class ChargingStationScript : MonoBehaviour
     public float maxCoolDown;
     public float coolDown;
     public bool chargingState;
-
     public bool inChargeCircle;
+    private Animator chargingStationAnimator;
 
     // Start is called before the first frame update
     void Start()
     {
+        chargingStationAnimator = gameObject.GetComponent<Animator>();
         chargingState = false;
         chargeTimeLeft = maxChargeTime;
         inChargeCircle = false;
@@ -49,27 +50,24 @@ public class ChargingStationScript : MonoBehaviour
         }
     }
 
+    void FixedUpdate()
+    {
+        if ((chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("rechargingStation") || chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("powerDown")) && inChargeCircle)
+        {
+            //pause animation
+            chargingStationAnimator.speed = 0;
+        }
+        else if ((chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("rechargingStation") || chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("powerDown")) && !inChargeCircle)
+        {
+            //resume animation
+            chargingStationAnimator.speed = 1;
+        }
+    }
+
     void reduceTimeLeft()
     {
         chargeTimeLeft -= Time.deltaTime;
     }
-
-    // IEnumerator cooldownReset()
-    // {
-    //     //coolDown = maxCoolDown;
-
-    //     while(coolDown > 0)
-    //     {
-    //         if(!inChargeCircle)
-    //         {
-    //             reduceCoolDown();
-    //         }
-
-    //     }
-    //     chargeTimeLeft = maxChargeTime;
-    //     yield return null;
-        
-    // }
 
     private void reduceCoolDown()
     {
@@ -80,6 +78,18 @@ public class ChargingStationScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("rechargingStation") || chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("powerDown"))
+            {
+                //Pause the animation
+                chargingStationAnimator.speed = 0;
+            }
+            else if(chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("chargingPlayer"))
+            {
+                //resume animation
+                chargingStationAnimator.speed = 1;
+            }
+
+            chargingStationAnimator.SetBool("playerCollide", true);
             inChargeCircle = true;
             chargingState = true;
         }
@@ -89,6 +99,18 @@ public class ChargingStationScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("chargingPlayer"))
+            {
+                //Pause the animation
+                chargingStationAnimator.speed = 0;
+            }
+            else if(chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("rechargeStation") || chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("powerDown"))
+            {
+                //resume animation
+                chargingStationAnimator.speed = 1;   
+            }
+
+            chargingStationAnimator.SetBool("playerCollide", false);
             inChargeCircle = false;
             chargingState = false;
         }
