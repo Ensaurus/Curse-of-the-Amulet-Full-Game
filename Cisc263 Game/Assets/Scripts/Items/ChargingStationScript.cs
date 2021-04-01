@@ -11,6 +11,9 @@ public class ChargingStationScript : MonoBehaviour
     public bool chargingState;
     public bool inChargeCircle;
     private Animator chargingStationAnimator;
+    [SerializeField] GameObject chargingStationObject;
+    [SerializeField] private GameObject yellowLight;
+    [SerializeField] private GameObject orangeLight;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +24,8 @@ public class ChargingStationScript : MonoBehaviour
         inChargeCircle = false;
         coolDown = maxCoolDown;
 
+        // yellowLight = chargingStationObject.transform.GetChild(0).gameObject;
+        // orangeLight = chargingStationObject.transform.GetChild(1).gameObject;
     }
 
     // Update is called once per frame
@@ -61,6 +66,19 @@ public class ChargingStationScript : MonoBehaviour
         {
             //resume animation
             chargingStationAnimator.speed = 1;
+        }
+
+        //Changing light colour
+        //This is not very inefficient, might fix later
+        if ((chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("idle")) || (chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("transitionToCharge")) || (chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("chargingPlayer")))
+        {
+            yellowLight.SetActive(true);
+            orangeLight.SetActive(false);
+        }
+        else if((chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("rechargingStation")))
+        {
+            yellowLight.SetActive(false);
+            orangeLight.SetActive(true);
         }
     }
 
