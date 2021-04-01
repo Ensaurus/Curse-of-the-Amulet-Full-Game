@@ -15,6 +15,7 @@ public class Lantern : Singleton<Lantern>
 
     [SerializeField] public float flameEnergy;   // time in seconds that each flame will add to currentEnergy
 
+    public bool triggered = false;
     public void Start()
     {
         currentEnergy = maxEnergy;
@@ -71,6 +72,7 @@ public class Lantern : Singleton<Lantern>
     public void IncreaseCurrentEnergy()
     {
         currentEnergy += flameEnergy;
+        triggered = true;
     }
 
 

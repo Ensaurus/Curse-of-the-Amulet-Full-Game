@@ -23,7 +23,7 @@ public class CollisionDetection : MonoBehaviour
         if (other.CompareTag("Flame"))
         {
             // deactivate flame
-            other.gameObject.SetActive(false);
+            //other.gameObject.SetActive(false);
             // increase energy of lantern
             Lantern.Instance.IncreaseCurrentEnergy();            
         }

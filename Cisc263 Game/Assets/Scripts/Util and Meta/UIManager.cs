@@ -31,7 +31,7 @@ public class UIManager : Singleton<UIManager>
             updateAmuletCharge();
         }
 
-        if (Lantern.Instance.isOn)
+        if (Lantern.Instance.isOn || Lantern.Instance.triggered)
         {
             updateLanternCharge();
         }
