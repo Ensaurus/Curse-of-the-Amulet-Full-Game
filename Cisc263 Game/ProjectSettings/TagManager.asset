@@ -10,6 +10,7 @@ TagManager:
   - Light
   - Exit
   - ChargingStation
+  - Path
   layers:
   - Default
   - TransparentFX

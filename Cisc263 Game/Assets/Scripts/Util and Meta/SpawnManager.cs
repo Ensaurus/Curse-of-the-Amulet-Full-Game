@@ -4,19 +4,37 @@ using UnityEngine;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
+    /*Note: all item prefabs need to have their focal point in the center and x,y buffers should be set based on the distance from center!
+     * 
+     * example: an item with a buffer of (5, 10) can't have anything spawn within 5 units to right or left or within 10 units above or below center point.
+     * 
+     * 
+     */
+    // pools for each of the items
     private ObjectPooler enemies;
     private ArrayPooler powerUps;
     private ArrayPooler obstacles;
+    private ArrayPooler paths;
     private ObjectPooler exit;
     private ObjectPooler chargingStations;
-    [SerializeField] private GameObject map;
-    private Transform mapTransform;
-    [SerializeField] private GameObject player;
-    [SerializeField] private Vector2 playerSpawnPos;
-    [SerializeField] private Vector2 spaceBuffer; // required distance certain objects must be from player when level starts
+    private ObjectPooler flames;
+    private ObjectPooler chests;
 
-    private ScentSpawner scentSpawner;
+    [SerializeField] private GameObject map;    // map
+    private Transform mapTransform;
+    
+    [SerializeField] private GameObject player; // player
+    [SerializeField] private Vector2 playerSpawnPos;
+    [SerializeField] private Vector2 playerBuffer; // required distance certain objects must be from player when level starts
+
+    private bool[,] mapGrid; // 2d array representing map. element false = map space empty, true = occupied
+    
+    private List<GameObject> activePaths = new List<GameObject>();   // array holding current path objects on map
+
+    private ScentSpawner scentSpawner;  // scent stuff used for dissabling and reenabling scent spawning on new level
     private ScentPool scentPool;
+
+    int fullCounter; // increments each time an item doesn't fit anywhere on the map, spawning stops after 5 misses 
 
     protected override void Awake()
     {
@@ -26,6 +44,8 @@ public class SpawnManager : Singleton<SpawnManager>
         powerUps = gameObject.GetComponent<PowerUpPool>();
         exit = gameObject.GetComponent<ExitPool>();
         obstacles = gameObject.GetComponent<ObstaclesPool>();
+        paths = gameObject.GetComponent<PathPool>();
+        chests = gameObject.GetComponent<ChestPool>();
 
         scentSpawner = player.GetComponent<ScentSpawner>();
         scentPool = player.GetComponent<ScentPool>();
@@ -36,73 +56,444 @@ public class SpawnManager : Singleton<SpawnManager>
     private void Start()
     {
         // add listener for when new level done fading in to activate scent spawning
-        EventManager.Instance.FadeComplete.AddListener(ActivateScentSpawning);
+        EventManager.Instance.FadeComplete.AddListener(OnFadeOut);
     }
 
 
     #region level spawner
 
-    public void LevelSpawner(int enemyNum, int powerUpNum, int chargingStationNum, int obstacleNum, Vector2 mapDimensions)
+    public void LevelSpawner(int enemyNum, int pathNum, int chargingStationNum, int flamesNum, Vector2 mapDimensions)
     {
+        fullCounter = 0;
+        // scale background and setup mapGrid
         mapTransform.localScale = new Vector3 (mapDimensions.x, mapDimensions.y, 1);
+        mapGrid = new bool[(int) mapDimensions.x, (int) mapDimensions.y];   // 2d array with dimensions of the map
 
         // place player at middle of map (activate scent spawning once ui faded out)
         playerSpawnPos = mapDimensions/2;
         player.transform.position = playerSpawnPos;
+        placeInGrid(playerSpawnPos, playerBuffer);
 
-
-
+        // spawn paths
+        for (int i = 0; i < pathNum; i++)
+        {
+            SpawnRandomPos(paths);
+        }
         // spawn enemies
         for (int i = 0; i < enemyNum; i++)
         {
-            SpawnRandomPos(enemies, mapDimensions, false);
-        }
-        // spawn powerups
-        for (int i = 0; i < powerUpNum; i++)
-        {
-            SpawnRandomPos(powerUps, mapDimensions, true);
+            SpawnRandomPos(enemies);
         }
         // spawn charging stations
         for (int i = 0; i < chargingStationNum; i++)
         {
-            SpawnRandomPos(chargingStations, mapDimensions, true);
+            SpawnRandomPos(chargingStations);
         }
-        // spawn obstacles
-        for (int i = 0; i < obstacleNum; i++)
+        // spawn flames
+        for (int i = 0; i < flamesNum; i++)
         {
-            SpawnRandomPos(obstacles, mapDimensions, true);
+            SpawnRandomPos(flames);
         }
+        // spawn powerups
+        SpawnInPath(powerUps);
         // place exit
-        SpawnRandomPos(exit, mapDimensions, false);
+        SpawnInPath(exit);
+        // spawn obstacles until map totally full
+        while (fullCounter < 5)
+        {
+            SpawnRandomPos(obstacles);
+        }
     }
 
-    private void SpawnRandomPos(Pooler pool, Vector2 dimensions, bool canBeNearPlayer)
+    private void SpawnRandomPos(Pooler pool)
     {
         GameObject obj = pool.GetObject();
+        SpaceBuffer bufferScript = obj.GetComponent<SpaceBuffer>();
+        Vector2 buffer = bufferScript.spaceBuffer;
         Transform objTransform = obj.transform;
-        float xPos = Random.Range(0, dimensions.x);
-        float yPos = Random.Range(0, dimensions.y);
 
-        // if this item shouldn't spawn near player, recalculate until it is at least SceneController.spaceBuffer away
-        if (!canBeNearPlayer){
-            while (xPos >= (playerSpawnPos.x - spaceBuffer.x) && xPos <= (playerSpawnPos.x + spaceBuffer.x))
+        Vector2 spawnPos = findOpeningInMapGrid(mapGrid,buffer);
+        // make sure the pos is valid and didn't just not find any space, if not valid just return and increment fullCounter
+        if (spawnPos.Equals(new Vector2(-1, -1)))
+        {
+            fullCounter++;
+            return;
+        }
+        placeInGrid(spawnPos, buffer);
+        spawnPos = new Vector2(spawnPos.y, spawnPos.x);  // flips x and y because 2d array is in row-col order while map is in col-row order
+        objTransform.position = spawnPos;
+        obj.SetActive(true);
+        // if it's a path add it to the path array
+        if (obj.tag == "Path")
+        {
+            activePaths.Add(obj);
+        }
+    }
+
+    // spawns random items from pool into paths on the map
+    private void SpawnInPath(Pooler pool)
+    {
+        Path pathScript;
+        // if exit, just throw it in and return
+        if (pool.Equals(exit))
+        {
+            GameObject exit = pool.GetObject();
+            Transform exitTransform = exit.transform;
+            int index = Random.Range(0, activePaths.Count);
+            GameObject path = activePaths[index];
+            pathScript = path.GetComponent<Path>();
+            exitTransform.position = pathScript.exitPos;
+            exit.SetActive(true);
+            return;
+        }
+        // otherwise it's a powerup and go through each path with 75% chance to spawn
+        foreach (GameObject activePath in activePaths)
+        {
+            int rng = Random.Range(0, 4);
+            /*TODO: add it so that powerups get removed from options as they get put in, but only really removed from spawn pool if collected
+             * set chest pos to just pathScript.powerUpPos remove z axis just for testing
+             * 
+             * 
+             */
+            // if rng == 0,1,2 but not 3
+            if (rng < 3)
             {
-                xPos = Random.Range(0, dimensions.x);
-            }
-            while (yPos >= (playerSpawnPos.y - spaceBuffer.y) && yPos <= (playerSpawnPos.y + spaceBuffer.y))
-            {
-                yPos = Random.Range(0, dimensions.y);
+                GameObject chest = chests.GetObject();
+                Chest chestScipt = chest.GetComponent<Chest>();
+                GameObject powerUp = powerUps.GetObject();
+                PowerUp powerUpScript = powerUp.GetComponent<PowerUp>();
+                pathScript = activePath.GetComponent<Path>();
+                chestScipt.contains = powerUpScript;
+                chest.transform.position = pathScript.powerUpPos;
+                chest.transform.position += new Vector3(0,0,-10); // remove this line, just for testing w 3d prefab
+                chest.SetActive(true);
             }
         }
-        objTransform.position = new Vector2(xPos, yPos);
+    }
 
-        obj.SetActive(true);
+    #region mapGrid manipulation
+
+    /* 
+     * performs a sort of tree search through mapGrid honing in to a random valid opening for the item in question.
+     * recursively randomly picks a quadrant and searches it to verify item has enough open space to fit in quadrant
+     * picks smaller and smaller quadrants until it doesnt fit in any quadrants of an area.
+     * quad 1 = top left, quad 2 = top right, quad 3 = bottom left, quad 4 = bottom right
+     * 
+     * returns a vector repesenting a position it can safely spawn
+    */
+    private Vector2 findOpeningInMapGrid(bool[,] arrayToSearch, Vector2 buffer)
+    {
+        Vector2 minSpace = (buffer * 2) + new Vector2(1,1); // ex an item with a buffer of (2,3) needs a 5x7 space to accomodate it
+        bool[,] quadrant = new bool[(int) (arrayToSearch.GetLength(0) / 2), (int) (arrayToSearch.GetLength(1) / 2)]; // new 2d array quarter size of previous
+        int[] quadOptions = new int[]{1, 2, 3, 4 };
+        int startingRow = 0;
+        int endingRow = 0;
+        int startingCol = 0;
+        int endingCol = 0;
+        // keep trying random different quadrants until you find one that can fit item
+        while (true)
+        {
+            int index = Random.Range(0, quadOptions.Length);
+            int quadrantNum = quadOptions[index];
+            switch (quadrantNum)
+            {
+                case (1):
+                    startingRow = 0;
+                    endingRow = arrayToSearch.GetLength(0) / 2;
+                    startingCol = 0;
+                    endingCol = arrayToSearch.GetLength(1) / 2;
+                    break;
+                case (2):
+                    startingRow = 0;
+                    endingRow = arrayToSearch.GetLength(0) / 2;
+                    startingCol = arrayToSearch.GetLength(1) / 2;
+                    endingCol = arrayToSearch.GetLength(1);
+                    // if array not divisible by 2, need to decrease edge values to account for halfs being floored
+                    if (arrayToSearch.GetLength(0) % 2 == 1)
+                    {
+                        endingCol--;
+                    }
+                    break;
+                case (3):
+                    startingRow = arrayToSearch.GetLength(0) / 2;
+                    endingRow = arrayToSearch.GetLength(0);
+                    startingCol = 0;
+                    endingCol = arrayToSearch.GetLength(1) / 2;
+                    // if array not divisible by 2, need to decrease edge values to account for halfs being floored
+                    if (arrayToSearch.GetLength(0) % 2 == 1)
+                    {
+                        endingRow--;
+                    }
+                    break;
+                case (4):
+                    startingRow = arrayToSearch.GetLength(0) / 2;
+                    endingRow = arrayToSearch.GetLength(0);
+                    startingCol = arrayToSearch.GetLength(1) / 2;
+                    endingCol = arrayToSearch.GetLength(1);
+                    // if array not divisible by 2, need to decrease edge values to account for halfs being floored
+                    if(arrayToSearch.GetLength(0) % 2 == 1)
+                    {
+                        endingCol--;
+                        endingRow--;
+                    }
+                    break;
+                default:
+                    Debug.Log("findOpeningInMapGrid fucked up in SpawnManager, sorry bud, please check");
+                    break;
+            }
+            // copy the correct quadrant of arrayToSearch to quadrant
+            int a = 0;
+            int b = 0;
+            for (int i = startingRow; i < endingRow; i++)
+            {              
+                for (int j = startingCol; j < endingCol; j++)
+                {
+                    quadrant[a, b] = arrayToSearch[i, j];                 
+                    b = (b + 1) % quadrant.GetLength(1);
+                }
+                a++;
+            }
+            //debugging to make sure right quadrant copied
+            /*
+            Debug.Log("quadrant: " + quadrantNum);
+            for (int i = 0; i < quadrant.GetLength(0); i++)
+            {
+                string line = "";
+                for (int j = 0; j < quadrant.GetLength(1); j++)
+                {
+                    if (quadrant[i,j] == true)
+                    {
+                        line += "(" + i + ", "+ j + "): " + quadrant[i, j];
+                    }
+                }
+                if (!line.Equals(""))
+                {
+                    Debug.Log(line);
+                }
+            }
+            */
+
+            boolAndVector2 quadrantTest = hasSpaceFor(quadrant, minSpace);
+            if (quadrantTest.hasSpace)
+            {
+                // call this function recusively to find smallest quadrant in which this fits
+                Vector2 spawnLocation = findOpeningInMapGrid(quadrant, buffer);
+                // if the call of this function returned vector (-1,-1) that means this one was the smallest area item could fit in so use the location found in this quadrant
+                if (spawnLocation.Equals(new Vector2(-1, -1)))
+                {
+                    // set location to the location found relative to this quadrant
+                    spawnLocation = quadrantTest.locationFound;
+                }
+                // translate spawnLocation based on what quadrant this is
+                switch (quadrantNum)
+                {
+                    case (1):
+                        // don't do anything, quad one is just based at zero zero
+                        // Debug.Log("quadrant 1: sitting");
+                        break;
+                    case (2):
+                        // translate right half of parent grid's cols
+                        spawnLocation += new Vector2(arrayToSearch.GetLength(1) / 2, 0);
+                        // Debug.Log("quadrant 2: translating right: " + arrayToSearch.GetLength(1) / 2);
+                        break;
+                    case (3):
+                        // translate up half of parent grid's rows
+                        spawnLocation += new Vector2(0, arrayToSearch.GetLength(0) / 2);
+                        // Debug.Log("quadrant 3: translating up: " + arrayToSearch.GetLength(0) / 2);
+                        break;
+                    case (4):
+                        // translate right half of parent grid's cols and up half of parent grid's rows
+                        spawnLocation += new Vector2(arrayToSearch.GetLength(0) / 2, arrayToSearch.GetLength(1) / 2);
+                        // Debug.Log("quadrant 4: translating right: " + arrayToSearch.GetLength(0) / 2 + "and up: " + arrayToSearch.GetLength(1) / 2);
+                        break;
+                    default:
+                        Debug.Log("findOpeningInMapGrid fucked up in SpawnManager, sorry bud, please check");
+                        break;
+                }
+                return spawnLocation;
+            }
+
+            // remove the quadrant just checked from the available choises
+            int[] newOptions = new int[quadOptions.Length - 1];
+            int x = 0;
+            for(int i=0; i < quadOptions.Length; i++)
+            {
+                if (quadOptions[i] != quadrantNum)
+                {
+                    newOptions[x] = quadOptions[i];
+                    x++;
+                }
+            }
+            quadOptions = newOptions;
+            // Debug.Log(quadOptions);
+
+            // if none of the quadrants in this area could fit the item
+            if (quadOptions.Length == 0)
+            {
+                return new Vector2(-1, -1);
+            }
+        }
     }
 
 
-    private void ActivateScentSpawning()
+
+    struct boolAndVector2
+    {
+        public bool hasSpace;
+        public Vector2 locationFound;
+    }
+
+    // returns true if quadrant contains enough free space to accomodate space required
+    // uses [i,j] as a pointer for iterating over the whole array, and [k,l] as a pointer to iterate over an open area in the array
+    private boolAndVector2 hasSpaceFor(bool[,] quadrant,Vector2 space)
+    {
+        bool lastElem = true;   // value of last element checked
+        bool traversingOpening = false;
+        bool movedPointer = false;
+        int lCounter = 0;
+        int kCounter = 0;
+        Vector2 spaceMidPoint = new Vector2((int)space.x / 2, (int) space.y / 2);
+        boolAndVector2 output;
+
+        // traverse quadrant
+        for (int i=0; i< quadrant.GetLength(0) - space.x; i++)  // only needs to check up to space.x rows away from the edge since if it gets that far it won't be able to fit anyway
+        {
+            for (int j=0; j< quadrant.GetLength(1) - space.y; j++)  // only needs to check up to space.y columns away from the edge since if it gets that far it won't be able to fit anyway
+            {
+                // entering a new opening once moved pointer has been set to true, will continue running this part on openings
+                if ((lastElem == true || movedPointer) && quadrant[i, j] == false)
+                {
+                    traversingOpening = true;
+                    // start scanning this opening until it hits a used space or finds it large enough to accomodate item
+                    while (traversingOpening)
+                    {
+                        int upperBound = (int)(i + space.x);   // how many rows down to check to verify opening large enough
+                        int rightBound = (int)(j + space.y);   // how many columns over to check to verify ,, ,, ,,
+                        for (int k = i; k < upperBound; k++)
+                        {
+                            for (int l = j; l < rightBound; l++)
+                            {
+                                // if it hits an occupied entry while searching the opening
+                                if (quadrant[k, l] == true)
+                                {
+                                    movedPointer = true;
+                                    /* keep moving over until you find an empty column, then set j to that free column, 
+                                     * otherwise it will just keep failing once it hits this row in subsequent searches
+                                     * 
+                                     * if no free column found within space.y coloumns from the edge, just set i to the next row down as we can count out all rows above this one
+                                    */
+                                    while (true)
+                                    {
+                                        // if col within last space.x cols of quadrand
+                                        if (l >= quadrant.GetLength(1) - space.x)
+                                        {
+                                            // if this impassable row is within the last space.x rows of quadrant, not enough space in quadrant, just quit
+                                            if (k >= quadrant.GetLength(0) - space.y)
+                                            {
+                                                // made it through entire quadrant without finding valid space return false
+                                                output.hasSpace = false;
+                                                output.locationFound = Vector2.zero;
+                                                return output;
+                                            }
+                                            // otherwise 
+                                            i = k + 1;  // set i to the row below this one since this row is impassable
+                                            j = 0;  // start from the beginning of this new row
+                                            traversingOpening = false;
+                                            break;
+                                        }
+                                        l++;
+                                        // hit an empty col
+                                        if (quadrant[k, l] == false)
+                                        {
+                                            j = l;  // keep i to the row it was, but jump the column ahead to after the last occupied column in this row
+                                            traversingOpening = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (!traversingOpening)
+                                {
+                                    break;
+                                }
+                                lCounter = l;
+                            }
+                            if (!traversingOpening)
+                            {
+                                break;
+                            }
+                            kCounter = k;
+                        }
+                        // if it makes it though all l's and k's, that means it searched enough cells to guarantee enough space
+                        if (kCounter == upperBound-1 && lCounter == rightBound-1)
+                        {
+                            output.hasSpace = true;
+                            // [i,j] pointer is at botom left corner of valid space searched, [k,l] pointer is at top right corner of valid space searched
+                            output.locationFound = spaceMidPoint + new Vector2(i, j);
+                            // Debug.Log("vecor being added to spawn point: " + new Vector2(i,j));
+                            return output;
+                        }
+                    }
+                }
+                lastElem = quadrant[i, j];
+            }
+        }
+        // if it makes it through the entire quadrant without finding valid space return false
+        output.hasSpace = false;
+        output.locationFound = Vector2.zero;
+        return output;
+    }
+
+
+    // sets the appropriate elements in the grid to true to represent the space taken by an item
+    // sets elements from bufferRadius.y above and bufferRadius.x to the left of location down to 
+    // bufferRadius.y below and bufferRadius.x to the right of location
+    private void placeInGrid(Vector2 location, Vector2 bufferRadius)
+    {
+        int lowerBound = (int) (location.y - (bufferRadius.y));
+        int upperBound = (int)(location.y + (bufferRadius.y));
+        int leftBound = (int)(location.x - (bufferRadius.x));
+        int rightBound = (int) (location.x + (bufferRadius.x));
+        if (lowerBound < 0 || upperBound >= mapGrid.GetLength(0) || leftBound < 0 || rightBound >= mapGrid.GetLength(1))
+        {
+            Debug.Log("attempted to place item out of bounds, check SpawnManager, location: " + location + " buffer: " + bufferRadius);
+            return;
+        }
+        // Debug.Log("setting: (" + lowerBound + ", " + leftBound + ") to (" + upperBound + ", " + rightBound + ") to true.");
+        for (int i = lowerBound; i <= upperBound; i++)
+        {
+            for (int j = leftBound; j <= rightBound; j++)
+            {
+                mapGrid[i, j] = true;
+                //Debug.Log("(" + i + ", " + j + ") = true");
+            }
+        }
+        /*
+        Debug.Log("updated grid:");
+        for (int i = 0; i < mapGrid.GetLength(0); i++)
+        {
+            Debug.Log("ROW " + i + ": ");
+            string line = "";
+            for (int j = 0; j < mapGrid.GetLength(1); j++)
+            {
+                int value = 0;
+                if (mapGrid[i,j] == true)
+                {
+                    value = 1;
+                }
+                line += "  " + value;
+            }
+            Debug.Log(line);
+        }
+        */
+    }
+
+    #endregion
+
+    // activate scent spawning and enemies
+    private void OnFadeOut()
     {
         scentSpawner.enabled = true;
+        // TODO: setup enemy toggleing
     }
     #endregion
 

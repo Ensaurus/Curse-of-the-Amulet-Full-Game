@@ -7,8 +7,8 @@ public class SceneController : Singleton<SceneController>
     public float currentLevel;
     public int numEnemies;
     public int numChargingStations;
-    public int numPowerUps;
-    public int numObstacles;
+    public int numPaths;
+    public int numFlames;
 
     // width and height of current level map, map extends from (0,0,0) to levelDimensions
     public Vector2 levelDimensions;
@@ -17,8 +17,8 @@ public class SceneController : Singleton<SceneController>
     public Vector2 levelSizeIncrease;
     public int enemyIncrease;
     public int chargingStationIncrease;
-    public int powerUpsIncrease;
-    public int obstaclesIncrease;
+    public int pathIncrease;
+    public int flamesIncrease;
 
     private void Start() {
         currentLevel = 1;
@@ -30,7 +30,7 @@ public class SceneController : Singleton<SceneController>
     private void SpawnLevel()
     {
         // done in seperate scipt so this doesnt need to be cluttered with fields for object pools
-        SpawnManager.Instance.LevelSpawner(numEnemies, numPowerUps, numChargingStations, numObstacles, levelDimensions);
+        SpawnManager.Instance.LevelSpawner(numEnemies, numPaths, numChargingStations, numFlames, levelDimensions);
     }
 
     private void UnloadLevel()
@@ -44,8 +44,7 @@ public class SceneController : Singleton<SceneController>
         levelDimensions += levelSizeIncrease;
         numEnemies += enemyIncrease;
         numChargingStations += chargingStationIncrease;
-        numPowerUps += powerUpsIncrease;
-        numObstacles += obstaclesIncrease;
+        numPaths += pathIncrease;
         UIManager.Instance.LevelTransitionText();
 
         UnloadLevel();
