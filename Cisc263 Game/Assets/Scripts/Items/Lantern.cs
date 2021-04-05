@@ -15,6 +15,8 @@ public class Lantern : Singleton<Lantern>
 
     [SerializeField] public float flameEnergy;   // time in seconds that each flame will add to currentEnergy
 
+    [SerializeField] public AudioSource flamePickedUp; //Sound for when the flames are picked up
+
     public bool triggered = false;
     public void Start()
     {
@@ -73,6 +75,7 @@ public class Lantern : Singleton<Lantern>
     {
         currentEnergy += flameEnergy;
         triggered = true;
+        flamePickedUp.Play();
     }
 
 
