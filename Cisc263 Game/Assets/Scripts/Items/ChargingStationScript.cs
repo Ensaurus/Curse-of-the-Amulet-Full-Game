@@ -15,6 +15,8 @@ public class ChargingStationScript : MonoBehaviour
     [SerializeField] private GameObject yellowLight;
     [SerializeField] private GameObject orangeLight;
 
+    public int inQuadrant; // represents which quadrant it's in, used for level generation
+
     // Start is called before the first frame update
     void Start()
     {

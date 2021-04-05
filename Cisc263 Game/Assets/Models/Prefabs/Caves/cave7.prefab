@@ -109,7 +109,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e87cc3994cff66c4fb4a61093865a5ae, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -264,7 +264,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e87cc3994cff66c4fb4a61093865a5ae, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -312,6 +312,7 @@ MonoBehaviour:
   exitPosObject: {fileID: 2104179843}
   powerUpPos: {x: 0, y: 0}
   exitPos: {x: 0, y: 0}
+  inQuadrant: 0
 --- !u!114 &542927674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01fdb9303d4ade4a876a80dbe5a3b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spaceBuffer: {x: 12, y: 12}
+  spaceBuffer: {x: 14, y: 14}
 --- !u!1 &8058224218119574193
 GameObject:
   m_ObjectHideFlags: 0

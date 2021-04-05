@@ -38,7 +38,8 @@ public class SpawnManager : Singleton<SpawnManager>
     // private int[,] debuggingGrid; // mirrors mapGrid but keeps track of order placed in for debugging, dissable when done debugging
     // private int debuggingCounter;
 
-    private List<GameObject> activePaths;   // array holding current path objects on map
+    private List<Path> activePaths;   // array holding current path objects on map
+    private List<ChargingStationScript> activeStations;   // array holding current station objects on map
 
     private ScentSpawner scentSpawner;  // scent stuff used for dissabling and reenabling scent spawning on new level
     private ScentPool scentPool;
@@ -77,7 +78,8 @@ public class SpawnManager : Singleton<SpawnManager>
     public void LevelSpawner(int enemyNum, int pathNum, int chargingStationNum, int flamesNum, Vector2 mapDimensions)
     {
         // reset fullCounter and activePaths
-        activePaths = new List<GameObject>();
+        activePaths = new List<Path>();
+        activeStations = new List<ChargingStationScript>();
         fullCounter = 0;
         // scale background, set miniMapCam and setup mapGrid
         mapTransform.localScale = new Vector3 (mapDimensions.x + 20, mapDimensions.y + 20, 1);    // makes a little wider to account for boundaries
@@ -165,7 +167,8 @@ public class SpawnManager : Singleton<SpawnManager>
         Vector2 buffer = bufferScript.spaceBuffer;
         Transform objTransform = obj.transform;
 
-        Vector2 spawnPos = findOpeningInMapGrid(mapGrid,buffer);
+        intAndVector2 spotAndQuad = findOpeningInMapGrid(mapGrid,obj);
+        Vector2 spawnPos = spotAndQuad.spawnLocation;
         // make sure the pos is valid and didn't just not find any space, if not valid just return and increment fullCounter
         if (spawnPos.Equals(new Vector2(-1, -1)))
         {
@@ -175,13 +178,20 @@ public class SpawnManager : Singleton<SpawnManager>
         //Debug.Log("adding " + obj);
         //Debug.Log("item placed at: " + spawnPos);
         placeInGrid(spawnPos, buffer);
-        // spawnPos = new Vector2(spawnPos.y, spawnPos.x);  // flips x and y because 2d array is in row-col order while map is in col-row order
         objTransform.position = spawnPos;
         obj.SetActive(true);
-        // if it's a path add it to the path array
+        if (obj.tag == "ChargingStation")
+        {
+            ChargingStationScript newStation = obj.GetComponent<ChargingStationScript>();
+            newStation.inQuadrant = spotAndQuad.quadrant;
+            activeStations.Add(newStation);
+        }
+        // if it's a path add it to the path array and set inQuadrant to the quadrant it was placed in
         if (obj.tag == "Path")
         {
-            activePaths.Add(obj);
+            Path newPath = obj.GetComponent<Path>();
+            newPath.inQuadrant = spotAndQuad.quadrant;
+            activePaths.Add(newPath);
         }
     }
 
@@ -199,14 +209,13 @@ public class SpawnManager : Singleton<SpawnManager>
             GameObject exit = pool.GetObject();
             Transform exitTransform = exit.transform;
             int index = Random.Range(0, activePaths.Count);
-            GameObject path = activePaths[index];
-            pathScript = path.GetComponent<Path>();
+            pathScript = activePaths[index];
             exitTransform.position = pathScript.exitPos;
             exit.SetActive(true);
             return;
         }
         // otherwise it's a powerup and go through each path with 75% chance to spawn
-        foreach (GameObject activePath in activePaths)
+        foreach (Path activePath in activePaths)
         {
             int rng = Random.Range(0, 4);
             /*TODO: add it so that powerups get removed from options as they get put in, but only really removed from spawn pool if collected
@@ -221,16 +230,22 @@ public class SpawnManager : Singleton<SpawnManager>
                 Chest chestScipt = chest.GetComponent<Chest>();
                 GameObject powerUp = powerUps.GetObject();
                 PowerUp powerUpScript = powerUp.GetComponent<PowerUp>();
-                pathScript = activePath.GetComponent<Path>();
+                pathScript = activePath;
                 chestScipt.contains = powerUpScript;
                 chest.transform.position = pathScript.powerUpPos;
-                chest.transform.position += new Vector3(0,0,-10); // remove this line, just for testing w 3d prefab
+                chest.transform.position += new Vector3(0,0,-10); // remove this line when chests put in, just for testing w 3d prefab
                 chest.SetActive(true);
             }
         }
     }
 
     #region mapGrid manipulation
+
+    struct intAndVector2
+    {
+        public int quadrant;
+        public Vector2 spawnLocation;
+    }
 
     /* 
      * performs a sort of tree search through mapGrid honing in to a random valid opening for the item in question.
@@ -240,11 +255,86 @@ public class SpawnManager : Singleton<SpawnManager>
      * 
      * returns a vector repesenting a position it can safely spawn
     */
-    private Vector2 findOpeningInMapGrid(bool[,] arrayToSearch, Vector2 buffer)
+    private intAndVector2 findOpeningInMapGrid(bool[,] arrayToSearch, GameObject item)
     {
+        intAndVector2 result;
+        Vector2 buffer = item.GetComponent<SpaceBuffer>().spaceBuffer;
         Vector2 minSpace = (buffer * 2) + new Vector2(1,1); // ex an item with a buffer of (2,3) needs a 5x7 space to accomodate it
         bool[,] quadrant = new bool[(int) (arrayToSearch.GetLength(0) / 2), (int) (arrayToSearch.GetLength(1) / 2)]; // new 2d array quarter size of previous
-        int[] quadOptions = new int[]{1, 2, 3, 4 };
+        int[] quadOptions;
+        // if item is a path, or cStation limit which quadrant it can go in based on which ones have them already
+        // can't add to an occupied quadrant until all have same amount
+        if (item.tag == "Path" || item.tag == "ChargingStation")
+        {
+            List<int> options = new List<int>();
+            // each elem represents a quadrant, value is incremented for each item in it
+            int[] quadrants = new int[4];
+            switch (item.tag)
+            {
+                case "Path":
+                    foreach (Path activePath in activePaths)
+                    {
+                        switch (activePath.inQuadrant)
+                        {
+                            case 1:
+                                quadrants[0]++;
+                                break;
+                            case 2:
+                                quadrants[1]++;
+                                break;
+                            case 3:
+                                quadrants[2]++;
+                                break;
+                            case 4:
+                                quadrants[3]++;
+                                break;
+                        }
+                    }
+                    break;
+                case ("ChargingStation"):
+                    foreach (ChargingStationScript station in activeStations)
+                    {
+                        switch (station.inQuadrant)
+                        {
+                            case 1:
+                                quadrants[0]++;
+                                break;
+                            case 2:
+                                quadrants[1]++;
+                                break;
+                            case 3:
+                                quadrants[2]++;
+                                break;
+                            case 4:
+                                quadrants[3]++;
+                                break;
+                        }
+                    }
+                    break;
+            }
+
+            int quadMax = Mathf.Max(quadrants);
+            for (int i=0; i<quadrants.Length; i++)
+            {
+                if (quadrants[i] < quadMax)
+                {
+                    options.Add(i+1);   // if quadrant has less than others, add it to options
+                }
+            }
+
+            if (options.Count == 0)
+            {
+                quadOptions = new int[] { 1, 2, 3, 4 }; // all quads are equivalent
+            }
+            else
+            {
+                quadOptions = options.ToArray();    // not all equal
+            }
+        }
+        else
+        {
+            quadOptions = new int[] { 1, 2, 3, 4 };
+        }
         int startingRow = 0;
         int endingRow = 0;
         int startingCol = 0;
@@ -254,6 +344,7 @@ public class SpawnManager : Singleton<SpawnManager>
         {
             int index = Random.Range(0, quadOptions.Length);
             int quadrantNum = quadOptions[index];
+            result.quadrant = quadrantNum;
             switch (quadrantNum)
             {
                 case (1):
@@ -316,36 +407,18 @@ public class SpawnManager : Singleton<SpawnManager>
                 }
                 a++;
             }
-            //debugging to make sure right quadrant copied
-            /*
-            Debug.Log("quadrant: " + quadrantNum);
-            for (int i = 0; i < quadrant.GetLength(0); i++)
-            {
-                string line = "";
-                for (int j = 0; j < quadrant.GetLength(1); j++)
-                {
-                    if (quadrant[i,j] == true)
-                    {
-                        line += "(" + i + ", "+ j + "): " + quadrant[i, j];
-                    }
-                }
-                if (!line.Equals(""))
-                {
-                    Debug.Log(line);
-                }
-            }
-            */
+
 
             boolAndVector2 quadrantTest = hasSpaceFor(quadrant, minSpace);
             if (quadrantTest.hasSpace)
             {
                 // call this function recusively to find smallest quadrant in which this fits
-                Vector2 spawnLocation = findOpeningInMapGrid(quadrant, buffer);
+                result.spawnLocation = findOpeningInMapGrid(quadrant, item).spawnLocation;
                 // if the call of this function returned vector (-1,-1) that means this one was the smallest area item could fit in so use the location found in this quadrant
-                if (spawnLocation.Equals(new Vector2(-1, -1)))
+                if (result.spawnLocation.Equals(new Vector2(-1, -1)))
                 {
                     // set location to the location found relative to this quadrant
-                    spawnLocation = quadrantTest.locationFound;
+                    result.spawnLocation = quadrantTest.locationFound;
                 }
                 // translate spawnLocation based on what quadrant this is
                 switch (quadrantNum)
@@ -356,24 +429,24 @@ public class SpawnManager : Singleton<SpawnManager>
                         break;
                     case (2):
                         // translate right half of parent grid's cols
-                        spawnLocation += new Vector2(arrayToSearch.GetLength(1) / 2, 0);
+                        result.spawnLocation += new Vector2(arrayToSearch.GetLength(1) / 2, 0);
                         // Debug.Log("quadrant 2: translating right: " + arrayToSearch.GetLength(1) / 2);
                         break;
                     case (3):
                         // translate up half of parent grid's rows
-                        spawnLocation += new Vector2(0, arrayToSearch.GetLength(0) / 2);
+                        result.spawnLocation += new Vector2(0, arrayToSearch.GetLength(0) / 2);
                         // Debug.Log("quadrant 3: translating up: " + arrayToSearch.GetLength(0) / 2);
                         break;
                     case (4):
                         // translate right half of parent grid's cols and up half of parent grid's rows
-                        spawnLocation += new Vector2(arrayToSearch.GetLength(0) / 2, arrayToSearch.GetLength(1) / 2);
+                        result.spawnLocation += new Vector2(arrayToSearch.GetLength(0) / 2, arrayToSearch.GetLength(1) / 2);
                         // Debug.Log("quadrant 4: translating right: " + arrayToSearch.GetLength(0) / 2 + "and up: " + arrayToSearch.GetLength(1) / 2);
                         break;
                     default:
                         Debug.Log("findOpeningInMapGrid fucked up in SpawnManager, sorry bud, please check");
                         break;
                 }
-                return spawnLocation;
+                return result;
             }
 
             // remove the quadrant just checked from the available choises
@@ -393,7 +466,8 @@ public class SpawnManager : Singleton<SpawnManager>
             // if none of the quadrants in this area could fit the item
             if (quadOptions.Length == 0)
             {
-                return new Vector2(-1, -1);
+                result.spawnLocation = new Vector2(-1, -1);
+                return result;
             }
         }
     }

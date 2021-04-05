@@ -1395,7 +1395,7 @@ MonoBehaviour:
   currentLevel: 1
   numEnemies: 1
   numChargingStations: 4
-  numPaths: 3
+  numPaths: 5
   numFlames: 50
   levelDimensions: {x: 100, y: 100}
   levelSizeIncrease: {x: 0, y: 0}
@@ -3923,12 +3923,12 @@ PrefabInstance:
     - target: {fileID: 37957568724167544, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 75.8
+      value: 3.9
       objectReference: {fileID: 0}
     - target: {fileID: 37957568724167544, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 57.2
+      value: 11.49
       objectReference: {fileID: 0}
     - target: {fileID: 37957568724167544, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
@@ -4000,6 +4000,11 @@ PrefabInstance:
       propertyPath: flamePickedUp
       value: 
       objectReference: {fileID: 855637825}
+    - target: {fileID: 37957568865264574, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 37957569077328216, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
       propertyPath: m_Pitch
@@ -4098,6 +4103,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_FlipX
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6561807243403505911, guid: 8a108b9d61111cc418d8e13790df890d,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6561807243403505911, guid: 8a108b9d61111cc418d8e13790df890d,
         type: 3}

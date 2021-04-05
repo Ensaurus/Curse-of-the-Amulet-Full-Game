@@ -300,6 +300,7 @@ MonoBehaviour:
   chargingStationObject: {fileID: 4905482788322140512}
   yellowLight: {fileID: 4905482788220710946}
   orangeLight: {fileID: 8166411102877668256}
+  inQuadrant: 0
 --- !u!95 &4905482788322140519
 Animator:
   serializedVersion: 3
@@ -364,7 +365,7 @@ GameObject:
   - component: {fileID: 859115543942624692}
   m_Layer: 0
   m_Name: chargingStation
-  m_TagString: Untagged
+  m_TagString: ChargingStation
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -406,6 +407,7 @@ MonoBehaviour:
   chargingStationObject: {fileID: 4905482790128214645}
   yellowLight: {fileID: 4905482788220710946}
   orangeLight: {fileID: 8166411102877668256}
+  inQuadrant: 0
 --- !u!212 &4905482790128214646
 SpriteRenderer:
   m_ObjectHideFlags: 0
