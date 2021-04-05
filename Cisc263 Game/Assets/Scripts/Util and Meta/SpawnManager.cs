@@ -8,6 +8,7 @@ public class SpawnManager : Singleton<SpawnManager>
      * 
      * example: an item with a buffer of (5, 10) can't have anything spawn within 5 units to right or left or within 10 units above or below center point.
      * 
+     * TODO: set minimap camera relative to map
      * 
      */
     // pools for each of the items
@@ -28,7 +29,9 @@ public class SpawnManager : Singleton<SpawnManager>
     [SerializeField] private Vector2 playerBuffer; // required distance certain objects must be from player when level starts
 
     private bool[,] mapGrid; // 2d array representing map. element false = map space empty, true = occupied
-    
+    // private int[,] debuggingGrid; // mirrors mapGrid but keeps track of order placed in for debugging, dissable when done debugging
+    // private int debuggingCounter;
+
     private List<GameObject> activePaths = new List<GameObject>();   // array holding current path objects on map
 
     private ScentSpawner scentSpawner;  // scent stuff used for dissabling and reenabling scent spawning on new level
@@ -68,6 +71,7 @@ public class SpawnManager : Singleton<SpawnManager>
         // scale background and setup mapGrid
         mapTransform.localScale = new Vector3 (mapDimensions.x, mapDimensions.y, 1);
         mapGrid = new bool[(int) mapDimensions.x, (int) mapDimensions.y];   // 2d array with dimensions of the map
+        // debuggingGrid = new int[(int) mapDimensions.x, (int) mapDimensions.y];
 
         // place player at middle of map (activate scent spawning once ui faded out)
         playerSpawnPos = mapDimensions/2;
@@ -119,8 +123,10 @@ public class SpawnManager : Singleton<SpawnManager>
             fullCounter++;
             return;
         }
+        //Debug.Log("adding " + obj);
+        //Debug.Log("item placed at: " + spawnPos);
         placeInGrid(spawnPos, buffer);
-        spawnPos = new Vector2(spawnPos.y, spawnPos.x);  // flips x and y because 2d array is in row-col order while map is in col-row order
+        // spawnPos = new Vector2(spawnPos.y, spawnPos.x);  // flips x and y because 2d array is in row-col order while map is in col-row order
         objTransform.position = spawnPos;
         obj.SetActive(true);
         // if it's a path add it to the path array
@@ -133,6 +139,10 @@ public class SpawnManager : Singleton<SpawnManager>
     // spawns random items from pool into paths on the map
     private void SpawnInPath(Pooler pool)
     {
+        if (activePaths.Count == 0)
+        {
+            return;
+        }
         Path pathScript;
         // if exit, just throw it in and return
         if (pool.Equals(exit))
@@ -202,19 +212,9 @@ public class SpawnManager : Singleton<SpawnManager>
                     endingRow = arrayToSearch.GetLength(0) / 2;
                     startingCol = 0;
                     endingCol = arrayToSearch.GetLength(1) / 2;
+                    //Debug.Log("Going quad 1");
                     break;
                 case (2):
-                    startingRow = 0;
-                    endingRow = arrayToSearch.GetLength(0) / 2;
-                    startingCol = arrayToSearch.GetLength(1) / 2;
-                    endingCol = arrayToSearch.GetLength(1);
-                    // if array not divisible by 2, need to decrease edge values to account for halfs being floored
-                    if (arrayToSearch.GetLength(0) % 2 == 1)
-                    {
-                        endingCol--;
-                    }
-                    break;
-                case (3):
                     startingRow = arrayToSearch.GetLength(0) / 2;
                     endingRow = arrayToSearch.GetLength(0);
                     startingCol = 0;
@@ -224,6 +224,19 @@ public class SpawnManager : Singleton<SpawnManager>
                     {
                         endingRow--;
                     }
+                    //Debug.Log("Going quad 3");
+                    break;
+                case (3):
+                    startingRow = 0;
+                    endingRow = arrayToSearch.GetLength(0) / 2;
+                    startingCol = arrayToSearch.GetLength(1) / 2;
+                    endingCol = arrayToSearch.GetLength(1);
+                    // if array not divisible by 2, need to decrease edge values to account for halfs being floored
+                    if (arrayToSearch.GetLength(0) % 2 == 1)
+                    {
+                        endingCol--;
+                    }
+                    //Debug.Log("Going quad 2");
                     break;
                 case (4):
                     startingRow = arrayToSearch.GetLength(0) / 2;
@@ -236,6 +249,7 @@ public class SpawnManager : Singleton<SpawnManager>
                         endingCol--;
                         endingRow--;
                     }
+                    //Debug.Log("Going quad 4");
                     break;
                 default:
                     Debug.Log("findOpeningInMapGrid fucked up in SpawnManager, sorry bud, please check");
@@ -449,22 +463,24 @@ public class SpawnManager : Singleton<SpawnManager>
     // bufferRadius.y below and bufferRadius.x to the right of location
     private void placeInGrid(Vector2 location, Vector2 bufferRadius)
     {
-        int lowerBound = (int) (location.y - (bufferRadius.y));
-        int upperBound = (int)(location.y + (bufferRadius.y));
-        int leftBound = (int)(location.x - (bufferRadius.x));
-        int rightBound = (int) (location.x + (bufferRadius.x));
+        int leftBound = (int) (location.y - (bufferRadius.y));
+        int rightBound = (int)(location.y + (bufferRadius.y));
+        int lowerBound = (int)(location.x - (bufferRadius.x));
+        int upperBound = (int) (location.x + (bufferRadius.x));
         if (lowerBound < 0 || upperBound >= mapGrid.GetLength(0) || leftBound < 0 || rightBound >= mapGrid.GetLength(1))
         {
             Debug.Log("attempted to place item out of bounds, check SpawnManager, location: " + location + " buffer: " + bufferRadius);
             return;
         }
-        // Debug.Log("setting: (" + lowerBound + ", " + leftBound + ") to (" + upperBound + ", " + rightBound + ") to true.");
+        Debug.Log("setting: (" + lowerBound + ", " + leftBound + ") to (" + upperBound + ", " + rightBound + ") to true.");
+        //debuggingCounter += 1; // comment out when not debugging
+
         for (int i = lowerBound; i <= upperBound; i++)
         {
             for (int j = leftBound; j <= rightBound; j++)
             {
                 mapGrid[i, j] = true;
-                //Debug.Log("(" + i + ", " + j + ") = true");
+                //debuggingGrid[i, j] = debuggingCounter; // comment out
             }
         }
         /*
@@ -475,10 +491,15 @@ public class SpawnManager : Singleton<SpawnManager>
             string line = "";
             for (int j = 0; j < mapGrid.GetLength(1); j++)
             {
-                int value = 0;
-                if (mapGrid[i,j] == true)
+                int value = debuggingGrid[i,j];
+
+                if (i == mapGrid.GetLength(0) / 2)
                 {
-                    value = 1;
+                    line += "-";
+                }
+                if (j == mapGrid.GetLength(1) / 2)
+                {
+                    line += "|";
                 }
                 line += "  " + value;
             }

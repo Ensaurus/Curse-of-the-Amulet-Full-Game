@@ -1386,11 +1386,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLevel: 1
-  numEnemies: 1
-  numChargingStations: 5
-  numPaths: 3
+  numEnemies: 0
+  numChargingStations: 0
+  numPaths: 0
   numFlames: 0
-  levelDimensions: {x: 100, y: 100}
+  levelDimensions: {x: 30, y: 30}
   levelSizeIncrease: {x: 0, y: 0}
   enemyIncrease: 1
   chargingStationIncrease: 1
@@ -3826,7 +3826,7 @@ PrefabInstance:
     - target: {fileID: 37957568724167547, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 37957568724167549, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
