@@ -15,6 +15,8 @@ public class ScentSpawner : MonoBehaviour
     [SerializeField] private float validDistance; // distance moved in unity units in last 4 secs for not to be stationary
     [SerializeField] private float stinkiness; // pungence of scent nodes
     [SerializeField] private float spawnRate; // time in seconds between spawns
+    [SerializeField] private float growthRate; // how much radius of scent will grow while standing still
+
 
     // Start is called before the first frame update
     void Awake()
@@ -98,7 +100,7 @@ public class ScentSpawner : MonoBehaviour
             Scent scent = node.GetComponent<Scent>();
             scent.next = myTransform.position;
             scent.pungence = stinkiness;
-            radius += 0.5f;
+            radius += growthRate;
             yield return new WaitForSeconds(spawnRate);
         }
 

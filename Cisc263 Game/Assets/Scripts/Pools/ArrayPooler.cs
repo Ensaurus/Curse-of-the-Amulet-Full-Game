@@ -8,7 +8,7 @@ public class ArrayPooler : MonoBehaviour, Pooler
 	[SerializeField] private int poolDepth;
 	[SerializeField] private bool canGrow = true;
 
-	private List<GameObject>[] poolArray;  // array of the different pool lists, of length objectsToPool.Length  readonly
+	protected List<GameObject>[] poolArray;  // array of the different pool lists, of length objectsToPool.Length  readonly
 
 	private void Awake()
 	{

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
-    /*Note: all item prefabs need to have their focal point in the center and x,y buffers should be set based on the distance from center!
+    /*Note: Map should be set to (-10,-10,0) rather than (0,0,0) to account for boundaries so there's grass under them
+     * 
+     * all item prefabs need to have their focal point in the center and x,y buffers should be set based on the distance from center!
      * 
      * example: an item with a buffer of (5, 10) can't have anything spawn within 5 units to right or left or within 10 units above or below center point.
      * 
@@ -20,6 +22,7 @@ public class SpawnManager : Singleton<SpawnManager>
     private ObjectPooler chargingStations;
     private ObjectPooler flames;
     private ObjectPooler chests;
+    private BoundaryPool borders;
 
     [SerializeField] private GameObject map;    // map
     private Transform mapTransform;
@@ -28,11 +31,14 @@ public class SpawnManager : Singleton<SpawnManager>
     [SerializeField] private Vector2 playerSpawnPos;
     [SerializeField] private Vector2 playerBuffer; // required distance certain objects must be from player when level starts
 
+    [SerializeField] private Camera miniMapCam; // minimap camera has to be adjusted to fit new dimensions
+    private Transform camTransform;
+
     private bool[,] mapGrid; // 2d array representing map. element false = map space empty, true = occupied
     // private int[,] debuggingGrid; // mirrors mapGrid but keeps track of order placed in for debugging, dissable when done debugging
     // private int debuggingCounter;
 
-    private List<GameObject> activePaths = new List<GameObject>();   // array holding current path objects on map
+    private List<GameObject> activePaths;   // array holding current path objects on map
 
     private ScentSpawner scentSpawner;  // scent stuff used for dissabling and reenabling scent spawning on new level
     private ScentPool scentPool;
@@ -50,11 +56,13 @@ public class SpawnManager : Singleton<SpawnManager>
         paths = gameObject.GetComponent<PathPool>();
         chests = gameObject.GetComponent<ChestPool>();
         flames = gameObject.GetComponent<FlamePool>();
+        borders = gameObject.GetComponent<BoundaryPool>();
 
         scentSpawner = player.GetComponent<ScentSpawner>();
         scentPool = player.GetComponent<ScentPool>();
 
         mapTransform = map.transform;
+        camTransform = miniMapCam.transform;
     }
 
     private void Start()
@@ -68,11 +76,17 @@ public class SpawnManager : Singleton<SpawnManager>
 
     public void LevelSpawner(int enemyNum, int pathNum, int chargingStationNum, int flamesNum, Vector2 mapDimensions)
     {
+        // reset fullCounter and activePaths
+        activePaths = new List<GameObject>();
         fullCounter = 0;
-        // scale background and setup mapGrid
-        mapTransform.localScale = new Vector3 (mapDimensions.x, mapDimensions.y, 1);
+        // scale background, set miniMapCam and setup mapGrid
+        mapTransform.localScale = new Vector3 (mapDimensions.x + 20, mapDimensions.y + 20, 1);    // makes a little wider to account for boundaries
+        camTransform.position = new Vector3(mapDimensions.x / 2, mapDimensions.y / 2, -10);
+        miniMapCam.orthographicSize = Mathf.Max(mapDimensions.x / 2, mapDimensions.y / 2);
         mapGrid = new bool[(int) mapDimensions.x, (int) mapDimensions.y];   // 2d array with dimensions of the map
-        // debuggingGrid = new int[(int) mapDimensions.x, (int) mapDimensions.y];
+
+        // place border around edge
+        SpawnBorder(mapDimensions);
 
         // place player at middle of map (activate scent spawning once ui faded out)
         playerSpawnPos = mapDimensions/2;
@@ -107,6 +121,40 @@ public class SpawnManager : Singleton<SpawnManager>
         while (fullCounter < 5)
         {
             SpawnRandomPos(obstacles);
+        }
+    }
+
+    private void SpawnBorder(Vector2 mapDimensions)
+    {
+        // iterate the values by 33 since that's how far each of the colliders extent, couldn't find how to determine that from a variable
+        GameObject wall;
+        // spawn left walls
+        for (int y = -10; y < mapDimensions.y; y += 33)
+        {
+            wall = borders.GetLeft();
+            wall.transform.position = new Vector2(0, y);
+            wall.SetActive(true);
+        }
+        // spawn upper walls
+        for (int x = -10; x < mapDimensions.x; x += 33)
+        {
+            wall = borders.GetUpper();
+            wall.transform.position = new Vector2(x, mapDimensions.y);
+            wall.SetActive(true);
+        }
+        // spawn lower walls
+        for (int x = -10; x < mapDimensions.x; x += 33)
+        {
+            wall = borders.GetLower();
+            wall.transform.position = new Vector2(x, 0);
+            wall.SetActive(true);
+        }
+        // spawn left walls
+        for (int y = -10; y < mapDimensions.y; y += 33)
+        {
+            wall = borders.GetRight();
+            wall.transform.position = new Vector2(mapDimensions.x, y);
+            wall.SetActive(true);
         }
     }
 
@@ -523,9 +571,14 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         enemies.ResetPool();
         powerUps.ResetPool();
+        chests.ResetPool();
         chargingStations.ResetPool();
         obstacles.ResetPool();
         exit.ResetPool();
+        paths.ResetPool();
+        borders.ResetPool();
+        flames.ResetPool();
+
         // disable scent spawning and remove lingering scent nodes
         scentSpawner.enabled = false;
         scentSpawner.CancelInvoke();
