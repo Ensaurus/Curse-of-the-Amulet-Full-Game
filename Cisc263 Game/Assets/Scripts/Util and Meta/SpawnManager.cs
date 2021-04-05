@@ -49,6 +49,7 @@ public class SpawnManager : Singleton<SpawnManager>
         obstacles = gameObject.GetComponent<ObstaclesPool>();
         paths = gameObject.GetComponent<PathPool>();
         chests = gameObject.GetComponent<ChestPool>();
+        flames = gameObject.GetComponent<FlamePool>();
 
         scentSpawner = player.GetComponent<ScentSpawner>();
         scentPool = player.GetComponent<ScentPool>();
@@ -472,7 +473,7 @@ public class SpawnManager : Singleton<SpawnManager>
             Debug.Log("attempted to place item out of bounds, check SpawnManager, location: " + location + " buffer: " + bufferRadius);
             return;
         }
-        Debug.Log("setting: (" + lowerBound + ", " + leftBound + ") to (" + upperBound + ", " + rightBound + ") to true.");
+        // Debug.Log("setting: (" + lowerBound + ", " + leftBound + ") to (" + upperBound + ", " + rightBound + ") to true.");
         //debuggingCounter += 1; // comment out when not debugging
 
         for (int i = lowerBound; i <= upperBound; i++)
