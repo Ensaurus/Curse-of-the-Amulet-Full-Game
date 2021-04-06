@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3961910642601758502}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.09, y: 0.07, z: -0.6258669}
+  m_LocalPosition: {x: 0, y: 0, z: -0.6258669}
   m_LocalScale: {x: 0.84576607, y: 0.8457661, z: 0.84576607}
   m_Children: []
   m_Father: {fileID: 3961910644205883823}
@@ -102,6 +102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3961910643069693633}
   - component: {fileID: 3961910643069693632}
+  - component: {fileID: 3058776081339334279}
   m_Layer: 0
   m_Name: fire
   m_TagString: Untagged
@@ -117,7 +118,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3961910643069693638}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.13, y: 0.17999983, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 3961910644205883823}
@@ -162,17 +163,36 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 6a47b98c9a2e6184fbaa4d72acc99c2d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1ce01fef35a9bbe4f807c003e0f9ef9a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 8, y: 8}
+  m_Size: {x: 10.8, y: 8.52}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &3058776081339334279
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3961910643069693638}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fb8fc6116639c85479bf175f614b1745, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3961910644205883820
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,7 +203,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3961910644205883823}
   m_Layer: 0
-  m_Name: Drops
+  m_Name: cameraDrop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,12 +246,12 @@ PrefabInstance:
     - target: {fileID: 2615075253431665937, guid: 1b95f508701a46448a886c01c636f3a8,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 26.07
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2615075253431665937, guid: 1b95f508701a46448a886c01c636f3a8,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.14
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2615075253431665937, guid: 1b95f508701a46448a886c01c636f3a8,
         type: 3}

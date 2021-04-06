@@ -102,6 +102,14 @@ public class CameraManager : Singleton<CameraManager>
         //reset other values
         CurrentCamera = 0;
         numCameras = 1;
+    }
 
+    //player can move only when not using cameras
+    public bool checkMovingAllowed()
+    {
+        if(CurrentCamera == 0)
+            return true;
+        else    
+            return false;
     }
 }
