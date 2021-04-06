@@ -10,6 +10,7 @@ public class UIManager : Singleton<UIManager>
     public TextMeshProUGUI gameOverText;
     public TextMeshProUGUI textAbovePlayer;
     public TextMeshProUGUI levelTransitionText;
+    public TextMeshProUGUI openChestText;
     public Image blackBackground;
     public Image jumpScare;
     public bool isScaring = false;
@@ -21,6 +22,9 @@ public class UIManager : Singleton<UIManager>
         EventManager.Instance.EnemyStateChange.AddListener(DisplayTracking);
         updateAmuletCharge();
         updateLanternCharge();
+
+        //chest text
+        openChestText.text = "Press E to open chest...";
     }
 
     // Update is called once per frame
@@ -182,5 +186,16 @@ public class UIManager : Singleton<UIManager>
         obj.gameObject.SetActive(false);
         levelTransitionText.gameObject.SetActive(false);
         EventManager.Instance.FadeComplete.Invoke();
+    }
+
+    //For the powerup chests
+    public void openChestTextDisplay()
+    {
+        openChestText.gameObject.SetActive(true);
+    }
+
+    public void openChestTextHide()
+    {
+        openChestText.gameObject.SetActive(false);
     }
 }
