@@ -10,7 +10,10 @@ public class UIManager : Singleton<UIManager>
     public TextMeshProUGUI gameOverText;
     public TextMeshProUGUI textAbovePlayer;
     public TextMeshProUGUI levelTransitionText;
-    public TextMeshProUGUI openChestText;
+    public TextMeshProUGUI newPowerUpDisplay;
+    public TextMeshProUGUI activeItem;
+    public TextMeshProUGUI qPrompt;
+    public TextMeshProUGUI ePrompt;
     public Image blackBackground;
     public Image jumpScare;
     public bool isScaring = false;
@@ -20,11 +23,11 @@ public class UIManager : Singleton<UIManager>
     {
         EventManager.Instance.JumpScare.AddListener(DisplayJumpScare);
         EventManager.Instance.EnemyStateChange.AddListener(DisplayTracking);
+        EventManager.Instance.PowerUpCollected.AddListener(NewPowerUp);
+        EventManager.Instance.ItemSwap.AddListener(ItemSwap);
+        EventManager.Instance.ItemUsed.AddListener(ItemUsed);
         updateAmuletCharge();
         updateLanternCharge();
-
-        //chest text
-        openChestText.text = "Press E to open chest...";
     }
 
     // Update is called once per frame
@@ -63,6 +66,65 @@ public class UIManager : Singleton<UIManager>
         {
             lanternChargeText.color = new Color(255, 255, 255);
         }
+    }
+
+    private void ItemSwap(GameObject newActive)
+    {
+        StartCoroutine(HandleItemSwap(newActive));
+    }
+
+    IEnumerator HandleItemSwap(GameObject newActive)
+    {
+        qPrompt.color = new Color(0, 255, 0);
+        PowerUp script = newActive.GetComponent<PowerUp>();
+        name = script.GetName();
+        activeItem.text = newActive.GetComponent<PowerUp>().GetName();
+        float timer = 0.5f;
+        while (timer >= 0)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+        qPrompt.color = new Color(255, 255, 255);
+    }
+
+    private void ItemUsed(GameObject newActive)
+    {
+        StartCoroutine(HandleItemSwap(newActive));
+    }
+
+    IEnumerator HandleItemUsed(GameObject newActive)
+    {
+        qPrompt.color = new Color(0, 255, 0);
+        PowerUp script = newActive.GetComponent<PowerUp>();
+        name = script.GetName();
+        activeItem.text = newActive.GetComponent<PowerUp>().GetName();
+        float timer = 0.5f;
+        while (timer >= 0)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+        qPrompt.color = new Color(255, 255, 255);
+    }
+
+    private void NewPowerUp(GameObject newPowerUp)
+    {
+        PowerUp script = newPowerUp.GetComponent<PowerUp>();
+        StartCoroutine(DisplayNewPowerUp(script));
+    }
+
+    IEnumerator DisplayNewPowerUp(PowerUp newPowerUp)
+    {
+        newPowerUpDisplay.text = "" + newPowerUp.GetName() + " collected.\n" + newPowerUp.GetDescription();
+        newPowerUpDisplay.gameObject.SetActive(true);
+        float timer = 3;
+        while (timer >= 0)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+        newPowerUpDisplay.gameObject.SetActive(false);
     }
 
     private void updateAmuletCharge()
@@ -186,16 +248,5 @@ public class UIManager : Singleton<UIManager>
         obj.gameObject.SetActive(false);
         levelTransitionText.gameObject.SetActive(false);
         EventManager.Instance.FadeComplete.Invoke();
-    }
-
-    //For the powerup chests
-    public void openChestTextDisplay()
-    {
-        openChestText.gameObject.SetActive(true);
-    }
-
-    public void openChestTextHide()
-    {
-        openChestText.gameObject.SetActive(false);
     }
 }

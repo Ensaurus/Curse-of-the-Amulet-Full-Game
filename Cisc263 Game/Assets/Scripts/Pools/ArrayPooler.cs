@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class ArrayPooler : MonoBehaviour, Pooler
 {
+	public bool empty; // for powerups, if all get collected and no reusable ones available
 	[SerializeField] private GameObject[] objectsToPool;
 	[SerializeField] private int poolDepth;
-	[SerializeField] private bool canGrow = true;
+	[SerializeField] protected bool canGrow = true;
 
-	protected List<GameObject>[] poolArray;  // array of the different pool lists, of length objectsToPool.Length  readonly
+	public List<GameObject>[] poolArray;  // array of the different pool lists, of length objectsToPool.Length  readonly (unless it's for powerups, oopsies)
 
 	private void Awake()
 	{
@@ -27,7 +28,7 @@ public class ArrayPooler : MonoBehaviour, Pooler
 		}
 	}
 
-	public GameObject GetObject()
+	public virtual GameObject GetObject()
 	{
 		int listArrayIndex = Random.Range(0, poolArray.Length);     // get a random pool list of game objects from the poolArray 
 
