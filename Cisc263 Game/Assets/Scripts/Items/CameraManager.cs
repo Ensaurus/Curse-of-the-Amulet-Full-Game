@@ -82,7 +82,6 @@ public class CameraManager : Singleton<CameraManager>
         Vector3 temp = new Vector3(cameraPositions[CurrentCamera].x, cameraPositions[CurrentCamera].y, Camera.transform.position.z);
         Camera.transform.position = temp;
         
-        print("test3");
         yield return null;
     }
 
