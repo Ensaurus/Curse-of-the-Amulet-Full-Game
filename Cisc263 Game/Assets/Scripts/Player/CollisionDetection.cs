@@ -46,11 +46,6 @@ public class CollisionDetection : MonoBehaviour
                 EventManager.Instance.LevelCompleted.Invoke();
             }
         }
-
-        if (other.CompareTag("Chest"))
-        {
-            UIManager.Instance.openChestTextDisplay();
-        }
     }
 
         private void OnTriggerStay2D(Collider2D other)
@@ -76,11 +71,6 @@ public class CollisionDetection : MonoBehaviour
             {
                 Amulet.Instance.isCharging = false;
             }
-
-                    if (other.CompareTag("Chest"))
-        {
-            UIManager.Instance.openChestTextHide();
-        }
         }
     }
 
