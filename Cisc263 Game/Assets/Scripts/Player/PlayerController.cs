@@ -46,7 +46,7 @@ public class PlayerController: MonoBehaviour
             {
                 rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
 
-        }
+            }
         }
         
     }

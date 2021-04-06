@@ -7,21 +7,23 @@ using UnityEngine;
     public bool isOpened;
     public bool playerIsColliding;
     [SerializeField] private Animator chestAnimator;
-    public PowerUp contains;
+    public GameObject contains;
 
     void Start()
     {
         isOpened = false;
         playerIsColliding = false;
+        chestAnimator = gameObject.GetComponent<Animator>();
     }
 
     void Update()
     {
         //open chest
-        if (Input.GetKeyDown(KeyCode.E) && playerIsColliding && !isOpened)
+        if (Input.GetKeyDown(KeyCode.R) && playerIsColliding && !isOpened)
         {
             chestAnimator.SetBool("chestOpened", true);
             isOpened = true;
+            EventManager.Instance.PowerUpCollected.Invoke(contains);
         }
     }
 
