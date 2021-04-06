@@ -196,6 +196,9 @@ public class UIManager : Singleton<UIManager>
         StartCoroutine(FadeInAndOut(blackBackground));
         levelTransitionText.text = "Level Complete!";
         levelTransitionText.gameObject.SetActive(true);
+
+        //camera destroy
+        CameraManager.Instance.Reset();
     }
 
     IEnumerator FadeInAndOut(Image obj)

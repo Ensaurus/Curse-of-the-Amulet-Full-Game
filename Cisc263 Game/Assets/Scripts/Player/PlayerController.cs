@@ -20,22 +20,35 @@ public class PlayerController: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        if (CameraManager.Instance.checkMovingAllowed())
+        {
+            movement.x = Input.GetAxisRaw("Horizontal");
+            movement.y = Input.GetAxisRaw("Vertical");
 
-        playerAnimator.SetFloat("horizontal", movement.x);
-        playerAnimator.SetFloat("vertical", movement.y);
-        playerAnimator.SetFloat("speed", movement.sqrMagnitude);
+            playerAnimator.SetFloat("horizontal", movement.x);
+            playerAnimator.SetFloat("vertical", movement.y);
+            playerAnimator.SetFloat("speed", movement.sqrMagnitude);
+        }
+        else{
+            playerAnimator.SetFloat("horizontal", 0);
+            playerAnimator.SetFloat("vertical", 0);
+            playerAnimator.SetFloat("speed", 0);
+        }
+        
     }
 
     void FixedUpdate()
     {
-        // move if not using amulet
-        if (!Amulet.Instance.isActive)
+        if (CameraManager.Instance.checkMovingAllowed())
         {
-            rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+            // move if not using amulet
+            if (!Amulet.Instance.isActive)
+            {
+                rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
 
         }
+        }
+        
     }
 
 }
