@@ -1781,7 +1781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b27b2cf12772cd44a39e6af22304a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabObject: {fileID: 1147060272728013024, guid: 86a3b3c505227c644a6aaa0ef9863f92,
+  prefabObject: {fileID: 4586678432819703456, guid: cc7b0ccf009500b4c9c367e56d06a595,
     type: 3}
   poolDepth: 7
   canGrow: 1
@@ -2426,9 +2426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d305505964bebd142a4e99e92cae5420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dictionarySetup:
-  - item: {fileID: 0}
-    amount: 0
+  dictionarySetup: []
   activeItem: {fileID: 0}
   activeIndex: 0
 --- !u!4 &1245930551

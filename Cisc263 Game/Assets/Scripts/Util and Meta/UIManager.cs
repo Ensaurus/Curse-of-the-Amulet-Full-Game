@@ -18,9 +18,14 @@ public class UIManager : Singleton<UIManager>
     public Image jumpScare;
     public bool isScaring = false;
 
+    public TextMeshProUGUI openChestText;
+
     // Start is called before the first frame update
     void Start()
     {
+        //chest text
+        openChestText.text = "Press E to open chest...";
+
         EventManager.Instance.JumpScare.AddListener(DisplayJumpScare);
         EventManager.Instance.EnemyStateChange.AddListener(DisplayTracking);
         EventManager.Instance.PowerUpCollected.AddListener(NewPowerUp);
@@ -251,5 +256,16 @@ public class UIManager : Singleton<UIManager>
         obj.gameObject.SetActive(false);
         levelTransitionText.gameObject.SetActive(false);
         EventManager.Instance.FadeComplete.Invoke();
+    }
+
+    //For the powerup chests
+    public void openChestTextDisplay()
+    {
+        openChestText.gameObject.SetActive(true);
+    }
+
+    public void openChestTextHide()
+    {
+        openChestText.gameObject.SetActive(false);
     }
 }
