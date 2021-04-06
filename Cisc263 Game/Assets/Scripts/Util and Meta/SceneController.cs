@@ -40,9 +40,6 @@ public class SceneController : Singleton<SceneController>
 
     private void ChangeLevel()
     {
-        //reset camera power up
-        CameraManager.Instance.Reset();
-
         currentLevel++;       
         levelDimensions += levelSizeIncrease;
         numEnemies += enemyIncrease;

@@ -29,24 +29,26 @@ public class CollisionDetection : MonoBehaviour
             // increase energy of lantern
             Lantern.Instance.IncreaseCurrentEnergy();            
         }
-
         // collided with charging station for charging amulet
         if (other.CompareTag("ChargingStation"))
         {
             Amulet.Instance.isCharging = true;
             chargingSound.Play();
-            
         }
-
         // collided with exit
-        if (other.CompareTag("Exit"))   
-        {     
+        if (other.CompareTag("Exit"))
+        {
             if (Amulet.Instance.charge >= Exit.Instance.requiredEnergy)
             {
                 EventManager.Instance.LevelCompleted.Invoke();
             }
         }
-    }
+        if (other.CompareTag("Chest"))
+        {
+            Chest chest = other.GetComponent<Chest>();
+            EventManager.Instance.PowerUpCollected.Invoke(chest.contains);
+        }
+        }
 
         private void OnTriggerStay2D(Collider2D other)
         {
@@ -63,7 +65,6 @@ public class CollisionDetection : MonoBehaviour
                     Amulet.Instance.isCharging = false;
                 }
             }
-
         }
         private void OnTriggerExit2D(Collider2D other)
         {

@@ -46,6 +46,8 @@ public class SpawnManager : Singleton<SpawnManager>
 
     int fullCounter; // increments each time an item doesn't fit anywhere on the map, spawning stops after 5 misses 
 
+    List<GameObject> singleUsePlaced;
+
     protected override void Awake()
     {
         base.Awake();
@@ -80,10 +82,11 @@ public class SpawnManager : Singleton<SpawnManager>
         // reset fullCounter and activePaths
         activePaths = new List<Path>();
         activeStations = new List<ChargingStationScript>();
+        singleUsePlaced = new List<GameObject>();
         fullCounter = 0;
         // scale background, set miniMapCam and setup mapGrid
         mapTransform.localScale = new Vector3 (mapDimensions.x + 20, mapDimensions.y + 20, 1);    // makes a little wider to account for boundaries
-        camTransform.position = new Vector3(mapDimensions.x / 2, mapDimensions.y / 2, -10);
+        camTransform.position = new Vector3(mapDimensions.x / 2, mapDimensions.y / 2, -1);
         miniMapCam.orthographicSize = Mathf.Max(mapDimensions.x / 2, mapDimensions.y / 2);
         mapGrid = new bool[(int) mapDimensions.x, (int) mapDimensions.y];   // 2d array with dimensions of the map
 
@@ -214,26 +217,49 @@ public class SpawnManager : Singleton<SpawnManager>
             exit.SetActive(true);
             return;
         }
-        // otherwise it's a powerup and go through each path with 75% chance to spawn
+        
+      
+        // otherwise it's a powerup and go through each path with 75% chance to spawn unless only single use items and all have been placed
         foreach (Path activePath in activePaths)
         {
+            if (singleUsePlaced.Count == powerUps.poolArray.Length)
+            {
+                Debug.Log("Attempting to use only singleUse items and ran out of space");
+                break;
+            }
             int rng = Random.Range(0, 4);
-            /*TODO: add it so that powerups get removed from options as they get put in, but only really removed from spawn pool if collected
-             * set chest pos to just pathScript.powerUpPos remove z axis just for testing
-             * 
-             * 
-             */
             // if rng == 0,1,2 but not 3
             if (rng < 3)
             {
                 GameObject chest = chests.GetObject();
                 Chest chestScipt = chest.GetComponent<Chest>();
                 GameObject powerUp = powerUps.GetObject();
+
+                // all powerups have been collected already
+                // also, I have NO IDEA why, but this is the only place this code seemed to work, wouldn't get read anywhere else
+                if (powerUps.empty)
+                {
+                    Debug.Log("all powerups collected");
+                    return;
+                }
                 PowerUp powerUpScript = powerUp.GetComponent<PowerUp>();
+                // if powerup is single use, make sure to only spawn 1 copy of it, add it to a deadlist for future chests this round
+                if (powerUpScript.isSingleUse())
+                {   
+                    // keep grabbing until get one not single use or hasnt been placed already
+                    while (singleUsePlaced.Contains(powerUp))
+                    {
+                        powerUp = powerUps.GetObject();
+                    }
+                    // if still single use, even if new one grabbed
+                    if (powerUp.GetComponent<PowerUp>().isSingleUse())
+                    {
+                        singleUsePlaced.Add(powerUp);
+                    }
+                }
                 pathScript = activePath;
-                chestScipt.contains = powerUpScript;
+                chestScipt.contains = powerUp;
                 chest.transform.position = pathScript.powerUpPos;
-                chest.transform.position += new Vector3(0,0,-10); // remove this line when chests put in, just for testing w 3d prefab
                 chest.SetActive(true);
             }
         }
