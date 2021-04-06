@@ -27,7 +27,6 @@ public class PowerUpPool : ArrayPooler
 
 	public override GameObject GetObject()
 	{
-		Debug.Log("DeadSpaces: " + deadSpaces);
 		if (deadSpaces.Count == poolArray.Length)
         {
 			Debug.Log("no valid powerups in pool, all been used");

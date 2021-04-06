@@ -2,27 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraManager : Singleton<CameraManager>
+public class CameraManager : Singleton<CameraManager>, Item
 {
+    /* key for this item in inventory: "camera"
+     * 
+     */
+    private string key = "camera";
     [SerializeField] private GameObject Camera;
-    [SerializeField] private int maxCameras;
     [SerializeField] private int curCameras;
-    [SerializeField] private int initCameras;
+  
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject cameraDrop;
     private Transform dropTransform;
     private Vector3 dropPosition;
     private List<Vector3> cameraPositions = new List<Vector3>();
-    
+
     [SerializeField] private int numCameras;
     [SerializeField] private int CurrentCamera;
     private List<GameObject> SpawnedCamerasObjectList = new List<GameObject>();
-    
+
     // Start is called before the first frame update
     void Start()
     {
-        curCameras = initCameras;
-
         numCameras = 1;
         CurrentCamera = 0;
 
@@ -36,17 +37,23 @@ public class CameraManager : Singleton<CameraManager>
         //Keep updating the player's position
         cameraPositions[0] = player.transform.position;
 
-        //drop camera
-        if(Input.GetKeyDown(KeyCode.C) && curCameras > 0 && CurrentCamera == 0){
-            
-            StartCoroutine(dropCamera());
-            curCameras -= 1;
-        }
-
         //cycle through cameras
-        if(Input.GetKeyDown(KeyCode.Tab) && numCameras > 1){
+        if (Input.GetKeyDown(KeyCode.Tab) && numCameras > 1) {
             StartCoroutine(switchCamera());
         }
+    }
+    public void Use()
+    {
+        StartCoroutine(dropCamera());
+    }
+    public string GetName()
+    {
+        return "Camera"; 
+    }
+
+    public int GetAmount()
+    {
+        return Inventory.Instance.items["camera"];
     }
 
     IEnumerator dropCamera(){
@@ -100,7 +107,6 @@ public class CameraManager : Singleton<CameraManager>
 
         //reset other values
         CurrentCamera = 0;
-        numCameras = 1;
     }
 
     //player can move only when not using cameras

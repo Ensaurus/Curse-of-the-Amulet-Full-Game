@@ -5,15 +5,11 @@ public class TestPowerUpScript : MonoBehaviour, PowerUp
 {
     public string GetName()
     {
-        return "Test Powerup";
+        return "Camera x3";
     }
     public string GetDescription()
     {
-        return "This powerup is a test and doesn't do much.";
-    }
-    public void Activate()
-    {
-        Debug.Log("Item activated!");
+        return "3 brand new cameras.";
     }
     public bool isSingleUse()
     {
@@ -31,11 +27,11 @@ public class TestPowerUpScript : MonoBehaviour, PowerUp
 
     public string GetItem()
     {
-        return "test";
+        return "camera";
     }
 
     public int GetAmount()
     {
-        return 5;
+        return 3;
     }
 }

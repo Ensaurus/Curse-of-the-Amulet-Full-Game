@@ -13,8 +13,9 @@ public class EventManager : Singleton<EventManager>
 	[System.Serializable] public class EventPlayerNoise : UnityEvent<float> { }     
 	[System.Serializable] public class EventPowerUp : UnityEvent<GameObject> { }		
 	[System.Serializable] public class EventFadeComplete : UnityEvent { }
-	[System.Serializable] public class EventItemSwap : UnityEvent<GameObject> { }
-	[System.Serializable] public class EventItemUsed : UnityEvent<GameObject> { }
+	[System.Serializable] public class EventItemSwap : UnityEvent<Item> { }
+	[System.Serializable] public class EventItemUsed : UnityEvent<Item> { }
+	[System.Serializable] public class EventItemIncrease : UnityEvent<Item> { }
 
 
 	public EventJumpScare JumpScare; // called whenever a jumpscare should appear
@@ -26,6 +27,7 @@ public class EventManager : Singleton<EventManager>
 	public EventPlayerNoise PlayerNoise;    // called when player makes a noise, gets heard by enemies
 	public EventPowerUp PowerUpCollected;	// called when a power up is picked up <the powerup picked up
 	public EventFadeComplete FadeComplete;  // called when transition screen is done fading out
-	public EventItemSwap ItemSwap;  // called when player swaps active item in inventory, <gameobject> new active item
-	public EventItemSwap ItemUsed;  // called when player uses active item in inventory, <gameobject> active item used
+	public EventItemSwap ItemSwap;  // called when player swaps active item in inventory, <Item> new active item
+	public EventItemSwap ItemUsed;  // called when player uses active item in inventory, <Item> active item used
+	public EventItemSwap ItemIncrease;  // called when player picks up more of an item
 }

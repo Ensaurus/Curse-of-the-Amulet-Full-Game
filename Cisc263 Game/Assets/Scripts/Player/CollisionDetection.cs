@@ -43,11 +43,6 @@ public class CollisionDetection : MonoBehaviour
                 EventManager.Instance.LevelCompleted.Invoke();
             }
         }
-        if (other.CompareTag("Chest"))
-        {
-            Chest chest = other.GetComponent<Chest>();
-            EventManager.Instance.PowerUpCollected.Invoke(chest.contains);
-        }
         }
 
         private void OnTriggerStay2D(Collider2D other)
