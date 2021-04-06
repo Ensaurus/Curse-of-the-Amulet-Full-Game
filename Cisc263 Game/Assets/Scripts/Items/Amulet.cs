@@ -13,7 +13,7 @@ public class Amulet : Singleton<Amulet>
     private Animator playerAnimator;
 
     [SerializeField] private GameObject stoneSpriteCollider;
-
+    [SerializeField] private AudioSource turnToStone;
 
     void Start()
     {
@@ -40,6 +40,7 @@ public class Amulet : Singleton<Amulet>
         playerAnimator.SetBool("frozen", isActive);
         playerCol.enabled = false;
         stoneSpriteCollider.SetActive(true);
+        turnToStone.Play();
 
         while (Input.GetKey(KeyCode.Space) && charge > 0) {
             isActive = true;
@@ -52,6 +53,7 @@ public class Amulet : Singleton<Amulet>
         playerCol.enabled = true;
         isActive = false;
         playerAnimator.SetBool("frozen", isActive);
+        turnToStone.Play();
     }
 
     public void IncreaseAmuletCharge()

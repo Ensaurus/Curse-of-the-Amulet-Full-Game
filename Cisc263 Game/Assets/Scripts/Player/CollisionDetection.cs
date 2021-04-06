@@ -8,6 +8,8 @@ public class CollisionDetection : MonoBehaviour
 
     public GameObject chargingStat;
 
+    [SerializeField] private AudioSource chargingSound; 
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         // if collided enemy and amulet not active
@@ -32,6 +34,7 @@ public class CollisionDetection : MonoBehaviour
         if (other.CompareTag("ChargingStation"))
         {
             Amulet.Instance.isCharging = true;
+            chargingSound.Play();
             
         }
 

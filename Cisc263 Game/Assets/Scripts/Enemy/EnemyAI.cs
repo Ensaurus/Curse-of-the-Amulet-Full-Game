@@ -33,8 +33,14 @@ public class EnemyAI : MonoBehaviour
     private Scent currentScent;
     private float currentConfidence;    // time in seconds enemy will be in tracking mode
 
-    //Sound for tracking
-    [SerializeField] private AudioSource trackingSound;
+   
+    [SerializeField] private AudioSource trackingSound;  //Sound to indicate start of tracking
+    [SerializeField] private AudioSource trackingSniff;  //Sound to indicate continued tracking
+    [SerializeField] private AudioSource attackStone;  //Sound to indicate continued tracking
+
+    [SerializeField] private AudioSource attackingSound; //Sound to indicate attacking
+
+    private bool trackingToggle = false; //Used to loop sound if tracking
 
     // Start is called before the first frame update
     void Start()
@@ -73,6 +79,8 @@ public class EnemyAI : MonoBehaviour
         {
             Roam();
         }
+
+        
     }
 
 
@@ -200,8 +208,13 @@ public class EnemyAI : MonoBehaviour
     IEnumerator Tracking(bool sound)
     {
         ChangeState(State.TRACKING);
-        trackingSound.Play();
+        trackingSound.Play(); //Sound indicated enemy has started to track
         
+        
+        trackingToggle = true;
+        trackingSniff.Play(); //Sound indicating continued tracking
+
+      
         float uncertainty = 0;
         while (uncertainty <= currentConfidence && activeState == State.TRACKING)
         {
@@ -225,6 +238,7 @@ public class EnemyAI : MonoBehaviour
         if (activeState != State.ATTACKING)
         {
             StartCoroutine(CoolingDown());
+            trackingSniff.Stop();
         }
     }
 
@@ -242,6 +256,10 @@ public class EnemyAI : MonoBehaviour
             if (activeState != State.ATTACKING)
             {
                 StartCoroutine(Attack());
+                if (trackingToggle == true){
+                    trackingToggle = false;
+                    trackingSniff.Stop();
+                }
             }
         }
     }
@@ -250,6 +268,7 @@ public class EnemyAI : MonoBehaviour
     {
         ChangeState(State.ATTACKING);
         float attackTimer = 0f;
+        attackingSound.Play();
 
         // move towards player
         while (!PositionIsVeryNear(myTransform.position, playerTransform.position))
@@ -262,6 +281,7 @@ public class EnemyAI : MonoBehaviour
         //stay on player for set time
         while (attackTimer <= EnemyStats.Instance.attackTime)
         {
+            attackStone.Play();
             // TODO: run attack animation and prevent moving
             attackTimer += Time.deltaTime;
             yield return null;
