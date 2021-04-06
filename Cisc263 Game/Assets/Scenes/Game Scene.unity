@@ -1393,9 +1393,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLevel: 1
-  numEnemies: 1
-  numChargingStations: 4
-  numPaths: 5
+  numEnemies: 0
+  numChargingStations: 5
+  numPaths: 3
   numFlames: 50
   levelDimensions: {x: 100, y: 100}
   levelSizeIncrease: {x: 0, y: 0}

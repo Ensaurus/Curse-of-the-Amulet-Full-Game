@@ -76,6 +76,19 @@ public class Lantern : Singleton<Lantern>
         currentEnergy += flameEnergy;
         triggered = true;
         flamePickedUp.Play();
+        // triggered used for ui to make text green
+        StartCoroutine(Untrigger());
+    }
+
+    IEnumerator Untrigger()
+    {
+        float timer = 0.5f;
+        while (timer >= 0)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+        triggered = false;
     }
 
 

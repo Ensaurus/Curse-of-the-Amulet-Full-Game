@@ -28,12 +28,36 @@ public class UIManager : Singleton<UIManager>
     {
         if (Amulet.Instance.isActive || Amulet.Instance.isCharging)
         {
+            if (Amulet.Instance.isActive)
+            {
+                amuletChargeText.color = new Color(255, 0, 0);
+            }
+            else
+            {
+                amuletChargeText.color = new Color(0, 255, 0);
+            }
             updateAmuletCharge();
+        }
+        else
+        {
+            amuletChargeText.color = new Color(255, 255, 255);
         }
 
         if (Lantern.Instance.isOn || Lantern.Instance.triggered)
         {
+            if (Lantern.Instance.isOn)
+            {
+                lanternChargeText.color = new Color(255, 0, 0);
+            }
+            else
+            {
+                lanternChargeText.color = new Color(0, 255, 0);
+            }
             updateLanternCharge();
+        }
+        else
+        {
+            lanternChargeText.color = new Color(255, 255, 255);
         }
     }
 

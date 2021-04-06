@@ -409,7 +409,7 @@ public class SpawnManager : Singleton<SpawnManager>
             }
 
 
-            boolAndVector2 quadrantTest = hasSpaceFor(quadrant, minSpace);
+            boolAndVector2 quadrantTest = hasSpaceFor(quadrant, minSpace, quadrantNum);
             if (quadrantTest.hasSpace)
             {
                 // call this function recusively to find smallest quadrant in which this fits
@@ -482,7 +482,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
     // returns true if quadrant contains enough free space to accomodate space required
     // uses [i,j] as a pointer for iterating over the whole array, and [k,l] as a pointer to iterate over an open area in the array
-    private boolAndVector2 hasSpaceFor(bool[,] quadrant,Vector2 space)
+    private boolAndVector2 hasSpaceFor(bool[,] quadrant,Vector2 space, int debuggingQuad)
     {
         bool lastElem = true;   // value of last element checked
         bool traversingOpening = false;
@@ -506,10 +506,23 @@ public class SpawnManager : Singleton<SpawnManager>
                     {
                         int upperBound = (int)(i + space.x);   // how many rows down to check to verify opening large enough
                         int rightBound = (int)(j + space.y);   // how many columns over to check to verify ,, ,, ,,
+                        // replace this later please if u have time, this is not a great fix
+                        if (upperBound >= quadrant.GetLength(0) || rightBound >= quadrant.GetLength(1))
+                        {
+                            output.hasSpace = false;
+                            output.locationFound = Vector2.zero;
+                            return output;
+                        }
+                        //Debug.Log("upperBound: " + upperBound + " rightBound: " + rightBound + " quadrantBound: (" + quadrant.GetLength(0) + ", " + quadrant.GetLength(1) + ") space required: (" + space.x + ", " + space.y + ")" + " starting from: (" + i + ", " + j + ") in quad: " + debuggingQuad);
                         for (int k = i; k < upperBound; k++)
                         {
                             for (int l = j; l < rightBound; l++)
                             {
+                                // Debugging
+                                //if (k >= quadrant.GetLength(0) || k < 0 || l >= quadrant.GetLength(1) || l < 0)
+                                //{
+                                //Debug.Log("upperBound: " + upperBound + " rightBound: " + rightBound + " quadrantBound: (" + quadrant.GetLength(0) + ", " + quadrant.GetLength(1) + ") space required: (" + space.x + ", " + space.y + ")" + " starting from: (" + i + ", " + j + ")");
+                                //}
                                 // if it hits an occupied entry while searching the opening
                                 if (quadrant[k, l] == true)
                                 {
