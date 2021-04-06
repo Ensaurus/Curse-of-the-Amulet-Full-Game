@@ -21,12 +21,9 @@ public class EnemyAI : MonoBehaviour
     }
 
     private float speed;
-
-    
     private Transform myTransform;
     private Transform playerTransform;
     private bool cooldown;
-
     private Vector2 target;
     
     // for roaming
@@ -123,7 +120,7 @@ public class EnemyAI : MonoBehaviour
             // set up next roam target
             TargetRandomPointOnMap();
         }
-        gameObject.AddComponent<BoxCollider2D>();
+        // gameObject.AddComponent<BoxCollider2D>();    //why was this here?
         searching = false;
     }
 
@@ -134,6 +131,14 @@ public class EnemyAI : MonoBehaviour
         float newX = Random.Range(point.x - radius, point.x + radius);
         float newY = Random.Range(point.y - radius, point.y + radius);
 
+        if (newX < 0)
+        {
+            newX = -newX;
+        }
+        if (newY < 0)
+        {
+            newY = -newY;
+        }
         target.Set(newX % SceneController.Instance.levelDimensions.x, newY % SceneController.Instance.levelDimensions.y);
     }
 

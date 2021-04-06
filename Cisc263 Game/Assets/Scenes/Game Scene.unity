@@ -1393,9 +1393,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLevel: 1
-  numEnemies: 0
-  numChargingStations: 5
-  numPaths: 3
+  numEnemies: 1
+  numChargingStations: 3
+  numPaths: 6
   numFlames: 50
   levelDimensions: {x: 100, y: 100}
   levelSizeIncrease: {x: 0, y: 0}
@@ -1555,7 +1555,7 @@ MonoBehaviour:
   - {fileID: 3008815726587049262, guid: 0e1956fff0d6db7438f71120543f4086, type: 3}
   - {fileID: 7370740684331986329, guid: 264dc2e8b6a6918479282c69b978d1f3, type: 3}
   - {fileID: 6377814998712635248, guid: 75e2e6fc83af5e64bbac5dd575f18345, type: 3}
-  poolDepth: 1
+  poolDepth: 5
   canGrow: 1
 --- !u!114 &838902668
 MonoBehaviour:
@@ -3975,6 +3975,11 @@ PrefabInstance:
       propertyPath: poolDepth
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 37957568724167546, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 37957568724167547, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
       propertyPath: m_Enabled
@@ -4047,8 +4052,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 37957569376607567, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
+      propertyPath: m_Range
+      value: 13.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569376607567, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.4009434
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569376607567, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.4291006
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569376607567, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569376607567, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_DrawHalo
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569376607567, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569376607567, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
       propertyPath: m_RenderMode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569376607567, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_BounceIntensity
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 37957569676911822, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
@@ -4058,7 +4098,22 @@ PrefabInstance:
     - target: {fileID: 37957569679840859, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569679840861, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.5683072
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569679840861, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.7418362
+      objectReference: {fileID: 0}
+    - target: {fileID: 37957569679840861, guid: efba5f2655dfdd341924bf628c458949,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.9339623
       objectReference: {fileID: 0}
     - target: {fileID: 37957570004692664, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
