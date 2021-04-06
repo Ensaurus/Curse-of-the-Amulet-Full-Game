@@ -11,6 +11,7 @@ TagManager:
   - Exit
   - ChargingStation
   - Path
+  - SecondaryCamera
   layers:
   - Default
   - TransparentFX

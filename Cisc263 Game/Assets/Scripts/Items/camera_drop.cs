@@ -11,7 +11,6 @@ public class camera_drop : MonoBehaviour
     [SerializeField] private GameObject player;
 
     [SerializeField] private GameObject drop;
-
     [SerializeField] private GameObject cam_1;
     [SerializeField] private GameObject cam_2;
 
