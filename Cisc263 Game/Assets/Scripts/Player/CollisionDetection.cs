@@ -58,6 +58,7 @@ public class CollisionDetection : MonoBehaviour
                 else
                 {
                     Amulet.Instance.isCharging = false;
+                    chargingSound.Stop();
                 }
             }
         }
@@ -66,6 +67,7 @@ public class CollisionDetection : MonoBehaviour
             if (other.CompareTag("ChargingStation"))
             {
                 Amulet.Instance.isCharging = false;
+                chargingSound.Stop();
             }
         }
     }

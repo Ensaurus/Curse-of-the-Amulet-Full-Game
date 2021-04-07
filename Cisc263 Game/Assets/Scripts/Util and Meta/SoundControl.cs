@@ -18,6 +18,7 @@ public class SoundControl : MonoBehaviour
     private void TransitionStart()
     {
         backgroundMusic.Stop();
+        lvlTransitionMusic.Play();
     }
 
     private void TransitionEnd()
