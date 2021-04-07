@@ -16,6 +16,7 @@ public class EventManager : Singleton<EventManager>
 	[System.Serializable] public class EventItemSwap : UnityEvent<Item> { }
 	[System.Serializable] public class EventItemUsed : UnityEvent<Item> { }
 	[System.Serializable] public class EventItemIncrease : UnityEvent<Item> { }
+	[System.Serializable] public class EventFailedPortalEntry : UnityEvent<int> { }
 
 
 	public EventJumpScare JumpScare; // called whenever a jumpscare should appear
@@ -30,4 +31,5 @@ public class EventManager : Singleton<EventManager>
 	public EventItemSwap ItemSwap;  // called when player swaps active item in inventory, <Item> new active item
 	public EventItemSwap ItemUsed;  // called when player uses active item in inventory, <Item> active item used
 	public EventItemSwap ItemIncrease;  // called when player picks up more of an item
+	public EventFailedPortalEntry FailedPortalEntry;  // called when player attmepts to enter portal but doesn't have enough charge to exit level <int> charge required
 }

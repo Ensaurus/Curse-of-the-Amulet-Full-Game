@@ -28,11 +28,11 @@ public class UIManager : Singleton<UIManager>
         //openChestText.text = "Press E to open chest...";
 
         EventManager.Instance.JumpScare.AddListener(DisplayJumpScare);
-        EventManager.Instance.EnemyStateChange.AddListener(DisplayTracking);
         EventManager.Instance.PowerUpCollected.AddListener(NewPowerUpHandler);
         EventManager.Instance.ItemSwap.AddListener(ItemSwap);
         EventManager.Instance.ItemUsed.AddListener(ItemUsed);
         EventManager.Instance.ItemIncrease.AddListener(ItemIncrease);
+        EventManager.Instance.FailedPortalEntry.AddListener(FailedPortalEntryHandler);
         updateAmuletCharge();
         updateLanternCharge();
         activeItem.text = "Camera x" + CameraManager.Instance.GetAmount();
@@ -74,6 +74,24 @@ public class UIManager : Singleton<UIManager>
         {
             lanternChargeText.color = new Color(255, 255, 255);
         }
+    }
+
+    private void FailedPortalEntryHandler(int chargeRequired)
+    {
+        StartCoroutine(DisplayChargeRequired(chargeRequired));
+    }
+
+    IEnumerator DisplayChargeRequired(int chargeRequired)
+    {
+        textAbovePlayer.text = "You require " + chargeRequired + " amulet charge to enter this portal.";
+        textAbovePlayer.gameObject.SetActive(true);
+        float timer = 6f;
+        while (timer >= 0)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+        textAbovePlayer.gameObject.SetActive(false);
     }
 
     #region Inventory
@@ -182,7 +200,7 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     #region amulet/lantern
-    private void updateAmuletCharge()
+    public void updateAmuletCharge()
     {
         amuletChargeText.text = "Amulet Charge: " + Mathf.Round(Amulet.Instance.charge);
     }
@@ -199,20 +217,6 @@ public class UIManager : Singleton<UIManager>
     {
         // Debug.Log("made it here");
         StartCoroutine(JumpScare());
-    }
-
-    private void DisplayTracking(EnemyAI.State newState)
-    {
-        // Debug.Log("Display Tracking called");
-        if (newState == EnemyAI.State.TRACKING)
-        {
-            textAbovePlayer.gameObject.SetActive(true);
-        }
-        else
-        {
-            // Debug.Log("removing tracking text");
-            textAbovePlayer.gameObject.SetActive(false);
-        }
     }
 
     IEnumerator JumpScare()
@@ -248,7 +252,6 @@ public class UIManager : Singleton<UIManager>
 
 
     #region lvl transition
-
     public void LevelTransitionText()
     {
         StartCoroutine(FadeInAndOut(blackBackground));

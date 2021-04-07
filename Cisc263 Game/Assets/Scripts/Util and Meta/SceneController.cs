@@ -9,6 +9,7 @@ public class SceneController : Singleton<SceneController>
     public int numChargingStations;
     public int numPaths;
     public int numFlames;
+    public int portalChargeRequired;
 
     // width and height of current level map, map extends from (0,0,0) to levelDimensions
     public Vector2 levelDimensions;
@@ -19,18 +20,20 @@ public class SceneController : Singleton<SceneController>
     public int chargingStationIncrease;
     public int pathIncrease;
     public int flamesIncrease;
+    public int portalChargeIncrease;
 
     private void Start() {
         currentLevel = 1;
 
         SpawnLevel();
+        EventManager.Instance.FadeComplete.Invoke(); // on first level spawn, invoke fadeComplete so enemyAI unfreezes
         EventManager.Instance.LevelCompleted.AddListener(ChangeLevel);
 	}
 
     private void SpawnLevel()
     {
         // done in seperate scipt so this doesnt need to be cluttered with fields for object pools
-        SpawnManager.Instance.LevelSpawner(numEnemies, numPaths, numChargingStations, numFlames, levelDimensions);
+        SpawnManager.Instance.LevelSpawner(numEnemies, numPaths, numChargingStations, numFlames, levelDimensions, portalChargeRequired);
     }
 
     private void UnloadLevel()
@@ -45,9 +48,10 @@ public class SceneController : Singleton<SceneController>
         numEnemies += enemyIncrease;
         numChargingStations += chargingStationIncrease;
         numPaths += pathIncrease;
-        UIManager.Instance.LevelTransitionText();
+        portalChargeRequired += portalChargeIncrease;
 
         UnloadLevel();
         SpawnLevel();
+        UIManager.Instance.LevelTransitionText();
     }
 }

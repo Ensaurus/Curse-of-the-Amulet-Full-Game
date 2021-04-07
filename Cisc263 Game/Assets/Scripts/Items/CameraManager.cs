@@ -8,7 +8,6 @@ public class CameraManager : Singleton<CameraManager>, Item
      * 
      */
     [SerializeField] private GameObject Camera;
-    [SerializeField] private int curCameras;
   
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject cameraDrop;

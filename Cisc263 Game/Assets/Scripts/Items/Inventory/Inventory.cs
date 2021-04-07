@@ -38,7 +38,7 @@ public class Inventory : Singleton<Inventory>
     {   
         // e is use active item
         if (Input.GetKeyDown(KeyCode.E) && !empty)
-        {
+        { 
             activeItem.Use();
             items[activeKey] -= 1;
             if (items[activeKey] == 0)
@@ -102,6 +102,10 @@ public class Inventory : Singleton<Inventory>
         {
             case "camera":
                 return CameraManager.Instance;
+            case "soul":
+                return LostSoulManager.Instance;
+            case "trap":
+                return TrapSigilManager.Instance;
             case "empty":
                 return null;
             default:

@@ -12,8 +12,8 @@ TagManager:
   - ChargingStation
   - Path
   - SecondaryCamera
-  - chest
   - Chest
+  - Trap
   layers:
   - Default
   - TransparentFX

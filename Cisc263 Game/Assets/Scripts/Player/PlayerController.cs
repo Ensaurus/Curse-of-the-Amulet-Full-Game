@@ -45,7 +45,6 @@ public class PlayerController: Singleton<PlayerController>
             if (!Amulet.Instance.isActive)
             {
                 rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
-
             }
         }
         

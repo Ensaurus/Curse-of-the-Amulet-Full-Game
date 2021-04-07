@@ -23,6 +23,8 @@ using UnityEngine;
         {
             chestAnimator.SetBool("chestOpened", true);
             isOpened = true;
+            PowerUp newFind = contains.GetComponent<PowerUp>();
+            newFind.OnCollect();
             EventManager.Instance.PowerUpCollected.Invoke(contains);
         }
     }
