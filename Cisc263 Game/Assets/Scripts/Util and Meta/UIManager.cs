@@ -86,7 +86,7 @@ public class UIManager : Singleton<UIManager>
     {
         string name;
         int amount;
-        if (newActive.Equals(null))
+        if (newActive == null)
         {
             name = "Empty";
             activeItem.text = name;

@@ -83,7 +83,6 @@ public class Inventory : Singleton<Inventory>
         // scroll through dictionary until u find an item that exists in inv or find it to be empty
         while (items[key] == 0 && !empty)
         {
-            counter++;
             keyIndex = (keyIndex + 1) % keyArr.Length;
             key = keyArr[keyIndex];
             // if it's checked all the entries in the dictionary, dictionary is empty
@@ -92,6 +91,7 @@ public class Inventory : Singleton<Inventory>
                 empty = true;
                 return "empty";
             }
+            counter++;
         }
         return key;
     } 

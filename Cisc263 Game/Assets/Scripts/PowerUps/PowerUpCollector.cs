@@ -11,7 +11,7 @@ public class PowerUpCollector : MonoBehaviour
     private void PowerUpHandler(GameObject newPowerUp)
     {
         PowerUp script = newPowerUp.GetComponent<PowerUp>();
-        if (script.isSingleUse())
+        if (!script.isUseable())
         {
             script.OnCollect();
         }

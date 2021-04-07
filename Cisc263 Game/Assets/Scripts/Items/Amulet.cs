@@ -6,6 +6,7 @@ public class Amulet : Singleton<Amulet>
 {
     public float charge;
     public bool isActive;
+    public float talismanBuff;   // talisman sets to 1.5f to decrease charge decrease rate by 1.5x
 
     public bool isCharging;
     public float chargeSpeed;
@@ -44,7 +45,7 @@ public class Amulet : Singleton<Amulet>
 
         while (Input.GetKey(KeyCode.Space) && charge > 0) {
             isActive = true;
-            charge -= Time.deltaTime;
+            charge -= Time.deltaTime / talismanBuff;
             yield return null;
         }
 

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class TestPowerUpScript : MonoBehaviour, PowerUp
+public class CameraX3 : MonoBehaviour, PowerUp
 {
     public string GetName()
     {

@@ -128,7 +128,6 @@ public class EnemyAI : MonoBehaviour
             // set up next roam target
             TargetRandomPointOnMap();
         }
-        // gameObject.AddComponent<BoxCollider2D>();    //why was this here?
         searching = false;
     }
 

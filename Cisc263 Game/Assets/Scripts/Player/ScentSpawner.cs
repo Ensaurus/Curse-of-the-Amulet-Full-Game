@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScentSpawner : MonoBehaviour
+public class ScentSpawner : Singleton<ScentSpawner>
 {
     private bool stationary;
     private bool staticSpawning;
@@ -13,14 +13,15 @@ public class ScentSpawner : MonoBehaviour
     private Transform myTransform;
     [SerializeField] private float updateTime; // time in seconds between location updates to see if player moved
     [SerializeField] private float validDistance; // distance moved in unity units in last 4 secs for not to be stationary
-    [SerializeField] private float stinkiness; // pungence of scent nodes
+    public float stinkiness; // pungence of scent nodes
     [SerializeField] private float spawnRate; // time in seconds between spawns
     [SerializeField] private float growthRate; // how much radius of scent will grow while standing still
 
 
     // Start is called before the first frame update
-    void Awake()
+    override protected void Awake()
     {
+        base.Awake();
         myTransform = this.transform;
         scentPool = GetComponent<ScentPool>();
     }

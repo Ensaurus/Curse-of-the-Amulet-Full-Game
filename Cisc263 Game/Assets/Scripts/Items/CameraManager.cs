@@ -7,7 +7,6 @@ public class CameraManager : Singleton<CameraManager>, Item
     /* key for this item in inventory: "camera"
      * 
      */
-    private string key = "camera";
     [SerializeField] private GameObject Camera;
     [SerializeField] private int curCameras;
   
