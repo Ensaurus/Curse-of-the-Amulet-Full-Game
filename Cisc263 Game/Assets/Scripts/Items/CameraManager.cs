@@ -75,7 +75,7 @@ public class CameraManager : Singleton<CameraManager>, Item
     }
 
     IEnumerator switchCamera(){
-
+        switchColorFromRed(CurrentCamera);
         //Find the position of the next camera in the list
         if(CurrentCamera + 1 < numCameras){
             CurrentCamera += 1;
@@ -83,6 +83,7 @@ public class CameraManager : Singleton<CameraManager>, Item
         else{
             CurrentCamera = 0;
         }
+        switchColorToRed(CurrentCamera);
 
         //Change the camera's location
         Vector3 temp = new Vector3(cameraPositions[CurrentCamera].x, cameraPositions[CurrentCamera].y, Camera.transform.position.z);
@@ -106,6 +107,7 @@ public class CameraManager : Singleton<CameraManager>, Item
 
         //reset other values
         CurrentCamera = 0;
+        numCameras = 1;
     }
 
     //player can move only when not using cameras
@@ -115,5 +117,40 @@ public class CameraManager : Singleton<CameraManager>, Item
             return true;
         else    
             return false;
+    }
+        //For the minimap
+        void switchColorFromRed(int CurCamNum)
+        {
+        GameObject white;
+        GameObject red;
+        if (CurCamNum == 0){
+            white = player.transform.GetChild(0).gameObject;
+            red = player.transform.GetChild(1).gameObject;
+        }
+        else {
+            GameObject cameraOb = SpawnedCamerasObjectList[CurCamNum - 1];
+            white = cameraOb.transform.GetChild(0).gameObject;
+            red = cameraOb.transform.GetChild(1).gameObject;
+        }
+        white.SetActive(true);
+        red.SetActive(false);
+    }
+
+    void switchColorToRed(int CurCamNum)
+        {
+        GameObject white;
+        GameObject red;
+        if (CurCamNum == 0){
+            white = player.transform.GetChild(0).gameObject;
+            red = player.transform.GetChild(1).gameObject;
+        }
+        else {
+            GameObject cameraOb = SpawnedCamerasObjectList[CurCamNum - 1];
+            white = cameraOb.transform.GetChild(0).gameObject;
+            red = cameraOb.transform.GetChild(1).gameObject;
+        }
+        white.SetActive(false);
+        red.SetActive(true);
+
     }
 }

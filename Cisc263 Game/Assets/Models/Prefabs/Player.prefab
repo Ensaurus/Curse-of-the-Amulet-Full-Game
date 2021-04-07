@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 37957568724167550}
   - component: {fileID: 37957568724167520}
   m_Layer: 0
-  m_Name: Player 1
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -172,6 +172,7 @@ MonoBehaviour:
   validDistance: 5
   stinkiness: 10
   spawnRate: 0.2
+  growthRate: 0
 --- !u!114 &37957568724167545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,9 +203,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charge: 5
   isActive: 1
+  talismanBuff: 0
   isCharging: 0
   chargeSpeed: 1.5
   stoneSpriteCollider: {fileID: 37957568953419416}
+  turnToStone: {fileID: 0}
 --- !u!114 &37957568724167549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,7 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DeathSound: {fileID: 37957569234578652}
   chargingStat: {fileID: 0}
-  chargingStatScript: {fileID: 0}
+  chargingSound: {fileID: 0}
 --- !u!95 &37957568724167551
 Animator:
   serializedVersion: 3
@@ -259,6 +262,8 @@ MonoBehaviour:
   maxEnergy: 100
   currentEnergy: 0
   flameEnergy: 0
+  flamePickedUp: {fileID: 0}
+  triggered: 0
 --- !u!114 &37957568724167520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -847,7 +852,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &37957569676911822
 Transform:
   m_ObjectHideFlags: 0
