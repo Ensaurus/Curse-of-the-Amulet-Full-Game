@@ -9,7 +9,7 @@ using UnityEngine;
     [SerializeField] private Animator chestAnimator;
     public GameObject contains;
 
-    void Start()
+    void OnEnable()
     {
         isOpened = false;
         playerIsColliding = false;

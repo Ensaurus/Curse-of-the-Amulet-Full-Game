@@ -36,6 +36,6 @@ public class Talisman : MonoBehaviour, PowerUp
 
     public void OnCollect()
     {
-        Amulet.Instance.talismanBuff = 1.5f;
+        Amulet.Instance.talismanBuff = 0.75f;
     }
 }
