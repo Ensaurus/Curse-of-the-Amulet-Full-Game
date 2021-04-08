@@ -14,14 +14,14 @@ public class ChargingStationScript : MonoBehaviour
     [SerializeField] GameObject chargingStationObject;
     [SerializeField] private GameObject yellowLight;
     [SerializeField] private GameObject orangeLight;
-    private bool continueAnimation;
+    //private bool continueAnimation;
 
     public int inQuadrant; // represents which quadrant it's in, used for level generation
 
     // Start is called before the first frame update
     void Start()
     {
-        continueAnimation = false;
+        //continueAnimation = false;
 
         chargingStationAnimator = gameObject.GetComponent<Animator>();
         chargingState = false;
@@ -53,12 +53,6 @@ public class ChargingStationScript : MonoBehaviour
                 }
             }
         }
-        else if (Amulet.Instance.charge >= Amulet.Instance.maxCharge)
-        {
-            chargingState = false;
-            chargeTimeLeft = 0;
-            continueAnimation = true;
-        }
 
         if(chargingState)
         {
@@ -68,10 +62,8 @@ public class ChargingStationScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (continueAnimation){
-            chargingStationAnimator.speed = 1;
-        }
-        else if ((chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("rechargingStation") || chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("powerDown")) && inChargeCircle)
+        
+        if ((chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("rechargingStation") || chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("powerDown")) && inChargeCircle)
         {
             //pause animation
             chargingStationAnimator.speed = 0;
@@ -108,7 +100,7 @@ public class ChargingStationScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && Amulet.Instance.charge < Amulet.Instance.maxCharge)
+        if (other.CompareTag("Player"))
         {
             if (chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("rechargingStation") || chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("powerDown"))
             {
@@ -120,10 +112,12 @@ public class ChargingStationScript : MonoBehaviour
                 //resume animation
                 chargingStationAnimator.speed = 1;
             }
-
             chargingStationAnimator.SetBool("playerCollide", true);
             inChargeCircle = true;
-            chargingState = true;
+            if (Amulet.Instance.charge < Amulet.Instance.maxCharge){
+                chargingState = true;
+            }
+            
         }
     }
 
