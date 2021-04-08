@@ -15,6 +15,8 @@ public class SpiritInteraction : MonoBehaviour
     public GameObject R6;
     public GameObject R7;
     public GameObject R8;
+    public GameObject R9;
+    public GameObject R10;
     
     public void nextQuestion(){
         R1.SetActive(false);
@@ -25,6 +27,8 @@ public class SpiritInteraction : MonoBehaviour
         R6.SetActive(false);
         R7.SetActive(false);
         R8.SetActive(false);
+        R9.SetActive(false);
+        R10.SetActive(false);
     }
     public void Question1(){
         nextQuestion();
@@ -56,7 +60,14 @@ public class SpiritInteraction : MonoBehaviour
         nextQuestion();
         R8.SetActive(true);
     }
-
+    public void Question9(){
+        nextQuestion();
+        R9.SetActive(true);
+    }
+    public void Question10(){
+        nextQuestion();
+        R10.SetActive(true);
+    }
 //To Take you back to the intro scene
     public void Done(){
         SceneManager.LoadScene("IntroScene");
