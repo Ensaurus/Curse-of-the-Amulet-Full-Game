@@ -16,10 +16,10 @@ public class TrapSigilPickup : MonoBehaviour, PowerUp
         switch (rng)
         {
             case 1:
-                accountForPlural = "A powerful seal sure to stop any beast in it's tracks.";
+                accountForPlural = "A powerful seal sure to stop any beast in its tracks.";
                 break;
             default:
-                accountForPlural = "Powerful seals, sure to stop any beast in it's tracks.";
+                accountForPlural = "Powerful seals, sure to stop any beast in its tracks.";
                 break;
         }
         return accountForPlural;

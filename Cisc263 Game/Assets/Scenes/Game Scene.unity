@@ -2296,7 +2296,7 @@ MonoBehaviour:
   enemyIncrease: 1
   chargingStationIncrease: 2
   pathIncrease: 3
-  flamesIncrease: 10
+  flamesIncrease: 20
   portalChargeIncrease: 2
 --- !u!4 &838902659
 Transform:
