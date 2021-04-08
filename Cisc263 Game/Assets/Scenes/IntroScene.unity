@@ -5481,7 +5481,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Camera: {fileID: 434646528}
-  curCameras: 0
   player: {fileID: 849468727}
   cameraDrop: {fileID: 0}
   numCameras: 0
@@ -18310,7 +18309,7 @@ Transform:
   - {fileID: 1988043557}
   - {fileID: 904310053}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1471291273
 GameObject:
@@ -25320,7 +25319,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 26
   m_Sprite: {fileID: 21300000, guid: 0336f153c2bd5b94cbe1152c68f9203a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -25344,7 +25343,7 @@ Transform:
   m_LocalScale: {x: 20, y: 20, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1988043556
 GameObject:

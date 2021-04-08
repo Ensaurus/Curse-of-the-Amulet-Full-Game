@@ -6,7 +6,7 @@ public class cave : MonoBehaviour
 {
     private bool isThereCameraInside;
 
-    private void Start(){
+    private void OnEnable(){
         isThereCameraInside = false;
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -18,7 +18,6 @@ public class cave : MonoBehaviour
 
         if (other.CompareTag("CameraDrop"))
         {
-            print("yes it works");
             isThereCameraInside = true;
         }
     }

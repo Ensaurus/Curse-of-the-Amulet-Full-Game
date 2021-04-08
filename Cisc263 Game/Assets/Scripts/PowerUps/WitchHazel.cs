@@ -34,7 +34,6 @@ public class WitchHazel : MonoBehaviour, PowerUp
 
     public void OnCollect()
     {
-        Debug.Log(ScentSpawner.Instance.stinkiness);
         ScentSpawner.Instance.stinkiness = ScentSpawner.Instance.stinkiness / 2;
     }
 }

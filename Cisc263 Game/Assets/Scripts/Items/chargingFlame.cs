@@ -4,23 +4,15 @@ using UnityEngine;
 
 public class chargingFlame : MonoBehaviour
 {
-
     private Animator flameAnimator;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
         flameAnimator = gameObject.GetComponent<Animator>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Player") && Lantern.Instance.currentEnergy < Lantern.Instance.maxEnergy)
         {
             flameAnimator.SetBool("isDestroyed", true);
             StartCoroutine(deactivate());

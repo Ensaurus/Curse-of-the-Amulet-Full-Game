@@ -18,7 +18,6 @@ public class PowerUpPool : ArrayPooler
             {
                 if (poolArray[i].Contains(pickedUp)){
                     poolArray[i] = new List<GameObject>();
-					Debug.Log("index reset: " + i);
 					deadSpaces.Add(i);
                 }
             }
