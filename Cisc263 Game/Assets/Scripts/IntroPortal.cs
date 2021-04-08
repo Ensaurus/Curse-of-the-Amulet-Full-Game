@@ -10,7 +10,7 @@ public class IntroPortal : MonoBehaviour
     // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D other){
         if (other.CompareTag("Player")){
-            Debug.Log("Portal Activated");
+            //Debug.Log("Portal Activated");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }

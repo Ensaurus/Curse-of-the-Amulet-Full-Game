@@ -23,6 +23,7 @@ public class SpiritDialog : MonoBehaviour
 
     public void Talk(){
         //Debug.Log("NPC Chatting");
+        Time.timeScale = 1f; 
         NPCBubble.SetActive(false);
         talkOption.SetActive(false);
         noOption.SetActive(false);
