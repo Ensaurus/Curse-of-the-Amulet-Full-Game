@@ -204,12 +204,26 @@ public class UIManager : Singleton<UIManager>
     #region amulet/lantern
     public void updateAmuletCharge()
     {
-        amuletChargeText.text = "Amulet Charge: " + Mathf.Round(Amulet.Instance.charge);
+        //Max charge display
+        if(Amulet.Instance.charge >= Amulet.Instance.maxCharge){
+            amuletChargeText.text = "Amulet Charge: " + Mathf.Round(Amulet.Instance.charge) + " (Max)";
+        }
+        else{
+            amuletChargeText.text = "Amulet Charge: " + Mathf.Round(Amulet.Instance.charge);
+        }
+        
     }
 
     private void updateLanternCharge()
     {
-        lanternChargeText.text = "Lantern Charge: " + Mathf.Round(Lantern.Instance.currentEnergy);
+        //Max charge display
+        if(Lantern.Instance.currentEnergy >= Lantern.Instance.maxEnergy){
+            lanternChargeText.text = "Lantern Charge: " + Mathf.Round(Lantern.Instance.currentEnergy) + " (Max)";
+        }
+        else{
+            lanternChargeText.text = "Lantern Charge: " + Mathf.Round(Lantern.Instance.currentEnergy);
+        }
+        
     }
 
     #endregion

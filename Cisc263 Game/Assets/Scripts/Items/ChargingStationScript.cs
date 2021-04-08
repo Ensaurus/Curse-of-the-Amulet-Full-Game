@@ -14,12 +14,15 @@ public class ChargingStationScript : MonoBehaviour
     [SerializeField] GameObject chargingStationObject;
     [SerializeField] private GameObject yellowLight;
     [SerializeField] private GameObject orangeLight;
+    private bool continueAnimation;
 
     public int inQuadrant; // represents which quadrant it's in, used for level generation
 
     // Start is called before the first frame update
     void Start()
     {
+        continueAnimation = false;
+
         chargingStationAnimator = gameObject.GetComponent<Animator>();
         chargingState = false;
         chargeTimeLeft = maxChargeTime;
@@ -50,6 +53,12 @@ public class ChargingStationScript : MonoBehaviour
                 }
             }
         }
+        else if (Amulet.Instance.charge >= Amulet.Instance.maxCharge)
+        {
+            chargingState = false;
+            chargeTimeLeft = 0;
+            continueAnimation = true;
+        }
 
         if(chargingState)
         {
@@ -59,7 +68,10 @@ public class ChargingStationScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        if ((chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("rechargingStation") || chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("powerDown")) && inChargeCircle)
+        if (continueAnimation){
+            chargingStationAnimator.speed = 1;
+        }
+        else if ((chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("rechargingStation") || chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("powerDown")) && inChargeCircle)
         {
             //pause animation
             chargingStationAnimator.speed = 0;
@@ -71,7 +83,7 @@ public class ChargingStationScript : MonoBehaviour
         }
 
         //Changing light colour
-        //This is not very inefficient, might fix later
+        //This is not very efficient, might fix later
         if ((chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("idle")) || (chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("transitionToCharge")) || (chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("chargingPlayer")))
         {
             yellowLight.SetActive(true);

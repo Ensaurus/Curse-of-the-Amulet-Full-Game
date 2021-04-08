@@ -61,7 +61,10 @@ public class Amulet : Singleton<Amulet>
 
     public void IncreaseAmuletCharge()
     {
-        charge += (Time.deltaTime * chargeSpeed);
+        if(Amulet.Instance.charge < Amulet.Instance.maxCharge)
+        {
+            charge += (Time.deltaTime * chargeSpeed);
+        }
     }
 
 
