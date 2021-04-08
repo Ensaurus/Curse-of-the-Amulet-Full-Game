@@ -335,11 +335,6 @@ PrefabInstance:
       propertyPath: orthographic size
       value: 13
       objectReference: {fileID: 0}
-    - target: {fileID: 37957569077328216, guid: efba5f2655dfdd341924bf628c458949,
-        type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: a7cde200a8acba5499b30e68fd2ef546, type: 3}
     - target: {fileID: 37957569234578650, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
       propertyPath: m_IsActive
@@ -352,6 +347,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2083432485, guid: efba5f2655dfdd341924bf628c458949, type: 3}
+<<<<<<< HEAD
+=======
+    - {fileID: 37957568724167549, guid: efba5f2655dfdd341924bf628c458949, type: 3}
+    - {fileID: 37957568724167547, guid: efba5f2655dfdd341924bf628c458949, type: 3}
+>>>>>>> 8492fcf43acd9cd94bd390ae6be3d2bb6713c3c5
   m_SourcePrefab: {fileID: 100100000, guid: efba5f2655dfdd341924bf628c458949, type: 3}
 --- !u!1 &20132992
 GameObject:
@@ -12031,7 +12031,6 @@ GameObject:
   - component: {fileID: 944928200}
   - component: {fileID: 944928202}
   - component: {fileID: 944928203}
-  - component: {fileID: 944928204}
   m_Layer: 0
   m_Name: Portal
   m_TagString: Untagged
@@ -12142,7 +12141,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.2304573, y: -0.99784756}
+  m_Offset: {x: 1.2304573, y: -3.2662077}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -12153,20 +12152,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 28.628288, y: 40.12552}
+  m_Size: {x: 28.628288, y: 44.66224}
   m_EdgeRadius: 0
---- !u!114 &944928204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 944928199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf485587549badb49baee175a3a5c333, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &953257872
 GameObject:
   m_ObjectHideFlags: 0
@@ -16587,7 +16574,7 @@ Transform:
   - {fileID: 892316261}
   - {fileID: 1373340851}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1279845048
 GameObject:
@@ -17752,7 +17739,7 @@ Transform:
   m_LocalScale: {x: 100, y: 100, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1338499967
 SpriteRenderer:
@@ -27090,7 +27077,7 @@ GameObject:
   - component: {fileID: 1984486110}
   - component: {fileID: 1984486114}
   m_Layer: 0
-  m_Name: SpiritNPC
+  m_Name: GameObject (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27150,7 +27137,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 26
   m_Sprite: {fileID: 21300000, guid: 0336f153c2bd5b94cbe1152c68f9203a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -27170,11 +27157,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1984486109}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33.3, y: 15.2, z: -1}
+  m_LocalPosition: {x: 33.3, y: 15.2, z: 0}
   m_LocalScale: {x: 20, y: 20, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1984486114
 MonoBehaviour:

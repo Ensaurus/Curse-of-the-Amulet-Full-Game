@@ -24,10 +24,11 @@ public class CollisionDetection : MonoBehaviour
         // collided with flame pickup for lantern
         if (other.CompareTag("Flame"))
         {
-            // deactivate flame
-            //other.gameObject.SetActive(false);
-            // increase energy of lantern
-            Lantern.Instance.IncreaseCurrentEnergy();            
+            if(Lantern.Instance.currentEnergy < Lantern.Instance.maxEnergy)
+            {
+                // increase energy of lantern
+                Lantern.Instance.IncreaseCurrentEnergy();
+            }
         }
         // collided with charging station for charging amulet
         if (other.CompareTag("ChargingStation"))

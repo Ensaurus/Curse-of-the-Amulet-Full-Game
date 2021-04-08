@@ -23,10 +23,8 @@ public class LostSoulManager : Singleton<LostSoulManager>, Item
 
     public void Use()
     {
-        Debug.Log("should be good 2");
         Vector3 playerPos = player.transform.position;
         playerPos.z = -0.5f; // light needs to be off ground a bit to be seen
-        Debug.Log("spawn pt: " + playerPos);
         Instantiate(lostSoul, playerPos, player.transform.rotation);
     }
 }
