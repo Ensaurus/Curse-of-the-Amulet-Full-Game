@@ -8,20 +8,33 @@ public class SpiritDialog : MonoBehaviour
     public GameObject NPCBubble;
     public GameObject talkOption;
     public GameObject noOption;
+    public GameObject Player;
+
+    IntroPlayerController playerScript;
 
 
-
+    void Start(){
+        playerScript = Player.GetComponent<IntroPlayerController>();
+    }
     private void OnTriggerEnter2D(Collider2D other){
         if (other.CompareTag("Player")){
+            //stop player animations
+            playerScript.isTalkingToSpirit = true;
+
             //Debug.Log("NPC Activated");
             Time.timeScale = 0f;
             NPCBubble.SetActive(true);
             talkOption.SetActive(true);
             noOption.SetActive(true);
+
+            
         }
     }
 
     public void Talk(){
+        //resume player animations
+        playerScript.isTalkingToSpirit = false;
+
         //Debug.Log("NPC Chatting");
         Time.timeScale = 1f; 
         NPCBubble.SetActive(false);
@@ -31,6 +44,9 @@ public class SpiritDialog : MonoBehaviour
     }
 
     public void NoTalk(){
+        //resume player animations
+        playerScript.isTalkingToSpirit = false;
+        
         //Debug.Log("No NPC Chatting");
         Time.timeScale = 1f;
         NPCBubble.SetActive(false);

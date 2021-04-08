@@ -10,22 +10,34 @@ public class IntroPlayerController : MonoBehaviour
 
     private Animator playerAnimator;
 
+    public bool isTalkingToSpirit;
+
     // Start is called before the first frame update
     void Start()
     {
         playerAnimator = gameObject.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
+
+        isTalkingToSpirit = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        if(isTalkingToSpirit){
+            playerAnimator.SetFloat("horizontal", 0);
+            playerAnimator.SetFloat("vertical", 0);
+            playerAnimator.SetFloat("speed", 0);
+        }
+        else {
+            movement.x = Input.GetAxisRaw("Horizontal");
+            movement.y = Input.GetAxisRaw("Vertical");
 
-        playerAnimator.SetFloat("horizontal", movement.x);
-        playerAnimator.SetFloat("vertical", movement.y);
-        playerAnimator.SetFloat("speed", movement.sqrMagnitude);
+            playerAnimator.SetFloat("horizontal", movement.x);
+            playerAnimator.SetFloat("vertical", movement.y);
+            playerAnimator.SetFloat("speed", movement.sqrMagnitude);
+        }
+        
     }
 
     private void FixedUpdate()
