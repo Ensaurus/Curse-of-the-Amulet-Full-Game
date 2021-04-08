@@ -8,7 +8,8 @@ public class EnemyAI : MonoBehaviour
     {
         ROAMING,
         TRACKING,
-        ATTACKING
+        ATTACKING,
+        TRAPPED
     }
 
     private State activeState; 
@@ -24,6 +25,7 @@ public class EnemyAI : MonoBehaviour
     private Transform myTransform;
     private Transform playerTransform;
     private bool cooldown;
+    private bool stopped;
     private Vector2 target;
     
     // for roaming
@@ -43,51 +45,71 @@ public class EnemyAI : MonoBehaviour
     private bool trackingToggle = false; //Used to loop sound if tracking
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        // make functions listen for events
-        EventManager.Instance.PlayerSeen.AddListener(SeePlayer);
-        EventManager.Instance.PlayerNoise.AddListener(HearSound);
-        
         // set up transforms
         myTransform = this.transform;
         playerTransform = EnemyStats.Instance.player.transform;
+        // make functions listen for events
+        EventManager.Instance.PlayerSeen.AddListener(SeePlayer);
+        EventManager.Instance.PlayerNoise.AddListener(HearSound);
+        EventManager.Instance.FadeComplete.AddListener(ToggleStop); // unfreeze enemy only when level starts
+    }
 
+    private void OnEnable()
+    {
         // set up first target
         float targetX = Random.Range(0, SceneController.Instance.levelDimensions.x);
         float targetY = Random.Range(0, SceneController.Instance.levelDimensions.y);
         target.Set(targetX, targetY);
 
         // set up starting state
-        ChangeState(State.ROAMING);
-        searching = false;
-        cooldown = false;
-        currentConfidence = 0;
-        speed = EnemyStats.Instance.roamSpeed;        
+        ChangeState(State.TRAPPED);
+        stopped = true;
     }
+
 
     // Update is called once per frame
     void Update()
     {
-        myTransform.LookAt(target, Vector3.forward);
-        if (activeState != State.ATTACKING)
+        if (activeState != State.TRAPPED)
         {
-            Move();
-        }
+            myTransform.LookAt(target, Vector3.forward);
+            if (activeState != State.ATTACKING)
+            {
+                Move();
+            }
 
-        if (activeState == State.ROAMING)
-        {
-            Roam();
+            if (activeState == State.ROAMING)
+            {
+                Roam();
+            }
         }
-
-        
     }
 
+    private void ToggleStop()
+    {
+        // not sure this is best fix, but i needed to make sure enemies in the enemy pool didn't get toggled before being enabled in the scene
+        if (gameObject.activeInHierarchy)
+        {
+            stopped = !stopped;
+            if (stopped)
+            {
+                ChangeState(State.TRAPPED);
+            }
+            else
+            {
+                ChangeState(State.ROAMING);
+            }
+
+        }
+    }
 
     private void Move()
     {
         // move towards target
-        myTransform.Translate(Vector3.forward * speed * Time.deltaTime, Space.Self);
+        myTransform.position = Vector2.MoveTowards(myTransform.position, target, speed*Time.deltaTime);
+        // myTransform.Translate(Vector3.forward * speed * Time.deltaTime, Space.Self);
         Debug.DrawRay(myTransform.position, myTransform.forward * speed * Time.deltaTime, Color.blue);
     }
 
@@ -167,6 +189,12 @@ public class EnemyAI : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Debug.Log("Hit something");
+        if (other.CompareTag("Trap"))
+        {
+            TrapSigil script = other.GetComponent<TrapSigil>();
+            StopAllCoroutines();
+            StartCoroutine(StuckInTrap(script.trapTime, other.gameObject));
+        }
         if (other.CompareTag("Scent") && activeState != State.ATTACKING)
         {
             // Debug.Log("it was a scent node");
@@ -187,6 +215,19 @@ public class EnemyAI : MonoBehaviour
                 StartCoroutine(Tracking(false));
             }
         }
+    }
+
+    IEnumerator StuckInTrap(float timeStuck, GameObject trap)
+    {
+        ToggleStop();
+        while (timeStuck >= 0)
+        {
+            timeStuck -= Time.deltaTime;
+            yield return null;
+        }
+        ToggleStop();
+        TrapSigilManager.Instance.activeTraps.Remove(trap);
+        Destroy(trap);
     }
 
     #region Tracking
@@ -252,7 +293,7 @@ public class EnemyAI : MonoBehaviour
         if (enemy == this)
         {
             // Debug.Log("I alone saw the player and I'm attacking now.");
-            if (activeState != State.ATTACKING)
+            if (activeState != State.ATTACKING && activeState != State.TRAPPED)
             {
                 StartCoroutine(Attack());
                 if (trackingToggle == true){
@@ -351,6 +392,12 @@ public class EnemyAI : MonoBehaviour
                 break;
             case State.ROAMING:
                 speed = EnemyStats.Instance.roamSpeed;
+                break;
+            case State.TRAPPED:
+                // reset everything, so when it goes free starts in normal roaming
+                searching = false;
+                cooldown = false;
+                currentConfidence = 0;
                 break;
         }
     }

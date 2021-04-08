@@ -45,6 +45,7 @@ public class SpawnManager : Singleton<SpawnManager>
     private ScentPool scentPool;
 
     int fullCounter; // increments each time an item doesn't fit anywhere on the map, spawning stops after 5 misses 
+    int portalCharge;
 
     List<GameObject> singleUsePlaced;
 
@@ -77,13 +78,14 @@ public class SpawnManager : Singleton<SpawnManager>
 
     #region level spawner
 
-    public void LevelSpawner(int enemyNum, int pathNum, int chargingStationNum, int flamesNum, Vector2 mapDimensions)
+    public void LevelSpawner(int enemyNum, int pathNum, int chargingStationNum, int flamesNum, Vector2 mapDimensions, int portalChargeRequired)
     {
         // reset fullCounter and activePaths
         activePaths = new List<Path>();
         activeStations = new List<ChargingStationScript>();
         singleUsePlaced = new List<GameObject>();
         fullCounter = 0;
+        portalCharge = portalChargeRequired;
         // scale background, set miniMapCam and setup mapGrid
         mapTransform.localScale = new Vector3 (mapDimensions.x + 20, mapDimensions.y + 20, 1);    // makes a little wider to account for boundaries
         camTransform.position = new Vector3(mapDimensions.x / 2, mapDimensions.y / 2, -1);
@@ -214,6 +216,8 @@ public class SpawnManager : Singleton<SpawnManager>
             int index = Random.Range(0, activePaths.Count);
             pathScript = activePaths[index];
             exitTransform.position = pathScript.exitPos;
+            Exit exitScript = exit.GetComponent<Exit>();
+            exitScript.requiredEnergy = portalCharge;
             exit.SetActive(true);
             return;
         }
@@ -676,7 +680,6 @@ public class SpawnManager : Singleton<SpawnManager>
     private void OnFadeOut()
     {
         scentSpawner.enabled = true;
-        // TODO: setup enemy toggleing
     }
     #endregion
 

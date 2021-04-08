@@ -38,9 +38,16 @@ public class CollisionDetection : MonoBehaviour
         // collided with exit
         if (other.CompareTag("Exit"))
         {
-            if (Amulet.Instance.charge >= Exit.Instance.requiredEnergy)
+            int required = Exit.Instance.requiredEnergy;
+            if (Amulet.Instance.charge >= required)
             {
                 EventManager.Instance.LevelCompleted.Invoke();
+                Amulet.Instance.charge -= required;
+                UIManager.Instance.updateAmuletCharge();
+            }
+            else
+            {
+                EventManager.Instance.FailedPortalEntry.Invoke(required);
             }
         }
         }

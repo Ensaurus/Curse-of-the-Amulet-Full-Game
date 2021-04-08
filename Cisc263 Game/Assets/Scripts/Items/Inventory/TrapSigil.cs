@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Exit : Singleton<Exit>
+public class TrapSigil : MonoBehaviour
 {
     private Transform myTransform;
     private Vector3 rotationDirection;
-    public int requiredEnergy; // charge required in amulet to be able to activate exit
+    public float trapTime;
 
     private void Start()
     {
@@ -16,7 +16,7 @@ public class Exit : Singleton<Exit>
 
     void Update()
     {
-        Rotate();   
+        Rotate();
     }
 
     private void Rotate()

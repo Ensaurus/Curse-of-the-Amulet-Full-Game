@@ -5,12 +5,13 @@ public interface PowerUp
     string GetName();
     //returns description of powerup
     string GetDescription();
-    // what to do when picked up
 
-    /*for single-use items handled by PowerUpCollector and removed from pool in PowerUpPool
+    /*Called as soon as item is picked up by "Chest" script.
      * 
      */
     void OnCollect();
+
+
     // return true if the powerup can only be collected once (permanent effects, not reusable)
     bool isSingleUse();
 
