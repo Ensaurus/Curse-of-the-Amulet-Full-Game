@@ -2,6 +2,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -15,6 +16,7 @@ public class UIManager : Singleton<UIManager>
     public TextMeshProUGUI activeItem;
     public TextMeshProUGUI qPrompt;
     public TextMeshProUGUI ePrompt;
+    public GameObject gameOverScreen;
     public Image blackBackground;
     public Image jumpScare;
     public bool isScaring = false;
@@ -213,6 +215,7 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
 
+    #region game over
     private void DisplayJumpScare()
     {
         // Debug.Log("made it here");
@@ -239,16 +242,46 @@ public class UIManager : Singleton<UIManager>
 
         jumpScare.gameObject.SetActive(false);
         isScaring = false;
+        DisplayGameOver();
     }
-
-    
-
 
 
     public void DisplayGameOver()
     {
         gameOverText.gameObject.SetActive(true);
+        StartCoroutine(FadeInGameOverScreen());
     }
+
+    IEnumerator FadeInGameOverScreen()
+    {
+        // make image transparent
+        Color backgroundColor = blackBackground.color;
+        backgroundColor.a = 0;
+        blackBackground.color = backgroundColor;
+        blackBackground.gameObject.SetActive(true);
+
+        int fadeSpeed = 5;  // change this to change fade speed
+        while (blackBackground.color.a < 1)
+        {
+            backgroundColor.a += Time.deltaTime * fadeSpeed;
+            blackBackground.color = backgroundColor;
+            yield return null;
+        }
+        gameOverScreen.SetActive(true);
+    }
+
+    private void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
+    }
+
+    private void ReturnToMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+    #endregion
+
+
 
 
     #region lvl transition

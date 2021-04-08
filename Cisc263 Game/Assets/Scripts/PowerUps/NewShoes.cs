@@ -9,7 +9,7 @@ public class NewShoes : MonoBehaviour, PowerUp
 
     public string GetDescription()
     {
-        return "A perfect fit, speed increased.";
+        return "Child's 11. A perfect fit... speed increased.";
     }
 
     public string GetItem()

@@ -237,4 +237,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01fdb9303d4ade4a876a80dbe5a3b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spaceBuffer: {x: 0, y: 0}
+  spaceBuffer: {x: 1, y: 1}

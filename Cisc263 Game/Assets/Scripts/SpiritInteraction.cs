@@ -27,25 +27,33 @@ public class SpiritInteraction : MonoBehaviour
         R8.SetActive(false);
     }
     public void Question1(){
+        nextQuestion();
         R1.SetActive(true);
     }
     public void Question2(){
+        nextQuestion();
         R2.SetActive(true);
     }
     public void Question3(){
+        nextQuestion();
         R3.SetActive(true);
     }
     public void Question4(){
+        nextQuestion();
         R4.SetActive(true);
     }public void Question5(){
+        nextQuestion();
         R5.SetActive(true);
     }
     public void Question6(){
+        nextQuestion();
         R6.SetActive(true);
     }public void Question7(){
+        nextQuestion();
         R7.SetActive(true);
     }
     public void Question8(){
+        nextQuestion();
         R8.SetActive(true);
     }
 

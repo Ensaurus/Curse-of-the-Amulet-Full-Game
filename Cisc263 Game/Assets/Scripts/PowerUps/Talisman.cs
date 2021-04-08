@@ -11,7 +11,7 @@ public class Talisman : MonoBehaviour, PowerUp
 
     public string GetDescription()
     {
-        return "Less charge used while turned to stone.";
+        return "The amulet vibrates in its presence, amulet uses less energy while active.";
     }
 
     public string GetItem()

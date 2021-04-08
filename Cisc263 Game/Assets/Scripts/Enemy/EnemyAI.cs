@@ -27,6 +27,8 @@ public class EnemyAI : MonoBehaviour
     private bool cooldown;
     private bool stopped;
     private Vector2 target;
+
+    [SerializeField] private GameObject glowingEyes;
     
     // for roaming
     private bool searching;
@@ -54,6 +56,7 @@ public class EnemyAI : MonoBehaviour
         EventManager.Instance.PlayerSeen.AddListener(SeePlayer);
         EventManager.Instance.PlayerNoise.AddListener(HearSound);
         EventManager.Instance.FadeComplete.AddListener(ToggleStop); // unfreeze enemy only when level starts
+        EventManager.Instance.Death.AddListener(OnGameOver);
     }
 
     private void OnEnable()
@@ -85,6 +88,12 @@ public class EnemyAI : MonoBehaviour
                 Roam();
             }
         }
+    }
+
+    private void OnGameOver()
+    {
+        StopAllCoroutines();
+        stopped = true;
     }
 
     private void ToggleStop()
@@ -193,6 +202,7 @@ public class EnemyAI : MonoBehaviour
         {
             TrapSigil script = other.GetComponent<TrapSigil>();
             StopAllCoroutines();
+            glowingEyes.SetActive(false);
             StartCoroutine(StuckInTrap(script.trapTime, other.gameObject));
         }
         if (other.CompareTag("Scent") && activeState != State.ATTACKING)
@@ -293,7 +303,7 @@ public class EnemyAI : MonoBehaviour
         if (enemy == this)
         {
             // Debug.Log("I alone saw the player and I'm attacking now.");
-            if (activeState != State.ATTACKING && activeState != State.TRAPPED)
+            if (activeState != State.ATTACKING && activeState != State.TRAPPED && !cooldown)
             {
                 StartCoroutine(Attack());
                 if (trackingToggle == true){
@@ -306,6 +316,7 @@ public class EnemyAI : MonoBehaviour
 
     IEnumerator Attack()
     {
+        glowingEyes.SetActive(true);
         ChangeState(State.ATTACKING);
         float attackTimer = 0f;
         attackingSound.Play();
@@ -326,7 +337,7 @@ public class EnemyAI : MonoBehaviour
             attackTimer += Time.deltaTime;
             yield return null;
         }
-
+        glowingEyes.SetActive(false);
         StartCoroutine(CoolingDown());
     }
 

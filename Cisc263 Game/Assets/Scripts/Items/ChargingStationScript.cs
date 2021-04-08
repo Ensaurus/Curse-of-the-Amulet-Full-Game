@@ -96,7 +96,7 @@ public class ChargingStationScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && Amulet.Instance.charge < Amulet.Instance.maxCharge)
         {
             if (chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("rechargingStation") || chargingStationAnimator.GetCurrentAnimatorStateInfo(0).IsName("powerDown"))
             {

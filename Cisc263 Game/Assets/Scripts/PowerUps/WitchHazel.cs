@@ -9,7 +9,7 @@ public class WitchHazel : MonoBehaviour, PowerUp
 
     public string GetDescription()
     {
-        return "Beasts now have a harder time finding your scent.";
+        return "You rub the foul odor on your clothes to hide your scent.";
     }
 
     public string GetItem()

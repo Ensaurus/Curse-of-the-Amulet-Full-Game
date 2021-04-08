@@ -5,40 +5,52 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    public static bool GameIsPaused = false;
     public GameObject pauseMenuUI;
     public GameObject ControlsUI;
     public GameObject LanternText;
     public GameObject AmultetText;
+    public bool isPaused;
+    private bool gameOver;
 
     private void Start()
     {
-        EventManager.Instance.GameStateChange.AddListener(TogglePause);
+        EventManager.Instance.Death.AddListener(GameOver);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && !gameOver)
+        {
+            TogglePause();
+        }
     }
 
 
-    private void TogglePause(GameManager.GameState previousGameState, GameManager.GameState newGameState)
+    private void TogglePause()
     {
-        if (newGameState == GameManager.GameState.PAUSED)
+        isPaused = !isPaused;
+        if (isPaused)
         {
             Pause();
         }
-        if (previousGameState == GameManager.GameState.PAUSED && newGameState != GameManager.GameState.PAUSED)
+        else
         {
             Resume();
         }
     }
+    private void GameOver()
+    {
+        gameOver = true;
+    }
 
-    public void Resume(){
+    private void Resume(){
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
-        GameIsPaused = false;
     }
 
     void Pause(){
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
-        GameIsPaused = true;
     }
 
     public void QuitGame(){

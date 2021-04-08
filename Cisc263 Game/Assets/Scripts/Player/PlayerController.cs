@@ -4,6 +4,7 @@
 public class PlayerController: Singleton<PlayerController>
 {
     public float speed = 5f;
+    public bool waitingForTransition = true;   // needs to start as true as FadeComplete is called when scene loaded
 
     private Rigidbody2D rb;
     Vector2 movement;
@@ -11,16 +12,20 @@ public class PlayerController: Singleton<PlayerController>
     private Animator playerAnimator;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Awake()
     {
+        base.Awake();
         playerAnimator = gameObject.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody2D>();
+        EventManager.Instance.LevelCompleted.AddListener(ToggleWaiting);
+        EventManager.Instance.FadeComplete.AddListener(ToggleWaiting);
+        EventManager.Instance.Death.AddListener(Dead);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (CameraManager.Instance.checkMovingAllowed())
+        if (CameraManager.Instance.checkMovingAllowed() && !waitingForTransition)
         {
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
@@ -39,7 +44,7 @@ public class PlayerController: Singleton<PlayerController>
 
     void FixedUpdate()
     {
-        if (CameraManager.Instance.checkMovingAllowed())
+        if (CameraManager.Instance.checkMovingAllowed() && !waitingForTransition)
         {
             // move if not using amulet
             if (!Amulet.Instance.isActive)
@@ -48,6 +53,18 @@ public class PlayerController: Singleton<PlayerController>
             }
         }
         
+    }
+
+    private void ToggleWaiting()
+    {
+        waitingForTransition = !waitingForTransition;
+    }
+
+    private void Dead()
+    {
+        Collider2D collider = gameObject.GetComponent<Collider2D>();
+        collider.enabled = false;
+        waitingForTransition = true;
     }
 
 }

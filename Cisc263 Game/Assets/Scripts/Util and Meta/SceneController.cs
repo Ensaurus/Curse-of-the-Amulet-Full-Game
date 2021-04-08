@@ -24,6 +24,7 @@ public class SceneController : Singleton<SceneController>
 
     private void Start() {
         currentLevel = 1;
+        Amulet.Instance.maxCharge = portalChargeRequired + 10;
 
         SpawnLevel();
         EventManager.Instance.FadeComplete.Invoke(); // on first level spawn, invoke fadeComplete so enemyAI unfreezes
@@ -49,6 +50,7 @@ public class SceneController : Singleton<SceneController>
         numChargingStations += chargingStationIncrease;
         numPaths += pathIncrease;
         portalChargeRequired += portalChargeIncrease;
+        Amulet.Instance.maxCharge = portalChargeRequired + 10;
 
         UnloadLevel();
         SpawnLevel();

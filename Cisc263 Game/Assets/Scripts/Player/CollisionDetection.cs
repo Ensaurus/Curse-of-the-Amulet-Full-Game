@@ -33,8 +33,11 @@ public class CollisionDetection : MonoBehaviour
         // collided with charging station for charging amulet
         if (other.CompareTag("ChargingStation"))
         {
-            Amulet.Instance.isCharging = true;
-            chargingSound.Play();
+            if(Amulet.Instance.charge < Amulet.Instance.maxCharge)
+            {
+                Amulet.Instance.isCharging = true;
+                chargingSound.Play();
+            }
         }
         // collided with exit
         if (other.CompareTag("Exit"))
@@ -72,7 +75,7 @@ public class CollisionDetection : MonoBehaviour
         }
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (other.CompareTag("ChargingStation"))
+            if (other.CompareTag("ChargingStation") && Amulet.Instance.charge < Amulet.Instance.maxCharge)
             {
                 Amulet.Instance.isCharging = false;
                 chargingSound.Stop();

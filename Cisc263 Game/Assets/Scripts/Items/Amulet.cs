@@ -7,6 +7,7 @@ public class Amulet : Singleton<Amulet>
     public float charge;
     public bool isActive;
     public float talismanBuff;   // talisman sets to 0.75f to decrease charge decrease rate by 25%
+    public int maxCharge;
 
     public bool isCharging;
     public float chargeSpeed;
