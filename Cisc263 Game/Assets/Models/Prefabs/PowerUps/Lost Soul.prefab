@@ -106,5 +106,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifespan: 5
-  stepSize: 12
+  stepSize: 10
   alive: 0
