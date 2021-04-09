@@ -83,8 +83,8 @@ public class CollisionDetection : MonoBehaviour
 
         public void PortalTaken()
         {
+            Amulet.Instance.charge -= Exit.Instance.requiredEnergy; // needs to be called before LevelCompleted because LevelCompleted will raise requiredCharge
             EventManager.Instance.LevelCompleted.Invoke();
-            Amulet.Instance.charge -= Exit.Instance.requiredEnergy;
             UIManager.Instance.updateAmuletCharge();
         }
         public void PortalNotTaken()

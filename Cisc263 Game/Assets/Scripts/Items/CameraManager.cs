@@ -11,6 +11,8 @@ public class CameraManager : Singleton<CameraManager>, Item
   
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject cameraDrop;
+    [SerializeField] private GameObject nightModeLight;
+    
     private Transform dropTransform;
     private Vector3 dropPosition;
     private List<Vector3> cameraPositions = new List<Vector3>();
@@ -78,9 +80,15 @@ public class CameraManager : Singleton<CameraManager>, Item
         //Find the position of the next camera in the list
         if(CurrentCamera + 1 < numCameras){
             CurrentCamera += 1;
+            Camera realCamera = Camera.GetComponent<Camera>();
+            realCamera.orthographicSize = 10;
+            nightModeLight.SetActive(true);
         }
         else{
+            Camera realCamera = Camera.GetComponent<Camera>();
+            realCamera.orthographicSize = 7.5f;
             CurrentCamera = 0;
+            nightModeLight.SetActive(false);
         }
         switchColorToRed(CurrentCamera);
 

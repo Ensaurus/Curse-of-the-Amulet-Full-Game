@@ -19,6 +19,7 @@ public class IntroPlayerController : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
 
         isTalkingToSpirit = false;
+
     }
 
     // Update is called once per frame
@@ -37,7 +38,6 @@ public class IntroPlayerController : MonoBehaviour
             playerAnimator.SetFloat("vertical", movement.y);
             playerAnimator.SetFloat("speed", movement.sqrMagnitude);
         }
-        
     }
 
     private void FixedUpdate()

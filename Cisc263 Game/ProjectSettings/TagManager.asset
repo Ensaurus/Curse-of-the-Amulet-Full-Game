@@ -15,6 +15,7 @@ TagManager:
   - Chest
   - Trap
   - CameraDrop
+  - MinimapIcon
   layers:
   - Default
   - TransparentFX

@@ -16,7 +16,7 @@ public class IntroChest : Singleton<IntroChest>
     private void Update()
     {
         //open chest
-        if (!isOpened && !isOpened && Input.GetKeyDown(KeyCode.R))
+        if (!isOpened && isTouching && Input.GetKeyDown(KeyCode.R))
         {
             animator.SetBool("chestOpened", true);
             isOpened = true;

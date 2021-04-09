@@ -290,11 +290,13 @@ public class UIManager : Singleton<UIManager>
 
     private void RestartGame()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
     }
 
     private void ReturnToMenu()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
     #endregion
