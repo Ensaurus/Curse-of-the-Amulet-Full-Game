@@ -45,9 +45,7 @@ public class CollisionDetection : MonoBehaviour
             int required = Exit.Instance.requiredEnergy;
             if (Amulet.Instance.charge >= required)
             {
-                EventManager.Instance.LevelCompleted.Invoke();
-                Amulet.Instance.charge -= required;
-                UIManager.Instance.updateAmuletCharge();
+                EventManager.Instance.AttemptedExitWithEnoughCharge.Invoke();   
             }
             else
             {
@@ -80,6 +78,18 @@ public class CollisionDetection : MonoBehaviour
                 Amulet.Instance.isCharging = false;
                 chargingSound.Stop();
             }
+        }
+
+
+        public void PortalTaken()
+        {
+            EventManager.Instance.LevelCompleted.Invoke();
+            Amulet.Instance.charge -= Exit.Instance.requiredEnergy;
+            UIManager.Instance.updateAmuletCharge();
+        }
+        public void PortalNotTaken()
+        {
+            EventManager.Instance.PortalNotTaken.Invoke();
         }
     }
 

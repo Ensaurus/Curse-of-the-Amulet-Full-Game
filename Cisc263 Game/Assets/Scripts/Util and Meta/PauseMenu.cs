@@ -10,16 +10,19 @@ public class PauseMenu : MonoBehaviour
     public GameObject LanternText;
     public GameObject AmultetText;
     public bool isPaused;
-    private bool gameOver;
+    private bool unpausable;
 
     private void Start()
     {
         EventManager.Instance.Death.AddListener(GameOver);
+        EventManager.Instance.AttemptedExitWithEnoughCharge.AddListener(WaitForPlayer);
+        EventManager.Instance.PortalNotTaken.AddListener(EnablePausing);
+        EventManager.Instance.LevelCompleted.AddListener(EnablePausing);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !gameOver)
+        if (Input.GetKeyDown(KeyCode.Escape) && !unpausable)
         {
             TogglePause();
         }
@@ -40,7 +43,7 @@ public class PauseMenu : MonoBehaviour
     }
     private void GameOver()
     {
-        gameOver = true;
+        unpausable = true;
     }
 
     private void Resume(){
@@ -69,5 +72,19 @@ public class PauseMenu : MonoBehaviour
         AmultetText.SetActive(true);
         pauseMenuUI.SetActive(true);
         ControlsUI.SetActive(false);
+    }
+
+    private void WaitForPlayer()
+    {
+        unpausable = true;
+        isPaused = true;
+        Time.timeScale = 0;
+    }
+
+    private void EnablePausing()
+    {
+        unpausable = false;
+        isPaused = false;
+        Time.timeScale = 1;
     }
 }

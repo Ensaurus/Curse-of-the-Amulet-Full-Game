@@ -17,6 +17,8 @@ public class UIManager : Singleton<UIManager>
     public TextMeshProUGUI qPrompt;
     public TextMeshProUGUI ePrompt;
     public GameObject gameOverScreen;
+    public GameObject enterPortalScreen;
+    public TextMeshProUGUI enterPortalText;
     public Image blackBackground;
     public Image jumpScare;
     public bool isScaring = false;
@@ -28,7 +30,8 @@ public class UIManager : Singleton<UIManager>
     {
         //chest text
         //openChestText.text = "Press E to open chest...";
-
+        EventManager.Instance.AttemptedExitWithEnoughCharge.AddListener(AskToEnterPortal);
+        EventManager.Instance.PortalNotTaken.AddListener(PutAwayPortalScreen);
         EventManager.Instance.JumpScare.AddListener(DisplayJumpScare);
         EventManager.Instance.PowerUpCollected.AddListener(NewPowerUpHandler);
         EventManager.Instance.ItemSwap.AddListener(ItemSwap);
@@ -282,6 +285,7 @@ public class UIManager : Singleton<UIManager>
             yield return null;
         }
         gameOverScreen.SetActive(true);
+        Time.timeScale = 0;
     }
 
     private void RestartGame()
@@ -299,8 +303,22 @@ public class UIManager : Singleton<UIManager>
 
 
     #region lvl transition
+
+    private void AskToEnterPortal()
+    {
+        Debug.Log("made it");
+        enterPortalText.text = "Would you like to spend " + Exit.Instance.requiredEnergy + " amulet charge to enter the portal?";
+        enterPortalScreen.SetActive(true);
+    }
+
+    private void PutAwayPortalScreen()
+    {
+        enterPortalScreen.SetActive(false);
+    }
+
     public void LevelTransitionText()
     {
+        enterPortalScreen.SetActive(false);
         StartCoroutine(FadeInAndOut(blackBackground));
         levelTransitionText.text = "Level Complete!";
         levelTransitionText.gameObject.SetActive(true);
