@@ -2550,14 +2550,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentLevel: 1
   numEnemies: 1
-  numChargingStations: 2
+  numChargingStations: 3
   numPaths: 3
   numFlames: 30
   portalChargeRequired: 5
   levelDimensions: {x: 80, y: 80}
   levelSizeIncrease: {x: 10, y: 10}
   enemyIncrease: 1
-  chargingStationIncrease: 2
+  chargingStationIncrease: 3
   pathIncrease: 3
   flamesIncrease: 20
   portalChargeIncrease: 2

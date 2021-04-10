@@ -504,7 +504,7 @@ GameObject:
   - component: {fileID: 4494084986511919396}
   m_Layer: 8
   m_Name: minimapIcon
-  m_TagString: Untagged
+  m_TagString: MinimapIcon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
