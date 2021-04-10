@@ -77,12 +77,17 @@ public class CameraManager : Singleton<CameraManager>, Item
 
     IEnumerator switchCamera(){
         switchColorFromRed(CurrentCamera);
+        int nextCamera = CurrentCamera - 1;
         //Find the position of the next camera in the list
-        if(CurrentCamera + 1 < numCameras){
-            CurrentCamera += 1;
+        if(nextCamera == -1){
+            CurrentCamera = numCameras - 1;
             Camera realCamera = Camera.GetComponent<Camera>();
             realCamera.orthographicSize = 10;
             nightModeLight.SetActive(true);
+        }
+        else if(nextCamera > 0)
+        {
+            CurrentCamera = nextCamera;
         }
         else{
             Camera realCamera = Camera.GetComponent<Camera>();

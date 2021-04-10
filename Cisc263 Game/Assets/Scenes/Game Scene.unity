@@ -3386,6 +3386,7 @@ MonoBehaviour:
   cooldownTime: 30
   attackTime: 3
   searchTime: 5
+  cooldownSpeed: 20
 --- !u!4 &1209771956
 Transform:
   m_ObjectHideFlags: 0

@@ -54,7 +54,7 @@ public class EnemyAI : MonoBehaviour
         playerTransform = EnemyStats.Instance.player.transform;
         // make functions listen for events
         EventManager.Instance.PlayerSeen.AddListener(SeePlayer);
-        EventManager.Instance.PlayerNoise.AddListener(HearSound);
+        EventManager.Instance.PlayerNoise.AddListener(HearSound);   // never actually used :(
         EventManager.Instance.FadeComplete.AddListener(ToggleStop); // unfreeze enemy only when level starts
         EventManager.Instance.Death.AddListener(OnGameOver);
     }
@@ -87,8 +87,52 @@ public class EnemyAI : MonoBehaviour
             {
                 Roam();
             }
+            // if on cooldown and within 20 units of player which should be well out of sight, sprint away from player until out of sight, unless would lead out of bounds
+            if (cooldown)
+            {
+                HandleCooldown();
+            }
         }
     }
+
+    // if on cooldown and within 20 units of player which should be well out of sight, sprint away from player until out of sight, unless would lead out of bounds
+    private void HandleCooldown()
+    {
+        // if forced out of bounds, teleport to other side
+        if (myTransform.position.x < 0 || myTransform.position.x > SceneController.Instance.levelDimensions.x || myTransform.position.y < 0 || myTransform.position.y > SceneController.Instance.levelDimensions.y)
+        {
+            if (myTransform.position.x < 0)
+            {
+                myTransform.position = new Vector2(SceneController.Instance.levelDimensions.x, myTransform.position.y);
+            }
+            if (myTransform.position.x > SceneController.Instance.levelDimensions.x)
+            {
+                myTransform.position = new Vector2(0, myTransform.position.y);
+            }
+            if (myTransform.position.y < 0)
+            {
+                myTransform.position = new Vector2(myTransform.position.x, SceneController.Instance.levelDimensions.y);
+            }
+            if (myTransform.position.y > SceneController.Instance.levelDimensions.y)
+            {
+                myTransform.position = new Vector2(myTransform.position.x, 0);
+            }
+            TargetRandomPointOnMap();
+        }
+        if (VectorToPlayer(myTransform.position).magnitude < 20)
+        {
+            Vector2 toPlayer = VectorToPlayer(myTransform.position);
+            target = ((Vector2)myTransform.position - toPlayer); 
+        }
+        
+        // once far enough away, set speed to regular roaming
+        else
+        {
+            speed = EnemyStats.Instance.roamSpeed;
+        }
+            
+    }
+
 
     private void OnGameOver()
     {
@@ -131,7 +175,15 @@ public class EnemyAI : MonoBehaviour
         // roam target reached
         if (!searching && PositionIsNear(myTransform.position, target))
         {
-            StartCoroutine(Search());
+            if (!cooldown)
+            {
+                StartCoroutine(Search());
+            }
+            else
+            {
+                // can't risk enemy sweeping an area during cooldown, still chance of running into player
+                TargetRandomPointOnMap();
+            }
         }
     }
 
@@ -147,7 +199,7 @@ public class EnemyAI : MonoBehaviour
         {        
             if (PositionIsNear(myTransform.position, target))
             {
-                generateTargetNear(searchOrigin, 15);
+                GenerateTargetNear(searchOrigin, 15);
             }
 
             searchTimer += Time.deltaTime;
@@ -164,7 +216,7 @@ public class EnemyAI : MonoBehaviour
 
     
     // set new target from a random point within a certain radius of given point
-    private void generateTargetNear(Vector2 point, float radius)
+    private void GenerateTargetNear(Vector2 point, float radius)
     {
         float newX = Random.Range(point.x - radius, point.x + radius);
         float newY = Random.Range(point.y - radius, point.y + radius);
@@ -180,12 +232,18 @@ public class EnemyAI : MonoBehaviour
         target.Set(newX % SceneController.Instance.levelDimensions.x, newY % SceneController.Instance.levelDimensions.y);
     }
 
+    private Vector2 VectorToPlayer(Vector2 position)
+    {
+        return ((Vector2)playerTransform.position - position);
+    }
+
     // set new target as a radom point in bounds of level
     private void TargetRandomPointOnMap()
     {
         // set new target anywhere on the map
         float newX = Random.Range(0, SceneController.Instance.levelDimensions.x);
         float newY = Random.Range(0, SceneController.Instance.levelDimensions.y);
+
         target.Set(newX, newY);
         // Debug.Log("New Target: " + target);
     }
@@ -345,10 +403,11 @@ public class EnemyAI : MonoBehaviour
 
     IEnumerator CoolingDown()
     {
-        float cooldownTimer = 0f;
-
-        ChangeState(State.ROAMING);
+        target = (Vector2)myTransform.position - (VectorToPlayer(myTransform.position));    // extra (1,1) to give extra boost at start 
         cooldown = true;
+        float cooldownTimer = 0f;
+        ChangeState(State.ROAMING);
+        speed = EnemyStats.Instance.cooldownSpeed;
 
         while (cooldownTimer <= EnemyStats.Instance.cooldownTime)
         {
@@ -357,6 +416,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         cooldown = false;
+        speed = EnemyStats.Instance.roamSpeed;
     }
 
     // returns true is point is within a radius of 0.5 Unity units from other

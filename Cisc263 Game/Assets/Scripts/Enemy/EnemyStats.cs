@@ -14,4 +14,5 @@ public class EnemyStats : Singleton<EnemyStats>
     //Sound for tracking
     // [SerializeField] private AudioSource trackingSound;
     public float searchTime;  // time enemies will spend searching an area
+    public float cooldownSpeed;
 }
