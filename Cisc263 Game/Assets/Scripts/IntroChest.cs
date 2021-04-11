@@ -11,6 +11,11 @@ public class IntroChest : Singleton<IntroChest>
     private void Start()
     {
         animator = gameObject.GetComponent<Animator>();       
+        if (ContinuityManager.Instance.chestOpened)
+        {
+            isOpened = true;
+            animator.SetBool("chestOpened", true);
+        }
     }
 
     private void Update()
@@ -21,7 +26,8 @@ public class IntroChest : Singleton<IntroChest>
             animator.SetBool("chestOpened", true);
             isOpened = true;
             chestOpenedText.SetActive(true);
-            openText.SetActive(false);            
+            openText.SetActive(false);
+            ContinuityManager.Instance.chestOpened = true;
         }
     }
 

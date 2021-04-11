@@ -492,7 +492,6 @@ GameObject:
   - component: {fileID: 8701147181165627355}
   - component: {fileID: 1144212798}
   - component: {fileID: 204964743}
-  - component: {fileID: 1638126542083708980}
   m_Layer: 0
   m_Name: EnemyRotated
   m_TagString: Enemy
@@ -658,25 +657,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spaceBuffer: {x: 5, y: 4}
---- !u!95 &1638126542083708980
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5858103958070478789}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8280380156943329820
 GameObject:
   m_ObjectHideFlags: 0
@@ -940,6 +920,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_EdgeRadius
       value: 10.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972440008115504450, guid: f14eff7f0f0c7534886bd92de6029e6e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972440008115504450, guid: f14eff7f0f0c7534886bd92de6029e6e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.56
       objectReference: {fileID: 0}
     - target: {fileID: 7035881056569261756, guid: f14eff7f0f0c7534886bd92de6029e6e,
         type: 3}

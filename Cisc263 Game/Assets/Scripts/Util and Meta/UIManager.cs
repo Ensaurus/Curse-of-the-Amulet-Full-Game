@@ -200,6 +200,8 @@ public class UIManager : Singleton<UIManager>
         }
         newPowerUpName.gameObject.SetActive(false);
         newPowerUpDescription.gameObject.SetActive(false);
+        newPowerUpName.text = "";   // set text to empty so this can be made active/deactivated in level transition to account for overlappin text
+        newPowerUpDescription.text = "";
     }
 
     #endregion
@@ -308,13 +310,17 @@ public class UIManager : Singleton<UIManager>
 
     private void AskToEnterPortal()
     {
-        Debug.Log("made it");
+        newPowerUpName.gameObject.SetActive(false);
+        newPowerUpDescription.gameObject.SetActive(false);
         enterPortalText.text = "Would you like to spend " + Exit.Instance.requiredEnergy + " amulet charge to enter the portal?";
+        
         enterPortalScreen.SetActive(true);
     }
 
     private void PutAwayPortalScreen()
     {
+        newPowerUpName.gameObject.SetActive(true);
+        newPowerUpDescription.gameObject.SetActive(true);
         enterPortalScreen.SetActive(false);
     }
 
@@ -378,6 +384,8 @@ public class UIManager : Singleton<UIManager>
         }
         obj.gameObject.SetActive(false);
         levelTransitionText.gameObject.SetActive(false);
+        newPowerUpName.gameObject.SetActive(true);  // start displaying interupted text again
+        newPowerUpDescription.gameObject.SetActive(true);
         EventManager.Instance.FadeComplete.Invoke();
     }
 

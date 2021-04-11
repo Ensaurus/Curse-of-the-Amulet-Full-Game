@@ -1559,7 +1559,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &597275251
 GameObject:
@@ -2364,9 +2364,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'New PowerUp
-
-'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2557,8 +2555,8 @@ MonoBehaviour:
   levelDimensions: {x: 80, y: 80}
   levelSizeIncrease: {x: 10, y: 10}
   enemyIncrease: 1
-  chargingStationIncrease: 3
-  pathIncrease: 3
+  chargingStationIncrease: 2
+  pathIncrease: 2
   flamesIncrease: 20
   portalChargeIncrease: 2
 --- !u!4 &838902659
@@ -4861,7 +4859,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You Got A New Thing
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6318,7 +6316,7 @@ PrefabInstance:
     - target: {fileID: 37957568724167550, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
       propertyPath: flameEnergy
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 37957568724167550, guid: efba5f2655dfdd341924bf628c458949,
         type: 3}
@@ -6636,7 +6634,7 @@ PrefabInstance:
     - target: {fileID: 6563820303930233166, guid: 79ea09db617a1b3479b02f9457d2d7f9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6563820303930233166, guid: 79ea09db617a1b3479b02f9457d2d7f9,
         type: 3}

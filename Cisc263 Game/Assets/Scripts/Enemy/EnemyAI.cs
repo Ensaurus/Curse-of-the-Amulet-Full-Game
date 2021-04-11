@@ -46,12 +46,15 @@ public class EnemyAI : MonoBehaviour
 
     private bool trackingToggle = false; //Used to loop sound if tracking
 
+    private Animator enemyAnimator;
+
     // Start is called before the first frame update
     void Awake()
     {
-        // set up transforms
+        // set up transforms and animator
         myTransform = this.transform;
         playerTransform = EnemyStats.Instance.player.transform;
+        enemyAnimator = GetComponentInChildren<Animator>();
         // make functions listen for events
         EventManager.Instance.PlayerSeen.AddListener(SeePlayer);
         EventManager.Instance.PlayerNoise.AddListener(HearSound);   // never actually used :(
@@ -457,18 +460,39 @@ public class EnemyAI : MonoBehaviour
         switch (newState){
             case State.ATTACKING:
                 speed = EnemyStats.Instance.attackSpeed;
+
+                enemyAnimator.SetBool("Roaming", false);
+                enemyAnimator.SetBool("Tracking", false);
+                enemyAnimator.SetBool("Attacking", true);
+                enemyAnimator.SetBool("Trapped", false);
                 break;
             case State.TRACKING:
                 speed = EnemyStats.Instance.trackSpeed;
+
+                enemyAnimator.SetBool("Roaming", false);
+                enemyAnimator.SetBool("Tracking", true);
+                enemyAnimator.SetBool("Attacking", false);
+                enemyAnimator.SetBool("Trapped", false);
                 break;
             case State.ROAMING:
                 speed = EnemyStats.Instance.roamSpeed;
+
+                enemyAnimator.SetBool("Roaming", true);
+                enemyAnimator.SetBool("Tracking", false);
+                enemyAnimator.SetBool("Attacking", false);
+                enemyAnimator.SetBool("Trapped", false);
                 break;
             case State.TRAPPED:
                 // reset everything, so when it goes free starts in normal roaming
                 searching = false;
                 cooldown = false;
                 currentConfidence = 0;
+
+
+                enemyAnimator.SetBool("Roaming", false);
+                enemyAnimator.SetBool("Tracking", false);
+                enemyAnimator.SetBool("Attacking", false);
+                enemyAnimator.SetBool("Trapped", true);
                 break;
         }
     }

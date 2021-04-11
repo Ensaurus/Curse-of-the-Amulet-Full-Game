@@ -6610,6 +6610,7 @@ MonoBehaviour:
   Camera: {fileID: 37957568884685327}
   player: {fileID: 37957568743584454}
   cameraDrop: {fileID: 0}
+  nightModeLight: {fileID: 0}
   numCameras: 0
   CurrentCamera: 0
 --- !u!4 &508974032

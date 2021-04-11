@@ -29,6 +29,10 @@ public class SceneController : Singleton<SceneController>
         SpawnLevel();
         EventManager.Instance.FadeComplete.Invoke(); // on first level spawn, invoke fadeComplete so enemyAI unfreezes
         EventManager.Instance.LevelCompleted.AddListener(ChangeLevel);
+
+        ContinuityManager.Instance.npcTalkedTo = false; // reset continuity for intro scene
+        ContinuityManager.Instance.chestOpened = false;
+        ContinuityManager.Instance.portalEntered = false;
 	}
 
     private void SpawnLevel()

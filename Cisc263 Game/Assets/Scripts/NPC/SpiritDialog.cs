@@ -40,6 +40,8 @@ public class SpiritDialog : MonoBehaviour
         NPCBubble.SetActive(false);
         talkOption.SetActive(false);
         noOption.SetActive(false);
+        ContinuityManager.Instance.npcTalkedTo = true;  // set flag in continuity manager
+        ContinuityManager.Instance.portalEntered = false;
         SceneManager.LoadScene("NPC");
     }
 

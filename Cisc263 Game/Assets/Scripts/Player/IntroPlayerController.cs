@@ -20,6 +20,15 @@ public class IntroPlayerController : MonoBehaviour
 
         isTalkingToSpirit = false;
 
+        if (ContinuityManager.Instance.npcTalkedTo)
+        {
+            transform.position = new Vector2(25, 15);
+        }
+        if (ContinuityManager.Instance.portalEntered)
+        {
+            transform.position = new Vector2(-30, 24);
+        }
+
     }
 
     // Update is called once per frame

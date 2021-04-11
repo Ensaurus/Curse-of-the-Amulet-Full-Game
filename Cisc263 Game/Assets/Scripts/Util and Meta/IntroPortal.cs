@@ -13,6 +13,8 @@ public class IntroPortal : MonoBehaviour
         if (other.CompareTag("Player")){
             if (IntroChest.Instance.isOpened)
             {
+                ContinuityManager.Instance.portalEntered = true;
+                ContinuityManager.Instance.npcTalkedTo = false;
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
             else
