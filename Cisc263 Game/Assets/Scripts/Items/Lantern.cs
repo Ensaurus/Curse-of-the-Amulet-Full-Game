@@ -30,7 +30,7 @@ public class Lantern : Singleton<Lantern>
     void Update()
     {
         //Turning the light on
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             StartCoroutine(ToggleLantern());
         }

@@ -2467,7 +2467,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -47.9, y: -47.5}
+  m_AnchoredPosition: {x: -47.899902, y: -47.5}
   m_SizeDelta: {x: 88.00177, y: 87.58836}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &776154164
@@ -4293,7 +4293,8 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Use Item: E\nSwap Item: Q\nOpen Chest: R\nMovement: WASD\nUse Amulet:
-    Space\nToggle Flashlight: F \nMove Flashlight: Mouse\nChange Perspective: TAB\n"
+    Space\nMove Lantern: Mouse\nToggle Lantern: Left Click \nChange Perspective:
+    TAB\n"
 --- !u!222 &1535007761
 CanvasRenderer:
   m_ObjectHideFlags: 0

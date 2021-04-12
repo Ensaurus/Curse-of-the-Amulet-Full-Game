@@ -268,22 +268,25 @@ public class EnemyAI : MonoBehaviour
         }
         if (other.CompareTag("Scent") && activeState != State.ATTACKING)
         {
-            // Debug.Log("it was a scent node");
-            Scent node = other.GetComponent<Scent>();
-            float confidence = node.pungence;
-
-            // if node is fresher than current node or first node seen
-            if (currentScent == null || node.pungence > currentScent.pungence)
+            if (activeState != State.TRAPPED)
             {
-                currentScent = node;
-            }
+                // Debug.Log("it was a scent node");
+                Scent node = other.GetComponent<Scent>();
+                float confidence = node.pungence;
 
-            // if node is over a couple seconds fresher than ours was when we found it (i.e. ran into a new fresher trail)
-            if ((confidence >= currentConfidence + 2) && !cooldown)
-            {
-                // restart tracking
-                currentConfidence = confidence;
-                StartCoroutine(Tracking(false));
+                // if node is fresher than current node or first node seen
+                if (currentScent == null || node.pungence > currentScent.pungence)
+                {
+                    currentScent = node;
+                }
+
+                // if node is over a couple seconds fresher than ours was when we found it (i.e. ran into a new fresher trail)
+                if ((confidence >= currentConfidence + 2) && !cooldown)
+                {
+                    // restart tracking
+                    currentConfidence = confidence;
+                    StartCoroutine(Tracking(false));
+                }
             }
         }
     }
