@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class CollisionDetection : MonoBehaviour
 {
-    [SerializeField] private AudioSource DeathSound;
-
     public GameObject chargingStat;
 
     [SerializeField] private AudioSource chargingSound; 
@@ -17,7 +15,6 @@ public class CollisionDetection : MonoBehaviour
         {
             // Debug.Log("player hit an enemy");
             // can add a condition here for health later if we want
-            DeathSound.Play();
             gameObject.GetComponent<Collider2D>().enabled = false; // disable collider to prevent double jumpscare
             EventManager.Instance.JumpScare.Invoke();
             EventManager.Instance.Death.Invoke();

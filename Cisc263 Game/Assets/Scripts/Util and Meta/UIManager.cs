@@ -24,6 +24,7 @@ public class UIManager : Singleton<UIManager>
     public bool isScaring = false;
 
     public TextMeshProUGUI openChestText;
+    [SerializeField] private AudioSource DeathSound;
 
     // Start is called before the first frame update
     void Start()
@@ -243,6 +244,7 @@ public class UIManager : Singleton<UIManager>
 
     IEnumerator JumpScare()
     {
+        DeathSound.Play();
         isScaring = true;
         // Debug.Log("JumpScare");
         float timer = 0;
